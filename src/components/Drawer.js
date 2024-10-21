@@ -2,18 +2,33 @@ import React, { useState } from 'react';
 import './Drawer.css';
 import { AiOutlineHome, AiOutlinePlus, AiOutlineCompass, AiOutlineSave } from 'react-icons/ai';
 import logo from '../logo.svg';
+import {useNavigate} from "react-router-dom";
 
 
 const Drawer = () => {
     const [selected, setSelected] = useState('Home');
+    const navigate = useNavigate();
 
     const handleSelect = (item) => {
         setSelected(item);
+        switch (item) {
+            case 'Home':
+                navigate('/home');
+                break;
+            case 'Discovery':
+                navigate('/discovery');
+                break;
+            case 'Saved':
+                navigate('/saved');
+                break;
+            default:
+                break;
+        }
     };
 
     return (
         <div className="drawer">
-            <div className="logo">
+            <div className="logo" onClick={() => handleSelect('Home')}>
                 <img src={logo} className="App-logo" alt="logo"/>
             </div>
             <div className="menu">

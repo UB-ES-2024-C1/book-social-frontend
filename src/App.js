@@ -1,23 +1,26 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
-import Drawer from './components/Drawer';
 import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
 import SavedPage from './pages/SavedPage';
+import Drawer from "./components/Drawer";
+
 
 function App() {
     return (
         <Router>
             <div className="App">
-                <header className="App-header">
+                <div className="App-header">
                     <Drawer />
-                </header>
-                <Routes>
-                    <Route path="/home" exact component={HomePage} />
-                    <Route path="/discovery" component={DiscoveryPage} />
-                    <Route path="/saved" component={SavedPage} />
-                </Routes>
+                    <div className="page-content">
+                        <Routes>
+                            <Route path="/home" element={<HomePage />} />
+                            <Route path="/discovery" element={<DiscoveryPage />} />
+                            <Route path="/saved" element={<SavedPage />} />
+                        </Routes>
+                    </div>
+                </div>
             </div>
         </Router>
     );
