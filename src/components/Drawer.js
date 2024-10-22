@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -8,9 +8,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { AiOutlineHome, AiOutlinePlus, AiOutlineCompass, AiOutlineSave } from 'react-icons/ai';
-import { useNavigate } from "react-router-dom";
+import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus, AiOutlineSave} from 'react-icons/ai';
+import {useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
+import * as routes from '../resources/routes_name';
+import paletteColors from "../resources/palette";
+
 
 export default function PermanentDrawer() {
     const [selected, setSelected] = useState('Home');
@@ -20,13 +23,13 @@ export default function PermanentDrawer() {
         setSelected(item);
         switch (item) {
             case 'Home':
-                navigate('/home');
+                navigate(routes.HOME);
                 break;
             case 'Discovery':
-                navigate('/discovery');
+                navigate(routes.DISCOVERY);
                 break;
             case 'Saved':
-                navigate('/saved');
+                navigate(routes.SAVED);
                 break;
             default:
                 break;
@@ -42,7 +45,7 @@ export default function PermanentDrawer() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                background: 'linear-gradient(135deg, #282c34, #3a3f47)',
+                background: paletteColors.background_color,
             }}
             role="presentation"
         >
@@ -53,9 +56,9 @@ export default function PermanentDrawer() {
                 width: '100%',
                 marginBottom: '30px',
             }}>
-                <img src={logo} className="App-logo" alt="logo" />
+                <img src={logo} className="App-logo" alt="logo"/>
             </div>
-            <Divider />
+            <Divider/>
             <List sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -64,10 +67,10 @@ export default function PermanentDrawer() {
                 width: '100%',
             }}>
                 {[
-                    { text: 'New post', icon: <AiOutlinePlus />, route: 'New post' },
-                    { text: 'Home', icon: <AiOutlineHome />, route: 'Home' },
-                    { text: 'Discovery', icon: <AiOutlineCompass />, route: 'Discovery' },
-                    { text: 'Saved', icon: <AiOutlineSave />, route: 'Saved' }
+                    {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
+                    {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
+                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
@@ -81,9 +84,13 @@ export default function PermanentDrawer() {
                                 gap: '5px',
                                 cursor: 'pointer',
                                 borderRadius: '8px',
-                                border: selected === item.route ? '1px solid #6055CF' : '1px solid transparent',
+                                border: item.route === 'New post'
+                                    ? '1px solid #FFFFFF'
+                                    : selected === item.route
+                                        ? '1px solid #6055CF'
+                                        : '1px solid transparent',
                                 margin: item.route === 'Add' ? '0 auto' : '0',
-                                background: selected === item.route ? 'linear-gradient(135deg, #282c34, #3a3f47)' : 'transparent',
+                                background: selected === item.route ? paletteColors.background_color : 'transparent',
                                 '&:hover': {
                                     background: 'rgba(255, 255, 255, 0.1)',
                                 }
@@ -100,7 +107,7 @@ export default function PermanentDrawer() {
                                 primary={item.text}
                                 sx={{
                                     fontSize: '15px',
-                                    color: selected === item.route ? '#6055CF' : '#fff',
+                                    color: selected === item.route ? '#6055CF' : paletteColors.textColor,
                                 }}
                             />
                         </ListItemButton>
@@ -115,9 +122,9 @@ export default function PermanentDrawer() {
             variant="permanent"
             sx={{
                 '& .MuiDrawer-paper': {
-                    background: 'linear-gradient(135deg, #282c34, #3a3f47)',
+                    background: paletteColors.background_color,
                     boxSizing: 'border-box',
-                    color: '#fff',
+                    color: paletteColors.textColor,
                 },
             }}
         >

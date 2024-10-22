@@ -6,18 +6,17 @@ import DiscoveryPage from './pages/DiscoveryPage';
 import SavedPage from './pages/SavedPage';
 import Drawer from "./components/Drawer";
 
-
 function App() {
     return (
         <Router>
             <div className="App">
                 <div className="App-header">
-                    <Drawer />
+                    <Drawer/>
                     <div className="page-content">
                         <Routes>
-                            <Route path="/home" element={<HomePage />} />
-                            <Route path="/discovery" element={<DiscoveryPage />} />
-                            <Route path="/saved" element={<SavedPage />} />
+                            <Route path="{myRoutes.home}" element={<HomePage/>}/>
+                            <Route path="/discovery" element={<DiscoveryPage/>}/>
+                            <Route path="/saved" element={<SavedPage/>}/>
                         </Routes>
                     </div>
                 </div>
