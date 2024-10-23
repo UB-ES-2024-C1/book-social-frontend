@@ -4,19 +4,23 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
 import SavedPage from './pages/SavedPage';
+import Profile from './pages/Profile';
 import Drawer from "./components/Drawer";
+import NavAppBar from './components/NavAppBar';
 
 function App() {
     return (
         <Router>
             <div className="App">
                 <div className="App-header">
+                    <NavAppBar/>
                     <Drawer/>
                     <div className="page-content">
                         <Routes>
-                            <Route path="{myRoutes.home}" element={<HomePage/>}/>
+                            <Route path="/home" element={<HomePage/>}/>
                             <Route path="/discovery" element={<DiscoveryPage/>}/>
                             <Route path="/saved" element={<SavedPage/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
                         </Routes>
                     </div>
                 </div>
