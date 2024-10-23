@@ -98,7 +98,7 @@ export default function PermanentDrawer() {
                             className={selected === item.route ? 'active' : ''}
                         >
                             <ListItemIcon sx={{
-                                color: selected === item.route ? '#6055CF' : 'inherit',
+                                color: selected === item.route ? paletteColors.color_primary : 'inherit',
                                 fontSize: '15px',
                             }}>
                                 {item.icon}
@@ -107,7 +107,7 @@ export default function PermanentDrawer() {
                                 primary={item.text}
                                 sx={{
                                     fontSize: '15px',
-                                    color: selected === item.route ? '#6055CF' : paletteColors.textColor,
+                                    color: selected === item.route ? paletteColors.color_primary : paletteColors.textColor,
                                 }}
                             />
                         </ListItemButton>
