@@ -8,7 +8,7 @@ import book4 from '../assets/books/book4.jpg';
 import book5 from '../assets/books/book5.jpg';
 import post1 from '../assets/posts/post1.png';
 
-const HomePage = ({isLogged}) => {
+const HomePage = ({isLogged, setLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 

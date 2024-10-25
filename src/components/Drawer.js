@@ -15,9 +15,10 @@ import * as routes from '../resources/routes_name';
 import paletteColors from "../resources/palette";
 
 
-export default function PermanentDrawer() {
+export default function PermanentDrawer({isLogged, setLogged}) {
     const [selected, setSelected] = useState('Home');
     const navigate = useNavigate();
+    // isLogged = true;
 
     const handleSelect = (item) => {
         setSelected(item);
@@ -128,7 +129,7 @@ export default function PermanentDrawer() {
                 },
             }}
         >
-            {DrawerList}
+            {isLogged && DrawerList}
         </Drawer>
     );
 }
