@@ -15,7 +15,7 @@ import * as routes from '../resources/routes_name';
 import paletteColors from "../resources/palette";
 
 
-export default function PermanentDrawer({isLogged, setLogged}) {
+export default function PermanentDrawer({isLogged}) {
     const [selected, setSelected] = useState('Home');
     const navigate = useNavigate();
     // isLogged = true;
