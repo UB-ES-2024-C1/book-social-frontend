@@ -14,7 +14,7 @@ function App() {
                     <Drawer/>
                     <div className="page-content">
                         <Routes>
-                            <Route path="{myRoutes.home}" element={<HomePage/>}/>
+                            <Route path="/home" element={<HomePage/>}/>
                             <Route path="/discovery" element={<DiscoveryPage/>}/>
                             <Route path="/saved" element={<SavedPage/>}/>
                         </Routes>
