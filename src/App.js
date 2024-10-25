@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
@@ -9,12 +9,14 @@ import Drawer from "./components/Drawer";
 import NavAppBar from './components/NavAppBar';
 
 function App() {
+    const [logged, setLogged] = useState(false); // Estado de login
+
     return (
         <Router>
             <div className="App">
                 <div className="App-header">
-                    <NavAppBar/>
-                    <Drawer/>
+                    <NavAppBar logged={logged} setLogged={setLogged}/>
+                    {logged && <Drawer/>} {/* Renderiza Drawer solo si está logueado */}
                     <div className="page-content">
                         <Routes>
                             <Route path="/home" element={<HomePage/>}/>
