@@ -18,7 +18,7 @@ import paletteColors from "../resources/palette";
 export default function PermanentDrawer({isLogged}) {
     const [selected, setSelected] = useState('Home');
     const navigate = useNavigate();
-    // isLogged = true;
+    isLogged = true;
 
     const handleSelect = (item) => {
         setSelected(item);
