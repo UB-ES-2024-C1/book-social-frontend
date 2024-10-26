@@ -5,11 +5,13 @@ import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
 import SavedPage from './pages/SavedPage';
 import Drawer from "./components/Drawer";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
     return (
         <Router>
             <div className="App">
+                <LandingPage/>
                 <div className="App-header">
                     <Drawer/>
                     <div className="page-content">
