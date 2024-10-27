@@ -1,16 +1,20 @@
 // src/App.js
-import React from 'react';
+import React , {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
 import SavedPage from './pages/SavedPage';
+import Profile from './pages/Profile';
 import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
+import NavAppBar from './components/NavAppBar';
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
     <div className="App">
+        <NavAppBar logged={logged} setLogged={setLogged}/>
+        {logged && <Drawer/>} {/* Renderiza Drawer solo si está logueado */}
         <Outlet />
     </div>
 );
@@ -18,6 +22,8 @@ const MainLayout = () => (
 // Layout with Drawer (for Home, Discovery, Saved)
 const DrawerLayout = () => (
     <div className="App">
+        <NavAppBar logged={logged} setLogged={setLogged}/>
+        {logged && <Drawer/>} {/* Renderiza Drawer solo si está logueado */}
         <div className="App-header">
             <PermanentDrawer isLogged={true} />
             <div className="page-content">
@@ -40,12 +46,14 @@ function AppContent() {
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/discovery" element={<DiscoveryPage />} />
                 <Route path="/saved" element={<SavedPage />} />
+                <Route path="/profile" element={<Profile/>}/>
             </Route>
         </Routes>
     );
 }
 
 function App() {
+    const [logged, setLogged] = useState(false); // Estado de login
     return (
         <Router>
             <AppContent />
