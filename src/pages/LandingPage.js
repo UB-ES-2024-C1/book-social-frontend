@@ -1,27 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import paletteColors from "../resources/palette";
-import {FaBook} from 'react-icons/fa';
 import book1 from '../assets/books/book1.jpg';
 import book2 from '../assets/books/book2.jpg';
 import book3 from '../assets/books/book3.jpg';
 import book4 from '../assets/books/book4.jpg';
 import book5 from '../assets/books/book5.jpg';
-import post1 from '../assets/posts/post1.png';
+import post from '../assets/posts/post.png';
+import Box from "@mui/material/Box";
+import paletteColors from "../resources/palette";
+import {FaBook} from "react-icons/fa";
+import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
+import * as routes from "../resources/routes_name";
+import {useNavigate} from "react-router-dom";
+import BookSocialTitle from "../components/BookSocialTitle";
+import {Spacer} from "../resources/spacer";
 
 const LandingPage = ({isLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setFadeIn(true);
     }, []);
 
-    const openPopup = () => {
-        setIsPopupOpen(true);
+    const goToDiscovery = () => {
+        navigate(routes.DISCOVERY);
     };
-
-    const closePopup = () => {
-        setIsPopupOpen(false);
+    const goToHome = () => {
+        navigate(routes.HOME);
     };
 
     const bookIcons = [
@@ -46,152 +51,134 @@ const LandingPage = ({isLogged}) => {
         book1, book2, book3, book4, book5
     ];
 
-    const postImage = [post1];
+    const postImage = [post];
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            width: '100%',
-            textAlign: 'center',
-            background: paletteColors.background_color,
-            overflow: 'hidden',
-            position: 'relative',
-        }}>
-            {bookIcons.map((icon, index) => (
-                <FaBook key={index} style={{
-                    position: 'absolute',
-                    top: icon.top,
-                    left: icon.left,
-                    fontSize: icon.size,
-                    color: paletteColors.primary,
-                    opacity: icon.opacity,
-                    transform: `rotate(${icon.rotation})`,
-                    filter: 'blur(3px)',
-                    pointerEvents: 'none',
-                }}/>
-            ))}
+        <Box
+            sx={{
+                width: '100vw',
+                height: '200vh',
+                scrollSnapType: 'y mandatory',
+                overflowY: 'scroll',
+                background: paletteColors.background_color,
+            }}
+        >
+            <Box
+                sx={{
+                    width: '100vw',
+                    height: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    scrollSnapAlign: 'start',
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                }}
+            >
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    width: '100%',
+                    textAlign: 'center',
+                    background: paletteColors.background_color,
+                    overflow: 'hidden',
+                    position: 'relative',
+                }}>
+                    {bookIcons.map((icon, index) => (
+                        <FaBook key={index} style={{
+                            position: 'absolute',
+                            top: icon.top,
+                            left: icon.left,
+                            fontSize: icon.size,
+                            color: paletteColors.primary,
+                            opacity: icon.opacity,
+                            transform: `rotate(${icon.rotation})`,
+                            filter: 'blur(3px)',
+                            pointerEvents: 'none',
+                        }}/>
+                    ))}
 
-            {isLogged ? null : (
-                <>
-                    <h1 style={{
-                        fontSize: '2.5em',
-                        maxWidth: '600px',
-                        lineHeight: '1.4',
-                        background: `linear-gradient(135deg, ${paletteColors.primary}, ${paletteColors.secondary})`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        textShadow: '3px 3px 10px rgba(0, 0, 0, 0.3)',
-                        opacity: fadeIn ? 1 : 0,
-                        transform: fadeIn ? 'translateY(0)' : 'translateY(20px)',
-                        transition: 'opacity 0.8s ease, transform 0.8s ease',
-                    }}
-                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-                    >
-                        Welcome everyone to bookSocial, the social network for books!
-                    </h1>
+                    {/*TODO add missing navbar*/}
 
-                    <button onClick={openPopup} style={{
-                        marginTop: '20px',
-                        padding: '12px 24px',
-                        fontSize: 'medium',
-                        color: paletteColors.textColor,
-                        background: `linear-gradient(135deg, ${paletteColors.primary}, ${paletteColors.secondary})`,
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
-                        transition: 'background 0.3s ease, transform 0.3s ease',
-                        position: 'relative',
-                        overflow: 'hidden',
-                    }}>
-                        Explore
-                    </button>
-
-                    {isPopupOpen && (
-                        <div style={{
-                            position: 'fixed',
-                            top: '50%',
-                            left: '60%',
-                            transform: 'translate(-50%, -50%)',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            zIndex: 1000,
-                        }}>
-                            <div style={{
-                                background: 'linear-gradient(135deg, #e0e0e0, #c0c0c0)',
-                                padding: '20px',
-                                borderRadius: '8px',
-                                textAlign: 'center',
-                                width: '100%',
-                                position: 'relative',
-                            }}>
-                                <button onClick={closePopup} style={{
-                                    position: 'absolute',
-                                    top: '10px',
-                                    right: '10px',
-                                    background: 'transparent',
-                                    border: 'none',
-                                    fontSize: '30px',
-                                    cursor: 'pointer',
-                                    color: paletteColors.background_color,
-                                    transition: 'color 0.3s ease',
-                                }} onMouseEnter={(e) => e.target.style.color = paletteColors.background_color}
-                                        onMouseLeave={(e) => e.target.style.color = paletteColors.background_color}>
-                                    &times;
-                                </button>
-
-                                <h2 style={{
-                                    marginBottom: '10px', fontSize: 'medium', color: 'black'
-                                }}>Discover New Books</h2>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    marginTop: '10px'
-                                }}>
-                                    {bookCovers.map((cover, index) => (
-                                        <img key={index} src={cover} alt={`Book cover ${index + 1}`} style={{
-                                            width: '100px',
-                                            height: '150px',
-                                            margin: '5px',
-                                            borderRadius: '5px',
-                                            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
-                                        }}/>
-                                    ))}
-                                </div>
-                                <h2 style={{
-                                    marginBottom: '10px', fontSize: 'medium', color: 'black'
-                                }}>Create New Posts</h2>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    marginTop: '10px',
-                                    width: '100%',
-                                    height: '200px',
-                                    overflow: 'hidden',
-                                    position: 'relative',
-                                }}>
-                                    <img src={postImage[0]} alt="Post cover" style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        borderRadius: '5px',
-                                        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                    }}/>
-                                </div>
+                    {isLogged ? null : (
+                        <>
+                            <div style={{width: '80%', margin: '10%'}} onClick={goToHome}>
+                                <BookSocialTitle
+                                    level={1}
+                                    text={'Welcome everyone to bookSocial, the social network for books!'}
+                                />
+                                <Spacer size={16}/>
+                                <BookSocialTitle
+                                    level={2}
+                                    text={'Feel free to publish all your thoughts and fantasies about the literary world.'}
+                                    color={paletteColors.textColorStrong}
+                                />
                             </div>
-                        </div>
+                            <BookSocialPrimaryButton
+                                buttonText="Explore"
+                                onClick={goToDiscovery}
+                                isExpanded={true}
+                            />
+                        </>
                     )}
+                </div>
+            </Box>
+            <Box
+                sx={{
+                    width: '100vw',
+                    height: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column', // Arrange children in a column
+                    alignItems: 'start',
+                    scrollSnapAlign: 'start',
+                    padding: '5% 5%',
+                }}
+            >
+                <>
+                    <BookSocialTitle level={2} text={'Discover New Books'}/>
+                    <Spacer size={16}/>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '10px',
+                        flexWrap: 'wrap', // Allow wrapping if needed
+                    }}
+                         onClick={goToDiscovery}
+                    >
+                        {bookCovers.map((cover, index) => (
+                            <img key={index} src={cover} alt={`Book cover ${index + 1}`} style={{
+                                width: 'auto',
+                                height: '360px',
+                                margin: '16px',
+                                borderRadius: '5px',
+                                boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
+                            }}/>
+                        ))}
+                    </div>
+                    <Spacer size={24}/>
+                    <BookSocialTitle level={2} text={'Create New Posts'}/>
+                    <Spacer size={16}/>
+                    {/*TODO add more images and fix the size to look prettier and not empty landing*/}
+                    <div style={{
+                        display: 'flex',
+                        marginTop: '10px',
+                        width: '100%',
+                        height: '200px',
+                        overflow: 'hidden',
+                        position: 'relative',
+                    }} onClick={goToHome}>
+                        <img src={postImage[0]} alt="Post cover" style={{
+                            width: 'auto',
+                            height: 'auto',
+                            borderRadius: '5px',
+                            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
+                        }}/>
+                    </div>
                 </>
-            )}
-        </div>
+            </Box>
+        </Box>
     );
 };
 
