@@ -53,11 +53,16 @@ export default function PermanentDrawer({isLogged}) {
             <div className="logo" onClick={() => handleSelect('Home')} style={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                justifyItems:'center',
                 width: '100%',
-                marginBottom: '30px',
+                margin: '15px',
             }}>
-                <img src={logo} className="App-logo" alt="logo"/>
+                <img src={logo}
+                     className="App-logo"
+                     alt="logo"
+                     style={{
+                         width: '225px',
+                     }}/>
             </div>
             <Divider/>
             <List sx={{
