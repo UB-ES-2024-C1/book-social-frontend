@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 
-const BookSocialText = ({level, text, color, style, sx}) => {
+const BookSocialText = ({level, text, color = paletteColors.textColor}) => {
     // Define font sizes for each text level
     const fontSizes = {
         p: '1rem', // Paragraph
@@ -21,9 +21,7 @@ const BookSocialText = ({level, text, color, style, sx}) => {
                 color: color,
                 fontSize: fontSizes[level] || fontSizes.p, // Default to paragraph size if level is not found
                 fontFamily: 'Robotos',
-                ...style, // Apply any additional styles passed in
             }}
-            sx={sx} // Apply additional styles using sx prop
         >
             {text} {/* Render the text passed as a prop */}
         </Typography>
@@ -37,12 +35,6 @@ BookSocialText.propTypes = {
     color: PropTypes.string, // Optional color
     style: PropTypes.object, // Optional additional styles
     sx: PropTypes.object, // Optional additional styles using sx
-};
-
-BookSocialText.defaultProps = {
-    color: paletteColors.textColor, // Default color
-    style: {}, // Default to an empty object for style
-    sx: {}, // Default to an empty object for sx
 };
 
 export default BookSocialText;
