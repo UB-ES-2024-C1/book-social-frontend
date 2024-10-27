@@ -8,16 +8,21 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchBar from './SearchBar';
+import LoginModal from './LoginModal';
 import logo from "../logo.svg";
 
 export default function NavAppBar({logged, setLogged}) {
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" sx={{backgroundColor: '#282c34'}}>
                 <Toolbar>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
 
-                    </Typography>
                     {logged ? (
                         <>
                             <SearchBar/>
@@ -44,11 +49,10 @@ export default function NavAppBar({logged, setLogged}) {
                                 <img src={logo}
                                      className="App-logo"
                                      alt="logo"
-                                     style={{
-                                         width: '120px',
-                                     }}/>
+                                     style={{width: '120px'}}
+                                />
                             </div>
-                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={() => setLogged(true)}>
+                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={handleOpen}>
                                 Login
                             </Button>
                             <Button color="inherit" sx={{textTransform: 'none'}}>Sign in</Button>
@@ -56,6 +60,7 @@ export default function NavAppBar({logged, setLogged}) {
                     )}
                 </Toolbar>
             </AppBar>
+            <LoginModal open={open} handleClose={handleClose}/>
         </Box>
     );
 }
