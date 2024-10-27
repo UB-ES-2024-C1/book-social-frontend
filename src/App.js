@@ -16,7 +16,7 @@ function App() {
             <div className="App">
                 <div className="App-header">
                     <NavAppBar logged={logged} setLogged={setLogged}/>
-                    {logged && <Drawer/>} {/* Renderiza Drawer solo si está logueado */}
+                    {logged && <Drawer/>}
                     <div className="page-content">
                         <Routes>
                             <Route path="/home" element={<HomePage/>}/>

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {purple} from "@mui/material/colors";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 const style = {
     position: 'absolute',
@@ -15,6 +16,7 @@ const style = {
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
+    borderRadius: 4,
 };
 
 const LoginModal = ({open, handleClose}) => {
@@ -22,7 +24,6 @@ const LoginModal = ({open, handleClose}) => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Aquí puedes manejar la lógica de autenticación
         console.log("Username:", username);
         console.log("Password:", password);
         handleClose();
@@ -43,9 +44,14 @@ const LoginModal = ({open, handleClose}) => {
                     sx={{
                         fontWeight: 'bold',
                         fontFamily: 'Arial, sans-serif',
-                        color: paletteColors.textColor, // color de texto en blanco
+                        color: paletteColors.textColor,
+                        textAlign: 'center',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
                 >
+                    <AccountCircle sx={{mr: 1}}/>
                     Login
                 </Typography>
                 <TextField
@@ -54,18 +60,14 @@ const LoginModal = ({open, handleClose}) => {
                     fullWidth
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    InputLabelProps={{style: {color: paletteColors.textColor}}}
-                    InputProps={{
-                        style: {color: paletteColors.textColor},
-                    }}
                     sx={{
+                        color: paletteColors.textColor,
+                        '& .MuiInputLabel-root': {color: paletteColors.textColor},
                         '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                                borderColor: paletteColors.textColor,
-                            },
-                            '&:hover fieldset': {
-                                borderColor: paletteColors.textColor,
-                            },
+                            '& fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover fieldset': {borderColor: paletteColors.textColor},
+                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
                         },
                     }}
                 />
@@ -76,18 +78,14 @@ const LoginModal = ({open, handleClose}) => {
                     fullWidth
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    InputLabelProps={{style: {color: paletteColors.textColor}}}
-                    InputProps={{
-                        style: {color: paletteColors.textColor},
-                    }}
                     sx={{
+                        color: paletteColors.textColor,
+                        '& .MuiInputLabel-root': {color: paletteColors.textColor},
                         '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                                borderColor: paletteColors.textColor,
-                            },
-                            '&:hover fieldset': {
-                                borderColor: paletteColors.textColor,
-                            },
+                            '& fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover fieldset': {borderColor: paletteColors.textColor},
+                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
                         },
                     }}
                 />
