@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography} from '@mui/material';
+import {Box, Checkbox, FormControlLabel, Modal, TextField, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
-import {purple} from "@mui/material/colors";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
@@ -9,6 +8,7 @@ import {AiOutlineClose} from "react-icons/ai";
 import {useAuth} from "../hooks/authentication";
 import {useNavigate} from 'react-router-dom';
 import * as routes from '../resources/routes_name';
+import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 
 
 const style = {
@@ -18,7 +18,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     height: 500,
-    bgcolor: paletteColors.color_primary_weakest,
+    bgcolor: paletteColors.background_header,
     boxShadow: 24,
     p: 4,
     display: 'flex',
@@ -99,7 +99,7 @@ const LoginModal = ({open, handleClose}) => {
                         color: paletteColors.textColor,
                         '& .MuiInputLabel-root': {
                             color: paletteColors.textColor,
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
                         },
 
                         '& .MuiOutlinedInput-root': {
@@ -121,7 +121,7 @@ const LoginModal = ({open, handleClose}) => {
                         color: paletteColors.textColor,
                         '& .MuiInputLabel-root': {
                             color: paletteColors.textColor,
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
                         },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
@@ -136,30 +136,17 @@ const LoginModal = ({open, handleClose}) => {
                         <Checkbox
                             defaultChecked
                             sx={{
-                                color: purple[800],
+                                color: paletteColors.color_primary,
                                 '&.Mui-checked': {
-                                    color: purple[600],
+                                    color: paletteColors.color_primary,
                                 }
                             }}
                         />
                     }
                     label="Remember me" sx={{color: paletteColors.textColor}}
                 />
-                <Button
-                    variant="contained"
-                    onClick={handleLogin}
-                    sx={{
-                        mt: 2,
-                        backgroundColor: purple[800],
-                        color: paletteColors.textColor,
-                        '&:hover': {
-                            backgroundColor: paletteColors.color_primary_weak,
-                            color: paletteColors.textColor,
-                        }
-                    }}
-                >
-                    Login
-                </Button>
+                <BookSocialPrimaryButton buttonText={'Login'} onClick={handleLogin} isExpanded={false}
+                                         bgColor={paletteColors.color_primary}/>
             </Box>
         </Modal>
     );

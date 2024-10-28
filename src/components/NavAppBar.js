@@ -11,16 +11,21 @@ import SearchBar from './SearchBar';
 import LoginModal from './LoginModal';
 import logo from "../logo.svg";
 import {useAuth} from "../hooks/authentication";
+import SignInModal from "./SignInModal";
 
 export default function NavAppBar() {
-    const [open, setOpen] = React.useState(false);
+    const [openLogin, setOpenLogin] = React.useState(false);
+    const [openSignIn, setOpenSignIn] = React.useState(false);
 
     const {isLoggedIn} = useAuth();
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpenLogin = () => setOpenLogin(true);
+    const handleCloseLogin = () => setOpenLogin(false);
+    const handleOpenSignIn = () => setOpenSignIn(true);
+    const handleCloseSignIn = () => setOpenSignIn(false);
+
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar position="static" sx={{backgroundColor: '#282c34'}}>
+            <AppBar position="static" sx={{backgroundColor: '#282c34', height: '68px'}}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
                     {isLoggedIn ? (
@@ -44,23 +49,26 @@ export default function NavAppBar() {
                                 display: 'flex',
                                 justifyContent: 'left',
                                 width: '100%',
-                                marginBottom: '15px',
                             }}>
                                 <img src={logo}
                                      className="App-logo"
                                      alt="logo"
-                                     style={{width: '120px'}}
-                                />
+                                     style={{
+                                         width: '120px',
+                                     }}/>
                             </div>
-                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={handleOpen}>
+                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={handleOpenLogin}>
                                 Login
                             </Button>
-                            <Button color="inherit" sx={{textTransform: 'none'}}>Sign in</Button>
+                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={handleOpenSignIn}>
+                                Sign in
+                            </Button>
                         </>
                     )}
                 </Toolbar>
             </AppBar>
-            <LoginModal open={open} handleClose={handleClose}/>
+            <LoginModal open={openLogin} handleClose={handleCloseLogin}/>
+            <SignInModal open={openSignIn} handleClose={handleCloseSignIn}/>
         </Box>
     );
 }

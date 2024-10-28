@@ -7,7 +7,7 @@ const BookSocialPrimaryButton = ({
                                      buttonText,
                                      onClick,
                                      textColor = paletteColors.textColorWeakest,
-                                     bgColor = paletteColors.secondary,
+                                     bgColor = paletteColors.color_primary,
                                      isExpanded = false,
                                  }) => {
     return (
@@ -19,7 +19,6 @@ const BookSocialPrimaryButton = ({
                 '&:hover': {backgroundColor: bgColor},
                 borderRadius: isExpanded ? '24px' : '16px',
                 padding: '16px',
-                margin: isExpanded ? '24px' : '16px',
                 width: isExpanded ? '33.33%' : 'auto',
                 display: 'flex',
                 justifyContent: 'space-evenly',
