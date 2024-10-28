@@ -14,6 +14,8 @@ import * as routes from "../resources/routes_name";
 import {useNavigate} from "react-router-dom";
 import BookSocialTitle from "../components/BookSocialTitle";
 import {Spacer} from "../resources/spacer";
+import AppBar from "@mui/material/AppBar";
+import NavAppBar from "../components/NavAppBar";
 
 const LandingPage = ({isLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
@@ -59,6 +61,9 @@ const LandingPage = ({isLogged}) => {
                 background: paletteColors.background_color,
             }}
         >
+            <AppBar position="fixed">
+                <NavAppBar/>
+            </AppBar>
             <Box
                 sx={{
                     minHeight: '100vh',
