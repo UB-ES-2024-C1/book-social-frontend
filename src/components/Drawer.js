@@ -13,6 +13,8 @@ import {useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
 import paletteColors from "../resources/palette";
+import {Typography} from "@mui/material";
+import {Logout} from "@mui/icons-material";
 
 
 export default function PermanentDrawer({isLogged}) {
@@ -53,7 +55,7 @@ export default function PermanentDrawer({isLogged}) {
             <div className="logo" onClick={() => handleSelect('Home')} style={{
                 display: 'flex',
                 justifyContent: 'center',
-                justifyItems:'center',
+                justifyItems: 'center',
                 width: '100%',
                 margin: '15px',
             }}>
@@ -120,6 +122,20 @@ export default function PermanentDrawer({isLogged}) {
                     </ListItem>
                 ))}
             </List>
+            <Typography
+                id="modal-title"
+                sx={{
+                    fontFamily: 'Roboto',
+                    color: paletteColors.textColor,
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <Logout sx={{mr: 1}}/>
+                Logout
+            </Typography>
         </Box>
     );
 

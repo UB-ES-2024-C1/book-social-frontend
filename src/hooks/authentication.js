@@ -7,6 +7,8 @@ const AuthContext = createContext();
 // Provider del contexto
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,7 +21,22 @@ export const AuthProvider = ({children}) => {
         console.log("Password:", password);
         setIsLoggedIn(true);
     };
-    const logout = () => setIsLoggedIn(false);
+
+    const signIn = (firstname, user, em, password) => {
+        setName(name);
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        console.log("Name:", name);
+        console.log("Email:", em);
+        console.log("Username:", username);
+        console.log("Password:", password);
+        setIsLoggedIn(true);
+    };
+
+    const logout = () => {
+        setIsLoggedIn(false);
+    }
 
     useEffect(() => {
         // Simulación de una autenticación inicial
@@ -43,7 +60,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{isLoggedIn, login, logout}}>
+        <AuthContext.Provider value={{isLoggedIn, login, signIn, logout}}>
             {children}
         </AuthContext.Provider>
     );

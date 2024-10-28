@@ -6,6 +6,10 @@ import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
 import {AiOutlineClose} from "react-icons/ai";
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
+import {useAuth} from "../hooks/authentication";
+import {useNavigate} from "react-router-dom";
+import * as routes from '../resources/routes_name';
+
 
 const style = {
     position: 'absolute',
@@ -24,21 +28,21 @@ const style = {
 };
 
 const SignInModal = ({open, handleClose}) => {
+    const {signIn} = useAuth();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
+    const navigate = useNavigate();
+
 
     const handleSignIn = () => {
-        console.log("Name:", name);
-        console.log("Email:", email);
-        console.log("Username:", username);
-        console.log("Password:", password);
-        console.log("Genre:", genre);
-        console.log("Person Type:", personType);
+        signIn(name, username, email, password);
         handleClose();
+        navigate(routes.HOME);
     };
 
     return (
@@ -191,9 +195,9 @@ const SignInModal = ({open, handleClose}) => {
                     <FormControl fullWidth>
                         <InputLabel id="genre-label" sx={{
                             color: paletteColors.textColor,
-                            '&:hover': {
+                            "&.Mui-focused": {
                                 color: paletteColors.textColor,
-                            }
+                            },
                         }}>Genre</InputLabel>
                         <Select
                             labelId="genre-label"
@@ -202,25 +206,19 @@ const SignInModal = ({open, handleClose}) => {
                             label="Genre"
                             onChange={(e) => setGenre(e.target.value)}
                             sx={{
-                                '& .MuiSelect-select': {
-                                    color: paletteColors.textColor,
-                                    '&:hover': {
-                                        color: paletteColors.textColor
-                                    }
-                                },
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                "& .MuiOutlinedInput-notchedOutline": {
                                     borderColor: paletteColors.textColor,
                                 },
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: paletteColors.textColor,
+                                    color: paletteColors.textColor
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: paletteColors.textColor,
+                                },
+                                color: paletteColors.textColor,
+                                "& .MuiSelect-icon": {
+                                    color: paletteColors.textColor,
                                 },
                             }}
                         >
@@ -232,9 +230,9 @@ const SignInModal = ({open, handleClose}) => {
                     <FormControl fullWidth>
                         <InputLabel id="person-type-label" sx={{
                             color: paletteColors.textColor,
-                            '&:hover': {
-                                color: 'white', // Cambia el color del label a blanco en hover
-                            }
+                            "&.Mui-focused": {
+                                color: paletteColors.textColor,
+                            },
                         }}>Person Type</InputLabel>
                         <Select
                             labelId="person-type-label"
@@ -243,25 +241,18 @@ const SignInModal = ({open, handleClose}) => {
                             label="Person Type"
                             onChange={(e) => setPersonType(e.target.value)}
                             sx={{
-                                '& .MuiSelect-select': {
-                                    color: paletteColors.textColor,
-                                    '&:hover': {
-                                        color: 'white' // Cambia el texto a blanco en hover
-                                    }
-                                },
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                "& .MuiOutlinedInput-notchedOutline": {
                                     borderColor: paletteColors.textColor,
                                 },
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: paletteColors.textColor,
-                                    },
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: paletteColors.textColor,
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: paletteColors.textColor,
+                                },
+                                color: paletteColors.textColor,
+                                "& .MuiSelect-icon": {
+                                    color: paletteColors.textColor,
                                 },
                             }}
                         >
