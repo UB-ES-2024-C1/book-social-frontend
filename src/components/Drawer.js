@@ -15,9 +15,10 @@ import * as routes from '../resources/routes_name';
 import paletteColors from "../resources/palette";
 
 
-export default function PermanentDrawer() {
+export default function PermanentDrawer({isLogged}) {
     const [selected, setSelected] = useState('Home');
     const navigate = useNavigate();
+    isLogged = true;
 
     const handleSelect = (item) => {
         setSelected(item);
@@ -52,11 +53,16 @@ export default function PermanentDrawer() {
             <div className="logo" onClick={() => handleSelect('Home')} style={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                justifyItems:'center',
                 width: '100%',
-                marginBottom: '30px',
+                margin: '15px',
             }}>
-                <img src={logo} className="App-logo" alt="logo"/>
+                <img src={logo}
+                     className="App-logo"
+                     alt="logo"
+                     style={{
+                         width: '225px',
+                     }}/>
             </div>
             <Divider/>
             <List sx={{
@@ -128,7 +134,7 @@ export default function PermanentDrawer() {
                 },
             }}
         >
-            {DrawerList}
+            {isLogged && DrawerList}
         </Drawer>
     );
 }
