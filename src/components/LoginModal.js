@@ -3,6 +3,9 @@ import {Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography} f
 import paletteColors from "../resources/palette";
 import {purple} from "@mui/material/colors";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import logo2 from "../logo2.svg";
+import IconButton from "@mui/material/IconButton";
+import {AiOutlineClose} from "react-icons/ai";
 
 const style = {
     position: 'absolute',
@@ -10,12 +13,13 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    height: 500,
     bgcolor: paletteColors.color_primary_weakest,
     boxShadow: 24,
     p: 4,
     display: 'flex',
     flexDirection: 'column',
-    gap: 2,
+    gap: 3,
     borderRadius: 4,
 };
 
@@ -37,6 +41,30 @@ const LoginModal = ({open, handleClose}) => {
             aria-describedby="modal-description"
         >
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: 'grey.500',
+                    }}
+                >
+                    <AiOutlineClose/>
+                </IconButton>
+                <div className="logo" style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '100%',
+                    marginBottom: '15px',
+                }}>
+                    <img src={logo2}
+                         className="App-logo"
+                         alt="logo"
+                         style={{width: '200px'}}
+                    />
+                </div>
                 <Typography
                     id="modal-title"
                     variant="h6"
@@ -62,7 +90,11 @@ const LoginModal = ({open, handleClose}) => {
                     onChange={(e) => setUsername(e.target.value)}
                     sx={{
                         color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {color: paletteColors.textColor},
+                        '& .MuiInputLabel-root': {
+                            color: paletteColors.textColor,
+                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                        },
+
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
                             '&:hover fieldset': {borderColor: paletteColors.textColor},
@@ -80,7 +112,10 @@ const LoginModal = ({open, handleClose}) => {
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
                         color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {color: paletteColors.textColor},
+                        '& .MuiInputLabel-root': {
+                            color: paletteColors.textColor,
+                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                        },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
                             '&:hover fieldset': {borderColor: paletteColors.textColor},
