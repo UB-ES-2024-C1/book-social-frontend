@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -9,18 +9,45 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus, AiOutlineSave} from 'react-icons/ai';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
 import paletteColors from "../resources/palette";
 import {Typography} from "@mui/material";
 import {Logout} from "@mui/icons-material";
+import {useAuth} from "../hooks/authentication";
 
 
 export default function PermanentDrawer({isLogged}) {
-    const [selected, setSelected] = useState('Home');
+    const {logout} = useAuth();
+    const [selected, setSelected] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+
     isLogged = true;
+
+    const handleLogout = () => {
+        logout();
+        navigate(routes.LANDING);
+    }
+
+    useEffect(() => {
+        const currentPath = location.pathname;
+        switch (currentPath) {
+            case routes.HOME:
+                setSelected('Home');
+                break;
+            case routes.DISCOVERY:
+                setSelected('Discovery');
+                break;
+            case routes.SAVED:
+                setSelected('Saved');
+                break;
+            default:
+                setSelected('');
+                break;
+        }
+    }, [location.pathname]);
 
     const handleSelect = (item) => {
         setSelected(item);
@@ -38,6 +65,7 @@ export default function PermanentDrawer({isLogged}) {
                 break;
         }
     };
+
 
     const DrawerList = (
         <Box
@@ -126,12 +154,15 @@ export default function PermanentDrawer({isLogged}) {
                 id="modal-title"
                 sx={{
                     fontFamily: 'Roboto',
-                    color: paletteColors.textColor,
                     textAlign: 'left',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    marginTop: '300px',
+                    cursor: 'pointer',
+                    color: paletteColors.textColor_weakest
                 }}
+                onClick={handleLogout}
             >
                 <Logout sx={{mr: 1}}/>
                 Logout
