@@ -6,6 +6,10 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
 import {AiOutlineClose} from "react-icons/ai";
+import {useAuth} from "../hooks/authentication";
+import {useNavigate} from 'react-router-dom';
+import * as routes from '../resources/routes_name';
+
 
 const style = {
     position: 'absolute',
@@ -24,13 +28,16 @@ const style = {
 };
 
 const LoginModal = ({open, handleClose}) => {
+    const {login} = useAuth();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = () => {
-        console.log("Username:", username);
-        console.log("Password:", password);
+        login(username, password);
         handleClose();
+        navigate(routes.HOME);
     };
 
     return (
