@@ -6,6 +6,7 @@ import book4 from '../assets/books/book4.jpg';
 import book5 from '../assets/books/book5.jpg';
 import post from '../assets/posts/post.png';
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid2";
 import paletteColors from "../resources/palette";
 import {FaBook} from "react-icons/fa";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
@@ -47,30 +48,22 @@ const LandingPage = ({isLogged}) => {
         {top: '90%', left: '80%', size: '55px', opacity: 0.2, rotation: '85deg'},
     ];
 
-    const bookCovers = [
-        book1, book2, book3, book4, book5
-    ];
-
+    const bookCovers = [book1, book2, book3, book4, book5];
     const postImage = [post];
 
     return (
         <Box
             sx={{
-                width: '100vw',
-                height: '200vh',
-                scrollSnapType: 'y mandatory',
-                overflowY: 'scroll',
+                minHeight: '100vh', // Ajustamos el mínimo de altura para que no sea excesivo
+                overflowY: 'auto', // Scroll sólo vertical
                 background: paletteColors.background_color,
             }}
         >
             <Box
                 sx={{
-                    width: '100vw',
-                    height: '100vh',
-                    display: 'flex',
+                    minHeight: '100vh',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    scrollSnapAlign: 'start',
                     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
                 }}
             >
@@ -100,14 +93,12 @@ const LandingPage = ({isLogged}) => {
                         }}/>
                     ))}
 
-                    {/*TODO add missing navbar*/}
-
                     {isLogged ? null : (
                         <>
                             <div style={{width: '80%', margin: '10%'}} onClick={goToHome}>
                                 <BookSocialTitle
                                     level={1}
-                                    text={'Welcome everyone to bookSocial, the social network for books!'}
+                                    text={'Welcome to bookSocial, the social network for books!'}
                                 />
                                 <Spacer size={16}/>
                                 <BookSocialTitle
@@ -127,56 +118,70 @@ const LandingPage = ({isLogged}) => {
             </Box>
             <Box
                 sx={{
-                    width: '100vw',
-                    height: '100vh',
-                    display: 'flex',
-                    flexDirection: 'column', // Arrange children in a column
-                    alignItems: 'start',
-                    scrollSnapAlign: 'start',
-                    padding: '5% 5%',
+                    minHeight: '100vh', // Para asegurar que no se corte
+                    padding: '32px',
                 }}
             >
-                <>
-                    <BookSocialTitle level={2} text={'Discover New Books'}/>
-                    <Spacer size={16}/>
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginTop: '10px',
-                        flexWrap: 'wrap', // Allow wrapping if needed
-                    }}
-                         onClick={goToDiscovery}
-                    >
-                        {bookCovers.map((cover, index) => (
-                            <img key={index} src={cover} alt={`Book cover ${index + 1}`} style={{
-                                width: 'auto',
-                                height: '360px',
-                                margin: '16px',
+                <Grid container sx={{height: '100%', width: '100%'}}>
+                    <Grid item xs={12}>
+                        <BookSocialTitle level={2} text={'Discover New Books'}
+                                         textAlign={"justify"}/>
+                        <BookSocialTitle
+                            level={3}
+                            color={paletteColors.textColorStrong}
+                            textAlign={"justify"}
+                            text={'Discover the latest new releases, find books by your favourite author, find books in your favourite genres. Immerse yourself in a world of fantasy and wisdom.'}
+                        />
+                        <Spacer size={16}/>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'left',
+                            flexWrap: 'wrap',
+                        }} onClick={goToDiscovery}>
+                            {bookCovers.map((cover, index) => (
+                                <img
+                                    key={index}
+                                    src={cover}
+                                    alt={`Book cover ${index + 1}`}
+                                    style={{
+                                        width: 'auto',
+                                        maxWidth: '90%',
+                                        height: '360px',
+                                        marginLeft: index === 0 ? '0' : '16px',
+                                        borderRadius: '5px',
+                                        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Spacer size={24}/>
+                        <BookSocialTitle level={2} text={'Create New Posts'}
+                                         textAlign={"justify"}/>
+                        <BookSocialTitle
+                            level={3}
+                            color={paletteColors.textColorStrong}
+                            textAlign={"justify"}
+                            text={'Post what you think, see opinions, and share your reader\'s world'}
+                        />
+                        <Spacer size={16}/>
+                        <div style={{
+                            display: 'flex',
+                            marginTop: '10px',
+                            height: '200px',
+                            overflow: 'hidden',
+                            position: 'relative',
+                        }} onClick={goToHome}>
+                            <img src={postImage[0]} alt="Post cover" style={{
+                                width: '100%',
+                                height: 'auto',
                                 borderRadius: '5px',
                                 boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
                             }}/>
-                        ))}
-                    </div>
-                    <Spacer size={24}/>
-                    <BookSocialTitle level={2} text={'Create New Posts'}/>
-                    <Spacer size={16}/>
-                    {/*TODO add more images and fix the size to look prettier and not empty landing*/}
-                    <div style={{
-                        display: 'flex',
-                        marginTop: '10px',
-                        width: '100%',
-                        height: '200px',
-                        overflow: 'hidden',
-                        position: 'relative',
-                    }} onClick={goToHome}>
-                        <img src={postImage[0]} alt="Post cover" style={{
-                            width: 'auto',
-                            height: 'auto',
-                            borderRadius: '5px',
-                            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
-                        }}/>
-                    </div>
-                </>
+                        </div>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );

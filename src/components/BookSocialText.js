@@ -20,7 +20,7 @@ const BookSocialText = ({level, text, color = paletteColors.textColor}) => {
             style={{
                 color: color,
                 fontSize: fontSizes[level] || fontSizes.p, // Default to paragraph size if level is not found
-                fontFamily: 'Robotos',
+                fontFamily: 'Roboto',
             }}
         >
             {text} {/* Render the text passed as a prop */}
