@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Box, Button, Modal, TextField, Typography} from '@mui/material';
+import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
-import {purple} from "@mui/material/colors";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
 import {AiOutlineClose} from "react-icons/ai";
+import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 
 const style = {
     position: 'absolute',
@@ -13,8 +13,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    height: 500,
-    bgcolor: paletteColors.color_primary_weakest,
+    height: 670,
+    bgcolor: paletteColors.background_header,
     boxShadow: 24,
     p: 4,
     display: 'flex',
@@ -24,17 +24,20 @@ const style = {
 };
 
 const SignInModal = ({open, handleClose}) => {
-    const [firstname, setFirstName] = useState('');
-    const [lastname, setLastName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [genre, setGenre] = useState('');
+    const [personType, setPersonType] = useState('');
 
     const handleSignIn = () => {
-        console.log("Name:", firstname)
-        console.log("Name:", lastname)
+        console.log("Name:", name);
+        console.log("Email:", email);
         console.log("Username:", username);
         console.log("Password:", password);
+        console.log("Genre:", genre);
+        console.log("Person Type:", personType);
         handleClose();
     };
 
@@ -87,6 +90,45 @@ const SignInModal = ({open, handleClose}) => {
                     <AccountCircle sx={{mr: 1}}/>
                     Create account
                 </Typography>
+                <Box sx={{display: 'flex', gap: 2}}>
+                    <TextField
+                        label="Name"
+                        variant="outlined"
+                        fullWidth
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        sx={{
+                            color: paletteColors.textColor,
+                            '& .MuiInputLabel-root': {
+                                color: paletteColors.textColor,
+                                '&:hover .MuiInputLabel-input': {color: 'white'}
+                            },
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {borderColor: paletteColors.textColor},
+                                '&:hover fieldset': {borderColor: paletteColors.textColor},
+                                '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
+                            },
+                        }}
+                    /><TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    sx={{
+                        color: paletteColors.textColor,
+                        '& .MuiInputLabel-root': {
+                            color: paletteColors.textColor,
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover fieldset': {borderColor: paletteColors.textColor},
+                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
+                        },
+                    }}
+                />
+                </Box>
                 <TextField
                     label="Email"
                     variant="outlined"
@@ -97,14 +139,12 @@ const SignInModal = ({open, handleClose}) => {
                         color: paletteColors.textColor,
                         '& .MuiInputLabel-root': {
                             color: paletteColors.textColor,
-                            '&:hover .MuiInlinedInput-input': {color: 'white'}
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
                         },
-
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
                             '&:hover fieldset': {borderColor: paletteColors.textColor},
                             '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
                         },
                     }}
                 />
@@ -118,19 +158,17 @@ const SignInModal = ({open, handleClose}) => {
                         color: paletteColors.textColor,
                         '& .MuiInputLabel-root': {
                             color: paletteColors.textColor,
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
                         },
-
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
                             '&:hover fieldset': {borderColor: paletteColors.textColor},
                             '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
                         },
                     }}
                 />
                 <TextField
-                    label="Password"
+                    label="Enter your password"
                     type="password"
                     variant="outlined"
                     fullWidth
@@ -140,31 +178,102 @@ const SignInModal = ({open, handleClose}) => {
                         color: paletteColors.textColor,
                         '& .MuiInputLabel-root': {
                             color: paletteColors.textColor,
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                            '&:hover .MuiInputLabel-input': {color: 'white'}
                         },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: paletteColors.textColor},
                             '&:hover fieldset': {borderColor: paletteColors.textColor},
                             '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
                         },
                     }}
                 />
-                <Button
-                    variant="contained"
-                    onClick={handleSignIn}
-                    sx={{
-                        mt: 2,
-                        backgroundColor: purple[800],
-                        color: paletteColors.textColor,
-                        '&:hover': {
-                            backgroundColor: paletteColors.color_primary_weak,
+                <Box sx={{display: 'flex', gap: 2}}>
+                    <FormControl fullWidth>
+                        <InputLabel id="genre-label" sx={{
                             color: paletteColors.textColor,
-                        }
-                    }}
-                >
-                    Sign In
-                </Button>
+                            '&:hover': {
+                                color: paletteColors.textColor,
+                            }
+                        }}>Genre</InputLabel>
+                        <Select
+                            labelId="genre-label"
+                            id="genre"
+                            value={genre}
+                            label="Genre"
+                            onChange={(e) => setGenre(e.target.value)}
+                            sx={{
+                                '& .MuiSelect-select': {
+                                    color: paletteColors.textColor,
+                                    '&:hover': {
+                                        color: paletteColors.textColor
+                                    }
+                                },
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: paletteColors.textColor,
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                },
+                            }}
+                        >
+                            <MenuItem value="fiction">Fiction</MenuItem>
+                            <MenuItem value="horror">Horror</MenuItem>
+                            <MenuItem value="comedy">Comedy</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id="person-type-label" sx={{
+                            color: paletteColors.textColor,
+                            '&:hover': {
+                                color: 'white', // Cambia el color del label a blanco en hover
+                            }
+                        }}>Person Type</InputLabel>
+                        <Select
+                            labelId="person-type-label"
+                            id="person-type"
+                            value={personType}
+                            label="Person Type"
+                            onChange={(e) => setPersonType(e.target.value)}
+                            sx={{
+                                '& .MuiSelect-select': {
+                                    color: paletteColors.textColor,
+                                    '&:hover': {
+                                        color: 'white' // Cambia el texto a blanco en hover
+                                    }
+                                },
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: paletteColors.textColor,
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: paletteColors.textColor,
+                                    },
+                                },
+                            }}
+                        >
+                            <MenuItem value="fiction">Fiction</MenuItem>
+                            <MenuItem value="horror">Horror</MenuItem>
+                            <MenuItem value="comedy">Comedy</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                </Box>
+                <BookSocialPrimaryButton buttonText={'Sign In'} onClick={handleSignIn} isExpanded={false}
+                                         bgColor={paletteColors.color_primary}/>
             </Box>
         </Modal>
     );
