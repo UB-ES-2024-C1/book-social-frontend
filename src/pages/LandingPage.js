@@ -153,6 +153,7 @@ const LandingPage = ({isLogged}) => {
                                         maxWidth: '90%',
                                         height: '360px',
                                         marginLeft: index === 0 ? '0' : '16px',
+                                        marginTop: '16px',
                                         borderRadius: '5px',
                                         boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
                                     }}
