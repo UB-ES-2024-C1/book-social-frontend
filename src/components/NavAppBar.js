@@ -10,20 +10,20 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchBar from './SearchBar';
 import LoginModal from './LoginModal';
 import logo from "../logo.svg";
+import {useAuth} from "../hooks/authentication";
 
-export default function NavAppBar({logged, setLogged}) {
+export default function NavAppBar() {
     const [open, setOpen] = React.useState(false);
 
+    const {isLoggedIn} = useAuth();
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" sx={{backgroundColor: '#282c34'}}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
-
-                    {logged ? (
+                    {isLoggedIn ? (
                         <>
                             <SearchBar/>
                             <IconButton

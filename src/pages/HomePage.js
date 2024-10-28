@@ -1,10 +1,4 @@
-import React from 'react';
-
-const HomePage = () => {
-    return (
-        <div>
-        </div>
-    );
-};
+const HomePage = ({isLogged}) => {
+}
 
 export default HomePage;
