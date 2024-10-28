@@ -1,14 +1,24 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
+
 // Creamos el contexto
 const AuthContext = createContext();
 
 // Provider del contexto
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
 
     // Función para actualizar el estado (ej. llamado cuando hay login/logout)
-    const login = () => setIsLoggedIn(true);
+    const login = (name, pass) => {
+        setUsername(name);
+        setPassword(pass);
+        console.log("Username:", username);
+        console.log("Password:", password);
+        setIsLoggedIn(true);
+    };
     const logout = () => setIsLoggedIn(false);
 
     useEffect(() => {

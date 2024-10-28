@@ -8,20 +8,21 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchBar from './SearchBar';
+import LoginModal from './LoginModal';
 import logo from "../logo.svg";
 import {useAuth} from "../hooks/authentication";
 
 export default function NavAppBar() {
+    const [open, setOpen] = React.useState(false);
 
-    const {isLoggedIn, login} = useAuth();
-
+    const {isLoggedIn} = useAuth();
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" sx={{backgroundColor: '#282c34'}}>
                 <Toolbar>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-
-                    </Typography>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
                     {isLoggedIn ? (
                         <>
                             <SearchBar/>
@@ -48,11 +49,10 @@ export default function NavAppBar() {
                                 <img src={logo}
                                      className="App-logo"
                                      alt="logo"
-                                     style={{
-                                         width: '120px',
-                                     }}/>
+                                     style={{width: '120px'}}
+                                />
                             </div>
-                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={login}>
+                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={handleOpen}>
                                 Login
                             </Button>
                             <Button color="inherit" sx={{textTransform: 'none'}}>Sign in</Button>
@@ -60,6 +60,7 @@ export default function NavAppBar() {
                     )}
                 </Toolbar>
             </AppBar>
+            <LoginModal open={open} handleClose={handleClose}/>
         </Box>
     );
 }
