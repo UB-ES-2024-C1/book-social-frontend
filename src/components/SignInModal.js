@@ -24,12 +24,15 @@ const style = {
 };
 
 const SignInModal = ({open, handleClose}) => {
-    const [name, setName] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSignIn = () => {
-        console.log("Name:", name)
+        console.log("Name:", firstname)
+        console.log("Name:", lastname)
         console.log("Username:", username);
         console.log("Password:", password);
         handleClose();
@@ -84,6 +87,27 @@ const SignInModal = ({open, handleClose}) => {
                     <AccountCircle sx={{mr: 1}}/>
                     Create account
                 </Typography>
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{
+                        color: paletteColors.textColor,
+                        '& .MuiInputLabel-root': {
+                            color: paletteColors.textColor,
+                            '&:hover .MuiInlinedInput-input': {color: 'white'}
+                        },
+
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover fieldset': {borderColor: paletteColors.textColor},
+                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
+                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
+                        },
+                    }}
+                />
                 <TextField
                     label="Username"
                     variant="outlined"
