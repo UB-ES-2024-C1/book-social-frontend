@@ -9,8 +9,12 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchBar from './SearchBar';
 import logo from "../logo.svg";
+import {useAuth} from "../hooks/authentication";
 
-export default function NavAppBar({logged, setLogged}) {
+export default function NavAppBar() {
+
+    const {isLoggedIn, login} = useAuth();
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" sx={{backgroundColor: '#282c34'}}>
@@ -18,7 +22,7 @@ export default function NavAppBar({logged, setLogged}) {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
 
                     </Typography>
-                    {logged ? (
+                    {isLoggedIn ? (
                         <>
                             <SearchBar/>
                             <IconButton
@@ -48,7 +52,7 @@ export default function NavAppBar({logged, setLogged}) {
                                          width: '120px',
                                      }}/>
                             </div>
-                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={() => setLogged(true)}>
+                            <Button color="inherit" sx={{textTransform: 'none'}} onClick={login}>
                                 Login
                             </Button>
                             <Button color="inherit" sx={{textTransform: 'none'}}>Sign in</Button>

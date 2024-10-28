@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
+import {AuthProvider} from "./hooks/authentication";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -53,11 +54,12 @@ function AppContent() {
 }
 
 function App() {
-    const [logged, setLogged] = useState(false); // Estado de login
     return (
-        <Router>
-            <AppContent />
-        </Router>
+        <AuthProvider>
+            <Router>
+                <AppContent/>
+            </Router>
+        </AuthProvider>
     );
 }
 
