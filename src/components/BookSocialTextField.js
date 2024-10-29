@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextField, Typography} from '@mui/material'
+import paletteColors from "../resources/palette";
 import PropTypes from 'prop-types'
 
 
@@ -35,11 +36,6 @@ const BookSocialTextField = ({
                     },
                 }}
             />
-            {isError && (
-                <Typography variant="caption" color="error">
-                    {errorMessage}
-                </Typography>
-            )}
         </div>
     );
 };
