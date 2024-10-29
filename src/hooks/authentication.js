@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-
+import api from '../services/api';
 
 // Creamos el contexto
 const AuthContext = createContext();
@@ -7,36 +7,43 @@ const AuthContext = createContext();
 // Provider del contexto
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
 
     // Función para actualizar el estado (ej. llamado cuando hay login/logout)
-    const login = (name, pass) => {
+    const login = async (name, pass) => {
         setUsername(name);
         setPassword(pass);
-        console.log("Username:", username);
-        console.log("Password:", password);
-        setIsLoggedIn(true);
+        // console.log("Username:", username);
+        // console.log("Password:", password);
+        const response = await api.post('/auth/login', {"username": name, "password": pass});
+        console.log("Response:", response);
+        if (response.status === 200) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
     };
+    const logout = () => setIsLoggedIn(false);
 
-    const signIn = (firstname, user, em, password) => {
-        setName(name);
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-        console.log("Name:", name);
-        console.log("Email:", em);
-        console.log("Username:", username);
-        console.log("Password:", password);
-        setIsLoggedIn(true);
+    const signIn = async (firstName, lastName, username, email, pass, genre, personType) => {
+        const response = await api.post('/auth/register', {
+            firstName,
+            lastName,
+            username,
+            email,
+            password: pass,
+            genre,
+            personType
+        });
+        console.log("Response:", response);
+        if (response.status === 201) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
     };
-
-    const logout = () => {
-        setIsLoggedIn(false);
-    }
 
     useEffect(() => {
         // Simulación de una autenticación inicial
@@ -60,7 +67,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{isLoggedIn, login, signIn, logout}}>
+        <AuthContext.Provider value={{isLoggedIn, login, logout, signIn}}>
             {children}
         </AuthContext.Provider>
     );
