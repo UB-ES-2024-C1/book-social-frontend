@@ -11,6 +11,7 @@ export const AuthProvider = ({children}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [password2, setRepeatPassword] = useState('');
     const [genre, setGenre] = useState('');
     const [person, setPerson] = useState('');
 
@@ -24,17 +25,19 @@ export const AuthProvider = ({children}) => {
         setIsLoggedIn(true);
     };
 
-    const signIn = (firstname, user, em, password, gen, type) => {
+    const signIn = (firstname, user, em, password, pass2, gen, type) => {
         setName(name);
         setUsername(username);
         setEmail(email);
         setPassword(password);
+        setRepeatPassword(password2);
         setGenre(genre);
         setPerson(person);
         console.log("Name:", firstname);
         console.log("Email:", em);
         console.log("Username:", user);
         console.log("Password:", password);
+        console.log("Repeat password:", pass2)
         console.log("Genre:", gen);
         console.log("Person:", type);
         setIsLoggedIn(true);

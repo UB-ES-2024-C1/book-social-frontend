@@ -36,6 +36,7 @@ const SignInModal = ({open, handleClose}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [repeat_password, setRepeatPassword] = useState('');
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ const SignInModal = ({open, handleClose}) => {
     const types_person = ['Lector', 'Autor', 'Critic']
 
     const handleSignIn = () => {
-        signIn(name, username, email, password, genre, personType);
+        signIn(name, username, email, password, repeat_password, genre, personType);
         handleClose();
         navigate(routes.HOME);
     };
@@ -120,7 +121,11 @@ const SignInModal = ({open, handleClose}) => {
                     label={'Enter your password'}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-
+                <TextFieldButton
+                    value={repeat_password}
+                    label={'Repeat your password'}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                />
                 <Box sx={{display: 'flex', gap: 2}}>
                     <FormControl fullWidth>
                         <InputLabel id="genre-label" sx={{
