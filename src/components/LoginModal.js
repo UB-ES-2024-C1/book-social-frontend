@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Checkbox, FormControlLabel, Modal, TextField, Typography} from '@mui/material';
+import {Box, Checkbox, FormControlLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
@@ -9,6 +9,7 @@ import {useAuth} from "../hooks/authentication";
 import {useNavigate} from 'react-router-dom';
 import * as routes from '../resources/routes_name';
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
+import TextFieldButton from "./TextFieldButton";
 
 
 const style = {
@@ -89,47 +90,15 @@ const LoginModal = ({open, handleClose}) => {
                     <AccountCircle sx={{mr: 1}}/>
                     Login
                 </Typography>
-                <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
+                <TextFieldButton
                     value={username}
+                    label={'Username'}
                     onChange={(e) => setUsername(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
-                        },
-                    }}
                 />
-                <TextField
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
+                <TextFieldButton
                     value={password}
+                    label={'Enter your password'}
                     onChange={(e) => setPassword(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover .MuiOutlinedInput-input': {color: 'white'}
-                        },
-                    }}
                 />
                 <FormControlLabel
                     control={

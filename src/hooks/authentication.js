@@ -11,6 +11,8 @@ export const AuthProvider = ({children}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [genre, setGenre] = useState('');
+    const [person, setPerson] = useState('');
 
 
     // Función para actualizar el estado (ej. llamado cuando hay login/logout)
@@ -22,15 +24,19 @@ export const AuthProvider = ({children}) => {
         setIsLoggedIn(true);
     };
 
-    const signIn = (firstname, user, em, password) => {
+    const signIn = (firstname, user, em, password, gen, type) => {
         setName(name);
         setUsername(username);
         setEmail(email);
         setPassword(password);
-        console.log("Name:", name);
+        setGenre(genre);
+        setPerson(person);
+        console.log("Name:", firstname);
         console.log("Email:", em);
-        console.log("Username:", username);
+        console.log("Username:", user);
         console.log("Password:", password);
+        console.log("Genre:", gen);
+        console.log("Person:", type);
         setIsLoggedIn(true);
     };
 

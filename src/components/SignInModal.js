@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
+import {Box, FormControl, InputLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
@@ -9,6 +9,8 @@ import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 import {useAuth} from "../hooks/authentication";
 import {useNavigate} from "react-router-dom";
 import * as routes from '../resources/routes_name';
+import Dropdownbutton from "./DropdownButton";
+import TextFieldButton from "./TextFieldButton";
 
 
 const style = {
@@ -38,9 +40,11 @@ const SignInModal = ({open, handleClose}) => {
     const [personType, setPersonType] = useState('');
     const navigate = useNavigate();
 
+    const types_genre = ['Horror', 'Comedy', 'Fantasy', 'Fiction'];
+    const types_person = ['Lector', 'Autor', 'Critic']
 
     const handleSignIn = () => {
-        signIn(name, username, email, password);
+        signIn(name, username, email, password, genre, personType);
         handleClose();
         navigate(routes.HOME);
     };
@@ -95,102 +99,28 @@ const SignInModal = ({open, handleClose}) => {
                     Create account
                 </Typography>
                 <Box sx={{display: 'flex', gap: 2}}>
-                    <TextField
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
+                    <TextFieldButton
                         value={name}
+                        label={'Name'}
                         onChange={(e) => setName(e.target.value)}
-                        sx={{
-                            color: paletteColors.textColor,
-                            '& .MuiInputLabel-root': {
-                                color: paletteColors.textColor,
-                                '&:hover .MuiInputLabel-input': {color: 'white'}
-                            },
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {borderColor: paletteColors.textColor},
-                                '&:hover fieldset': {borderColor: paletteColors.textColor},
-                                '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            },
-                        }}
-                    /><TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
-                />
+                    />
+                    <TextFieldButton
+                        value={username}
+                        label={'Username'}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                 </Box>
-                <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
+                <TextFieldButton
                     value={email}
+                    label={'Email'}
                     onChange={(e) => setEmail(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
                 />
-                <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
-                />
-                <TextField
-                    label="Enter your password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
+                <TextFieldButton
                     value={password}
+                    label={'Enter your password'}
                     onChange={(e) => setPassword(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
                 />
+
                 <Box sx={{display: 'flex', gap: 2}}>
                     <FormControl fullWidth>
                         <InputLabel id="genre-label" sx={{
@@ -199,33 +129,11 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Genre</InputLabel>
-                        <Select
-                            labelId="genre-label"
-                            id="genre"
+                        <Dropdownbutton
                             value={genre}
-                            label="Genre"
                             onChange={(e) => setGenre(e.target.value)}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                    color: paletteColors.textColor
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                color: paletteColors.textColor,
-                                "& .MuiSelect-icon": {
-                                    color: paletteColors.textColor,
-                                },
-                            }}
-                        >
-                            <MenuItem value="fiction">Fiction</MenuItem>
-                            <MenuItem value="horror">Horror</MenuItem>
-                            <MenuItem value="comedy">Comedy</MenuItem>
-                        </Select>
+                            options={types_genre}
+                        />
                     </FormControl>
                     <FormControl fullWidth>
                         <InputLabel id="person-type-label" sx={{
@@ -234,34 +142,12 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Person Type</InputLabel>
-                        <Select
-                            labelId="person-type-label"
-                            id="person-type"
+                        <Dropdownbutton
                             value={personType}
-                            label="Person Type"
                             onChange={(e) => setPersonType(e.target.value)}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                color: paletteColors.textColor,
-                                "& .MuiSelect-icon": {
-                                    color: paletteColors.textColor,
-                                },
-                            }}
-                        >
-                            <MenuItem value="fiction">Fiction</MenuItem>
-                            <MenuItem value="horror">Horror</MenuItem>
-                            <MenuItem value="comedy">Comedy</MenuItem>
-                        </Select>
+                            options={types_person}
+                        />
                     </FormControl>
-
                 </Box>
                 <BookSocialPrimaryButton buttonText={'Sign In'} onClick={handleSignIn} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>
