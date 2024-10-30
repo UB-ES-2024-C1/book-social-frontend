@@ -36,7 +36,6 @@ const SignInModal = ({open, handleClose}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [repeat_password, setRepeatPassword] = useState('');
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
     const navigate = useNavigate();
@@ -44,10 +43,22 @@ const SignInModal = ({open, handleClose}) => {
     const types_genre = ['Horror', 'Comedy', 'Fantasy', 'Fiction'];
     const types_person = ['Lector', 'Autor', 'Critic']
 
-    const handleSignIn = () => {
-        signIn(name, username, email, password, repeat_password, genre, personType);
-        handleClose();
-        navigate(routes.HOME);
+    const handleSignIn = async () => {
+        try {
+            await signIn(
+                name,
+                name,
+                username,
+                email,
+                password,
+                genre,
+                personType
+            );
+            handleClose();
+            navigate(routes.HOME);
+        } catch (error) {
+            console.error('Error during sign in:', error);
+        }
     };
 
     return (
@@ -154,7 +165,7 @@ const SignInModal = ({open, handleClose}) => {
                         />
                     </FormControl>
                 </Box>
-                <BookSocialPrimaryButton buttonText={'Sign In'} onClick={handleSignIn} isExpanded={false}
+                <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>
             </Box>
         </Modal>
