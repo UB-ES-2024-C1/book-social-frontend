@@ -9,8 +9,8 @@ import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 import {useAuth} from "../hooks/authentication";
 import {useNavigate} from "react-router-dom";
 import * as routes from '../resources/routes_name';
-import Dropdownbutton from "./DropdownButton";
-import TextFieldButton from "./TextFieldButton";
+import BookSocialTextField from "./BookSocialTextField";
+import BookSocialDropdown from "./BookSocialDropdown";
 
 
 const style = {
@@ -111,31 +111,31 @@ const SignInModal = ({open, handleClose}) => {
                     Create account
                 </Typography>
                 <Box sx={{display: 'flex', gap: 2}}>
-                    <TextFieldButton
+                    <BookSocialTextField
                         value={name}
                         label={'Name'}
                         onChange={(e) => setName(e.target.value)}
                     />
-                    <TextFieldButton
+                    <BookSocialTextField
                         value={username}
                         label={'Username'}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </Box>
-                <TextFieldButton
+                <BookSocialTextField
                     value={email}
                     label={'Email'}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <TextFieldButton
+                <BookSocialTextField
                     value={password}
                     label={'Enter your password'}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <TextFieldButton
-                    value={repeat_password}
+                <BookSocialTextField
+                    value={password}
                     label={'Repeat your password'}
-                    onChange={(e) => setRepeatPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <Box sx={{display: 'flex', gap: 2}}>
                     <FormControl fullWidth>
@@ -145,7 +145,8 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Genre</InputLabel>
-                        <Dropdownbutton
+                        <BookSocialDropdown
+                            label='Genre'
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
                             options={types_genre}
@@ -158,7 +159,8 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Person Type</InputLabel>
-                        <Dropdownbutton
+                        <BookSocialDropdown
+                            label='Person Type'
                             value={personType}
                             onChange={(e) => setPersonType(e.target.value)}
                             options={types_person}

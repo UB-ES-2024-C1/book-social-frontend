@@ -1,67 +1,55 @@
 import React from 'react';
-import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
+import {MenuItem, Select} from '@mui/material';
 import PropTypes from 'prop-types';
 import paletteColors from "../resources/palette";
 
 const BookSocialDropdown = ({
-    label,
-    options,
-    value,
-    onChange,
-    errorMessage = "",
-    status = "default", // 'default', 'error'
-}) => {
-    const isError = status === "error";
-
+                                value,
+                                onChange,
+                                label,
+                                options = [],
+                                sx = {},
+                            }) => {
     return (
-        <FormControl variant="outlined" fullWidth error={isError}>
-            {label && <InputLabel>{label}</InputLabel>}
-            <Select
-                value={value}
-                onChange={onChange}
-                label={label}
-                sx={{
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: isError
-                            ? paletteColors.error
-                            : paletteColors.color_primary,
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: isError
-                            ? paletteColors.error
-                            : paletteColors.color_primary,
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: isError
-                            ? paletteColors.error
-                            : paletteColors.color_primary,
-                    },
-                }}
-            >
-                {options.map((option, index) => (
-                    <MenuItem key={index} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </Select>
-            {isError && <FormHelperText>{errorMessage}</FormHelperText>}
-        </FormControl>
+        <Select
+            labelId={`${label}-label`}
+            id={`${label}-select`}
+            value={value}
+            label={label}
+            onChange={onChange}
+            sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: paletteColors.textColor,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: paletteColors.textColor,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: paletteColors.textColor,
+                },
+                color: paletteColors.textColor,
+                "& .MuiSelect-icon": {
+                    color: paletteColors.textColor,
+                },
+                ...sx,
+            }}
+        >
+            {options.map((option) => (
+                <MenuItem key={option.toLowerCase()} value={option.toLowerCase()}>
+                    {option}
+                </MenuItem>
+            ))}
+        </Select>
     );
 };
 
-// Definición de PropTypes para control de tipos
+// Agregar PropTypes para un mejor chequeo de tipos
 BookSocialDropdown.propTypes = {
-    label: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(
-        PropTypes.shape({
-            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-            label: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string,
-    status: PropTypes.oneOf(['default', 'error']),
+    label: PropTypes.string,
+    options: PropTypes.arrayOf(PropTypes.string).isRequired,
+    sx: PropTypes.object,
 };
 
 export default BookSocialDropdown;

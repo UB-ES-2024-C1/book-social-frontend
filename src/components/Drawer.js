@@ -8,6 +8,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus, AiOutlineSave} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
@@ -21,6 +27,7 @@ import {useAuth} from "../hooks/authentication";
 export default function PermanentDrawer({isLogged}) {
     const {logout} = useAuth();
     const [selected, setSelected] = useState('');
+    const [openDialog, setOpenDialog] = useState(false); // Estado para controlar el diálogo
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -29,7 +36,20 @@ export default function PermanentDrawer({isLogged}) {
     const handleLogout = () => {
         logout();
         navigate(routes.LANDING);
-    }
+    };
+
+    const handleOpenDialog = () => {
+        setOpenDialog(true); // Abre el diálogo
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false); // Cierra el diálogo sin cerrar sesión
+    };
+
+    const confirmLogout = () => {
+        handleLogout();
+        handleCloseDialog();
+    };
 
     useEffect(() => {
         const currentPath = location.pathname;
@@ -65,7 +85,6 @@ export default function PermanentDrawer({isLogged}) {
                 break;
         }
     };
-
 
     const DrawerList = (
         <Box
@@ -162,7 +181,7 @@ export default function PermanentDrawer({isLogged}) {
                     cursor: 'pointer',
                     color: paletteColors.textColor_weakest
                 }}
-                onClick={handleLogout}
+                onClick={handleOpenDialog} // Abre el diálogo al hacer clic
             >
                 <Logout sx={{mr: 1}}/>
                 Logout
@@ -171,17 +190,40 @@ export default function PermanentDrawer({isLogged}) {
     );
 
     return (
-        <Drawer
-            variant="permanent"
-            sx={{
-                '& .MuiDrawer-paper': {
-                    background: paletteColors.background_color,
-                    boxSizing: 'border-box',
-                    color: paletteColors.textColor,
-                },
-            }}
-        >
-            {isLogged && DrawerList}
-        </Drawer>
+        <>
+            <Drawer
+                variant="permanent"
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        background: paletteColors.background_color,
+                        boxSizing: 'border-box',
+                        color: paletteColors.textColor,
+                    },
+                }}
+            >
+                {isLogged && DrawerList}
+            </Drawer>
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="logout-dialog-title"
+                aria-describedby="logout-dialog-description"
+            >
+                <DialogTitle id="logout-dialog-title">{"Are you sure you want to log out?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="logout-dialog-description">
+                        If you log out, you will need to log in again to access your account.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{justifyContent: 'center'}}>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={confirmLogout} color="primary" autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }

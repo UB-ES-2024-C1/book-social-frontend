@@ -9,7 +9,7 @@ import {useAuth} from "../hooks/authentication";
 import {useNavigate} from 'react-router-dom';
 import * as routes from '../resources/routes_name';
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
-import TextFieldButton from "./TextFieldButton";
+import BookSocialTextField from "./BookSocialTextField";
 
 
 const style = {
@@ -90,12 +90,12 @@ const LoginModal = ({open, handleClose}) => {
                     <AccountCircle sx={{mr: 1}}/>
                     Login
                 </Typography>
-                <TextFieldButton
+                <BookSocialTextField
                     value={username}
                     label={'Username'}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <TextFieldButton
+                <BookSocialTextField
                     value={password}
                     label={'Enter your password'}
                     onChange={(e) => setPassword(e.target.value)}
