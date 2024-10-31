@@ -4,7 +4,7 @@ import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
-import {AiOutlineClose} from "react-icons/ai";
+import {AiOutlineClose, AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 import {useAuth} from "../hooks/authentication";
 import {useNavigate} from 'react-router-dom';
 import * as routes from '../resources/routes_name';
@@ -34,6 +34,12 @@ const LoginModal = ({open, handleClose}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleLogin = () => {
         login(username, password);
@@ -95,11 +101,27 @@ const LoginModal = ({open, handleClose}) => {
                     label={'Username'}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <BookSocialTextField
-                    value={password}
-                    label={'Enter your password'}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <Box sx={{position: 'relative'}}>
+                    <BookSocialTextField
+                        value={password}
+                        type={showPassword ? 'text' : 'password'}
+                        label={'Enter your password'}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <IconButton
+                        onClick={toggleShowPassword}
+                        edge="end"
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: 13,
+                            transform: 'translateY(-50%)',
+                            color: paletteColors.textColor,
+                        }}
+                    >
+                        {showPassword ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
+                    </IconButton>
+                </Box>
                 <FormControlLabel
                     control={
                         <Checkbox

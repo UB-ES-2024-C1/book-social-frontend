@@ -4,11 +4,11 @@ import book2 from '../assets/books/book2.jpg';
 import book3 from '../assets/books/book3.jpg';
 import book4 from '../assets/books/book4.jpg';
 import book5 from '../assets/books/book5.jpg';
-import post from '../assets/posts/post.png';
+import post1 from '../assets/posts/post2.png';
+import post2 from '../assets/posts/post1.png';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import paletteColors from "../resources/palette";
-import {FaBook} from "react-icons/fa";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
 import * as routes from "../resources/routes_name";
 import {useNavigate} from "react-router-dom";
@@ -16,6 +16,7 @@ import BookSocialTitle from "../components/BookSocialTitle";
 import {Spacer} from "../resources/spacer";
 import AppBar from "@mui/material/AppBar";
 import NavAppBar from "../components/NavAppBar";
+import {FaBook} from "react-icons/fa";
 
 const LandingPage = ({isLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
@@ -51,13 +52,13 @@ const LandingPage = ({isLogged}) => {
     ];
 
     const bookCovers = [book1, book2, book3, book4, book5];
-    const postImage = [post];
+    const postImage = [post1, post2];
 
     return (
         <Box
             sx={{
-                minHeight: '100vh', // Ajustamos el mínimo de altura para que no sea excesivo
-                overflowY: 'auto', // Scroll sólo vertical
+                minHeight: '100vh',
+                overflowY: 'auto',
                 background: paletteColors.background_color,
             }}
         >
@@ -90,7 +91,7 @@ const LandingPage = ({isLogged}) => {
                             top: icon.top,
                             left: icon.left,
                             fontSize: icon.size,
-                            color: paletteColors.primary,
+                            color: paletteColors.color_primary,
                             opacity: icon.opacity,
                             transform: `rotate(${icon.rotation})`,
                             filter: 'blur(3px)',
@@ -100,91 +101,86 @@ const LandingPage = ({isLogged}) => {
 
                     {isLogged ? null : (
                         <>
-                            <div style={{width: '80%', margin: '10%'}} onClick={goToHome}>
-                                <BookSocialTitle
-                                    level={1}
-                                    text={'Welcome to bookSocial, the social network for books!'}
-                                />
+                            <div style={{width: '80%', margin: '10%', cursor: 'pointer'}} onClick={goToHome}>
+                                <BookSocialTitle level={1}
+                                                 text={
+                                                     <>Welcome to <span style={{
+                                                         color: paletteColors.highlight,
+                                                         fontWeight: 'bold',
+                                                         textShadow: '2px 2px 15px rgba(0, 0, 0, 0.3)'
+                                                     }}>bookSocial</span>, the social network for books!</>
+                                                 }/>
                                 <Spacer size={16}/>
-                                <BookSocialTitle
-                                    level={2}
-                                    text={'Feel free to publish all your thoughts and fantasies about the literary world.'}
-                                    color={paletteColors.textColorStrong}
-                                />
+                                <BookSocialTitle level={3}
+                                                 text={'Feel free to publish all your thoughts and fantasies about the literary world.'}
+                                                 color={paletteColors.textColorStrong}/>
                             </div>
-                            <BookSocialPrimaryButton
-                                buttonText="Explore"
-                                onClick={goToDiscovery}
-                                isExpanded={true}
-                            />
+                            <BookSocialPrimaryButton buttonText="Explore" onClick={goToDiscovery} isExpanded={true}/>
                         </>
                     )}
                 </div>
             </Box>
-            <Box
-                sx={{
-                    minHeight: '100vh', // Para asegurar que no se corte
-                    padding: '32px',
-                }}
-            >
-                <Grid container sx={{height: '100%', width: '100%'}}>
+            <Box sx={{padding: '32px', backgroundColor: paletteColors.background_color}}>
+                <Grid container spacing={4} justifyContent="center">
                     <Grid item xs={12}>
-                        <BookSocialTitle level={2} text={'Discover New Books'}
-                                         textAlign={"justify"}/>
-                        <BookSocialTitle
-                            level={3}
-                            color={paletteColors.textColorStrong}
-                            textAlign={"justify"}
-                            text={'Discover the latest new releases, find books by your favourite author, find books in your favourite genres. Immerse yourself in a world of fantasy and wisdom.'}
-                        />
+                        <BookSocialTitle level={2} text={'Discover New Books'} textAlign={"center"}/>
+                        <BookSocialTitle level={3} color={paletteColors.textColorStrong} textAlign={"center"}
+                                         text={'Discover the latest new releases, find books by your favourite author, find books in your favourite genres. Immerse yourself in a world of fantasy and wisdom.'}/>
                         <Spacer size={16}/>
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'left',
-                            flexWrap: 'wrap',
-                        }} onClick={goToDiscovery}>
+                        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
                             {bookCovers.map((cover, index) => (
-                                <img
-                                    key={index}
-                                    src={cover}
-                                    alt={`Book cover ${index + 1}`}
-                                    style={{
-                                        width: 'auto',
-                                        maxWidth: '90%',
-                                        height: '360px',
-                                        marginLeft: index === 0 ? '0' : '16px',
-                                        marginTop: '16px',
-                                        borderRadius: '5px',
-                                        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
-                                    }}
-                                />
+                                <Box key={index} sx={{
+                                    borderRadius: '10px',
+                                    overflow: 'hidden',
+                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.3)',
+                                    margin: '16px',
+                                    transition: 'transform 0.2s',
+                                    '&:hover': {
+                                        transform: 'scale(1.05)',
+                                    }
+                                }}>
+                                    <img
+                                        src={cover}
+                                        alt={`Book cover ${index + 1}`}
+                                        style={{
+                                            width: '200px',
+                                            height: '300px',
+                                            borderRadius: '5px',
+                                        }}
+                                    />
+                                </Box>
                             ))}
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <Spacer size={24}/>
-                        <BookSocialTitle level={2} text={'Create New Posts'}
-                                         textAlign={"justify"}/>
-                        <BookSocialTitle
-                            level={3}
-                            color={paletteColors.textColorStrong}
-                            textAlign={"justify"}
-                            text={'Post what you think, see opinions, and share your reader\'s world'}
-                        />
+                        <BookSocialTitle level={2} text={'Create New Posts'} textAlign={"center"}/>
+                        <BookSocialTitle level={3} color={paletteColors.textColorStrong} textAlign={"center"}
+                                         text={'Post what you think, see opinions, and share your reader\'s world'}/>
                         <Spacer size={16}/>
-                        <div style={{
-                            display: 'flex',
-                            marginTop: '10px',
-                            height: '200px',
-                            overflow: 'hidden',
-                            position: 'relative',
-                        }} onClick={goToHome}>
-                            <img src={postImage[0]} alt="Post cover" style={{
-                                width: '100%',
-                                height: 'auto',
-                                borderRadius: '5px',
-                                boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
-                            }}/>
+                        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
+                            {postImage.map((posts, index) => (
+                                <Box key={index} sx={{
+                                    borderRadius: '10px',
+                                    overflow: 'hidden',
+                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.3)',
+                                    margin: '16px',
+                                    transition: 'transform 0.2s',
+                                    '&:hover': {
+                                        transform: 'scale(1.05)',
+                                    }
+                                }}>
+                                    <img
+                                        src={posts}
+                                        alt={`Post ${index + 1}`}
+                                        style={{
+                                            width: '400px',
+                                            height: '300px',
+                                            borderRadius: '30px',
+                                        }}
+                                    />
+                                </Box>
+                            ))}
                         </div>
                     </Grid>
                 </Grid>

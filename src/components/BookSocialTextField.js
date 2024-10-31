@@ -8,6 +8,7 @@ const BookSocialTextField = ({
                                  onChange,
                                  label,
                                  type,
+                                 minLength,
                                  sx = {},
                                  errorMessage = "",
                                  status = "default", // 'default', 'error', or 'success'

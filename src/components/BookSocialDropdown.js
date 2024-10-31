@@ -33,9 +33,26 @@ const BookSocialDropdown = ({
                 },
                 ...sx,
             }}
+            MenuProps={{
+                PaperProps: {
+                    sx: {
+                        backgroundColor: '#5b5a5a',
+                    },
+                },
+            }}
         >
             {options.map((option) => (
-                <MenuItem key={option.toLowerCase()} value={option.toLowerCase()}>
+                <MenuItem
+                    key={option.toLowerCase()}
+                    value={option.toLowerCase()}
+                    sx={{
+                        backgroundColor: '#5b5a5a',
+                        color: 'white',
+                        "&:hover": {
+                            backgroundColor: paletteColors.textColorStrong,
+                        },
+                    }}
+                >
                     {option}
                 </MenuItem>
             ))}
