@@ -39,10 +39,22 @@ const SignInModal = ({open, handleClose}) => {
     const navigate = useNavigate();
 
 
-    const handleSignIn = () => {
-        signIn(name, username, email, password);
-        handleClose();
-        navigate(routes.HOME);
+    const handleSignIn = async () => {
+        try {
+            await signIn(
+                name,
+                name,
+                username,
+                email,
+                password,
+                genre,
+                personType
+            );
+            handleClose();
+            navigate(routes.HOME);
+        } catch (error) {
+            console.error('Error during sign in:', error);
+        }
     };
 
     return (
@@ -263,7 +275,7 @@ const SignInModal = ({open, handleClose}) => {
                     </FormControl>
 
                 </Box>
-                <BookSocialPrimaryButton buttonText={'Sign In'} onClick={handleSignIn} isExpanded={false}
+                <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>
             </Box>
         </Modal>
