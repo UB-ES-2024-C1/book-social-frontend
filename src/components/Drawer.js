@@ -208,18 +208,24 @@ export default function PermanentDrawer({isLogged}) {
                 onClose={handleCloseDialog}
                 aria-labelledby="logout-dialog-title"
                 aria-describedby="logout-dialog-description"
+                sx={{
+                    '& .MuiDialog-paper': {
+                        backgroundColor: paletteColors.background_header,
+                        color: 'white',
+                    }
+                }}
             >
-                <DialogTitle id="logout-dialog-title">{"Are you sure you want to log out?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="logout-dialog-description">
+                <DialogTitle id="logout-dialog-title">{"Are you sure you want to log out?"} </DialogTitle>
+                <DialogContent sx={{justifyContent: 'center'}}>
+                    <DialogContentText id="logout-dialog-description" sx={{justifyContent: 'center', color: 'white'}}>
                         If you log out, you will need to log in again to access your account.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{justifyContent: 'center'}}>
-                    <Button onClick={handleCloseDialog} color="primary">
+                    <Button onClick={handleCloseDialog} color='white'>
                         No
                     </Button>
-                    <Button onClick={confirmLogout} color="primary" autoFocus>
+                    <Button onClick={confirmLogout} color='white' autoFocus>
                         Yes
                     </Button>
                 </DialogActions>

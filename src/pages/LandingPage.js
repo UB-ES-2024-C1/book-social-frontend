@@ -165,6 +165,7 @@ const LandingPage = ({isLogged}) => {
                                     overflow: 'hidden',
                                     boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.3)',
                                     margin: '16px',
+                                    cursor: 'pointer',
                                     transition: 'transform 0.2s',
                                     '&:hover': {
                                         transform: 'scale(1.05)',
@@ -177,6 +178,7 @@ const LandingPage = ({isLogged}) => {
                                             width: '400px',
                                             height: '300px',
                                             borderRadius: '30px',
+                                            cursor: 'pointer'
                                         }}
                                     />
                                 </Box>
