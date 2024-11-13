@@ -25,7 +25,7 @@ export default function NavAppBar() {
 
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar position="static" sx={{backgroundColor: '#282c34', height: '68px'}}>
+            <AppBar position="fixed" sx={{backgroundColor: '#282c34', height: '68px'}}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
                     {isLoggedIn ? (

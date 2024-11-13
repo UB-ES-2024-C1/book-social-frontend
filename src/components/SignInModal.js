@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
+import {Box, FormControl, InputLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
-import {AiOutlineClose} from "react-icons/ai";
+import {AiOutlineClose, AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 import {useAuth} from "../hooks/authentication";
 import {useNavigate} from "react-router-dom";
 import * as routes from '../resources/routes_name';
+import BookSocialTextField from "./BookSocialTextField";
+import BookSocialDropdown from "./BookSocialDropdown";
 
 
 const style = {
@@ -34,10 +36,23 @@ const SignInModal = ({open, handleClose}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
     const navigate = useNavigate();
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+    const toggleShowPassword2 = () => {
+        setShowPassword2(!showPassword2);
+    };
+
+    const types_genre = ['Horror', 'Comedy', 'Fantasy', 'Fiction'];
+    const types_person = ['Lector', 'Autor', 'Critic']
 
     const handleSignIn = async () => {
         try {
@@ -47,6 +62,7 @@ const SignInModal = ({open, handleClose}) => {
                 username,
                 email,
                 password,
+                password2,
                 genre,
                 personType
             );
@@ -107,102 +123,67 @@ const SignInModal = ({open, handleClose}) => {
                     Create account
                 </Typography>
                 <Box sx={{display: 'flex', gap: 2}}>
-                    <TextField
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
+                    <BookSocialTextField
                         value={name}
+                        type={'text'}
+                        label={'Name'}
                         onChange={(e) => setName(e.target.value)}
-                        sx={{
-                            color: paletteColors.textColor,
-                            '& .MuiInputLabel-root': {
-                                color: paletteColors.textColor,
-                                '&:hover .MuiInputLabel-input': {color: 'white'}
-                            },
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {borderColor: paletteColors.textColor},
-                                '&:hover fieldset': {borderColor: paletteColors.textColor},
-                                '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                            },
-                        }}
-                    /><TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
-                />
+                    />
+                    <BookSocialTextField
+                        value={username}
+                        label={'Username'}
+                        type={'text'}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                 </Box>
-                <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
+                <BookSocialTextField
                     value={email}
+                    label={'Email'}
+                    type={'email'}
                     onChange={(e) => setEmail(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
-                            color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
                 />
-                <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
+                <Box sx={{position: 'relative'}}>
+                    <BookSocialTextField
+                        value={password}
+                        type={showPassword ? 'text' : 'password'}
+                        label={'Enter your password'}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <IconButton
+                        onClick={toggleShowPassword}
+                        edge="end"
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: 13,
+                            transform: 'translateY(-50%)',
                             color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
-                />
-                <TextField
-                    label="Enter your password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    sx={{
-                        color: paletteColors.textColor,
-                        '& .MuiInputLabel-root': {
+                        }}
+                    >
+                        {showPassword ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
+                    </IconButton>
+                </Box>
+                <Box sx={{position: 'relative'}}>
+                    <BookSocialTextField
+                        value={password2}
+                        type={showPassword2 ? 'text' : 'password'}
+                        label={'Enter your password'}
+                        onChange={(e) => setPassword2(e.target.value)}
+                    />
+                    <IconButton
+                        onClick={toggleShowPassword2}
+                        edge="end"
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: 13,
+                            transform: 'translateY(-50%)',
                             color: paletteColors.textColor,
-                            '&:hover .MuiInputLabel-input': {color: 'white'}
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {borderColor: paletteColors.textColor},
-                            '&:hover fieldset': {borderColor: paletteColors.textColor},
-                            '&.Mui-focused fieldset': {borderColor: paletteColors.textColor},
-                        },
-                    }}
-                />
+                        }}
+                    >
+                        {showPassword2 ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
+                    </IconButton>
+                </Box>
                 <Box sx={{display: 'flex', gap: 2}}>
                     <FormControl fullWidth>
                         <InputLabel id="genre-label" sx={{
@@ -211,33 +192,12 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Genre</InputLabel>
-                        <Select
-                            labelId="genre-label"
-                            id="genre"
+                        <BookSocialDropdown
+                            label='Genre'
                             value={genre}
-                            label="Genre"
                             onChange={(e) => setGenre(e.target.value)}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                    color: paletteColors.textColor
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                color: paletteColors.textColor,
-                                "& .MuiSelect-icon": {
-                                    color: paletteColors.textColor,
-                                },
-                            }}
-                        >
-                            <MenuItem value="fiction">Fiction</MenuItem>
-                            <MenuItem value="horror">Horror</MenuItem>
-                            <MenuItem value="comedy">Comedy</MenuItem>
-                        </Select>
+                            options={types_genre}
+                        />
                     </FormControl>
                     <FormControl fullWidth>
                         <InputLabel id="person-type-label" sx={{
@@ -246,34 +206,13 @@ const SignInModal = ({open, handleClose}) => {
                                 color: paletteColors.textColor,
                             },
                         }}>Person Type</InputLabel>
-                        <Select
-                            labelId="person-type-label"
-                            id="person-type"
+                        <BookSocialDropdown
+                            label='Person Type'
                             value={personType}
-                            label="Person Type"
                             onChange={(e) => setPersonType(e.target.value)}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: paletteColors.textColor,
-                                },
-                                color: paletteColors.textColor,
-                                "& .MuiSelect-icon": {
-                                    color: paletteColors.textColor,
-                                },
-                            }}
-                        >
-                            <MenuItem value="fiction">Fiction</MenuItem>
-                            <MenuItem value="horror">Horror</MenuItem>
-                            <MenuItem value="comedy">Comedy</MenuItem>
-                        </Select>
+                            options={types_person}
+                        />
                     </FormControl>
-
                 </Box>
                 <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>

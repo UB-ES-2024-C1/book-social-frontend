@@ -7,8 +7,13 @@ const AuthContext = createContext();
 // Provider del contexto
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [password2, setRepeatPassword] = useState('');
+    const [genre, setGenre] = useState('');
+    const [person, setPerson] = useState('');
 
 
     // Función para actualizar el estado (ej. llamado cuando hay login/logout)
@@ -27,10 +32,9 @@ export const AuthProvider = ({children}) => {
     };
     const logout = () => setIsLoggedIn(false);
 
-    const signIn = async (firstName, lastName, username, email, pass, genre, personType) => {
+    const signIn = async (firstName, username, email, pass, genre, personType) => {
         const response = await api.post('/auth/register', {
             firstName,
-            lastName,
             username,
             email,
             password: pass,
