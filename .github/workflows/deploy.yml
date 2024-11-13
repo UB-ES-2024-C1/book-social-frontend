@@ -1,0 +1,42 @@
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main           # Despliega a producción cuando haya un push a main
+      - development    # Despliega a desarrollo cuando haya un push a development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting (Production)
+        if: github.ref == 'refs/heads/main'   # Despliega a producción solo si el push es a main
+        run: |
+          npm install -g firebase-tools
+          firebase login --token ${{ secrets.FIREBASE_TOKEN }}
+          firebase use --add
+          firebase deploy --only hosting:prod-book-social
+
+      - name: Deploy to Firebase Hosting (Development)
+        if: github.ref == 'refs/heads/development'   # Despliega a desarrollo solo si el push es a development
+        run: |
+          npm install -g firebase-tools
+          firebase login --token ${{ secrets.FIREBASE_TOKEN }}
+          firebase use --add
+          firebase deploy --only hosting:dev-book-social
