@@ -1,0 +1,42 @@
+name: Deploy React App to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main        # Desplegar cuando haya un push a la rama 'main'
+      - development # Desplegar cuando haya un push a la rama 'development'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # O la versión de Node.js que estás usando
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting (Production)
+        if: github.ref == 'refs/heads/main'  # Solo despliega a producción si el push es a la rama 'main'
+        run: |
+          npm install -g firebase-tools
+          firebase login --token ${{ secrets.FIREBASE_TOKEN }}  # Usa tu token de Firebase
+          firebase use --add  # Selecciona el proyecto de Firebase
+          firebase deploy --only hosting:production  # Despliega al sitio de producción
+
+      - name: Deploy to Firebase Hosting (Development)
+        if: github.ref == 'refs/heads/development'  # Solo despliega a desarrollo si el push es a la rama 'development'
+        run: |
+          npm install -g firebase-tools
+          firebase login --token ${{ secrets.FIREBASE_TOKEN }}  # Usa tu token de Firebase
+          firebase use --add  # Selecciona el proyecto de Firebase
+          firebase deploy --only hosting:development  # Despliega al sitio de desarrollo
