@@ -3,3 +3,4 @@
 .storybook
 .idea
 /src/stories/
+/build/
