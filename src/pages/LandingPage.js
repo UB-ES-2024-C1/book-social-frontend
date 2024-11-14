@@ -146,6 +146,7 @@ const LandingPage = ({isLogged}) => {
                                             width: '200px',
                                             height: '300px',
                                             borderRadius: '5px',
+                                            cursor: 'pointer'
                                         }}
                                     />
                                 </Box>

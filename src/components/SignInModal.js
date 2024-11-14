@@ -58,7 +58,6 @@ const SignInModal = ({open, handleClose}) => {
         try {
             await signIn(
                 name,
-                name,
                 username,
                 email,
                 password,
