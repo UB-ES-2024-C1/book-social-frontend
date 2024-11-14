@@ -17,6 +17,8 @@ import {Spacer} from "../resources/spacer";
 import AppBar from "@mui/material/AppBar";
 import NavAppBar from "../components/NavAppBar";
 import {FaBook} from "react-icons/fa";
+import CardvisualizeBook from "../components/CardVisualizeBook";
+
 
 const LandingPage = ({isLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
@@ -159,6 +161,13 @@ const LandingPage = ({isLogged}) => {
                         <BookSocialTitle level={3} color={paletteColors.textColorStrong} textAlign={"center"}
                                          text={'Post what you think, see opinions, and share your reader\'s world'}/>
                         <Spacer size={16}/>
+                        <CardvisualizeBook
+                            image="url-de-la-imagen-del-libro.jpg"
+                            title="Cuando reescribamos la historia"
+                            author="Belén Martínez"
+                            summary="HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase..."
+                            rating={4.5}
+                        />
                         <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
                             {postImage.map((posts, index) => (
                                 <Box key={index} sx={{
