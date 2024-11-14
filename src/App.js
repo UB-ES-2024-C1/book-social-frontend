@@ -10,7 +10,6 @@ import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
 import {AuthProvider} from "./hooks/authentication";
-import Drawer from "@mui/material/Drawer";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -23,12 +22,9 @@ const MainLayout = () => (
 const DrawerLayout = () => (
     <div className="App">
         <NavAppBar/>
-        <Drawer/>
         <div className="App-header">
             <PermanentDrawer isLogged={true}/>
-            <div className="page-content">
-                <Outlet/>
-            </div>
+            <Outlet/>
         </div>
     </div>
 );
