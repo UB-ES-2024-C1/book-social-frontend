@@ -1,1 +1,6 @@
 /node_modules
+*storybook.log
+.storybook
+.idea
+/src/stories/
+/build/
