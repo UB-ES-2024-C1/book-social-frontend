@@ -105,12 +105,14 @@ export default function PermanentDrawer({isLogged}) {
                 justifyItems: 'center',
                 width: '100%',
                 margin: '15px',
+                cursor: 'pointer'
             }}>
                 <img src={logo}
                      className="App-logo"
                      alt="logo"
                      style={{
                          width: '225px',
+
                      }}/>
             </div>
             <Divider/>
