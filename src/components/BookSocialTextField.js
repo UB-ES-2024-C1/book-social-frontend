@@ -9,9 +9,13 @@ const BookSocialTextField = ({
                                  label,
                                  type,
                                  minLength,
+                                 maxLength,
                                  sx = {},
                                  errorMessage = "",
                                  status = "default", // 'default', 'error', or 'success'
+                                 required = false, 
+                                 isDate = false,
+
                              }) => {
     const isError = status === "error";
     const isSuccess = status === "success";
@@ -27,6 +31,15 @@ const BookSocialTextField = ({
                 onChange={onChange}
                 error={isError}
                 helperText={isError ? errorMessage : ""}
+                required={required}
+                slotProps={{
+                    inputLabel: isDate ? {
+                        shrink: true, // Aplica solo cuando es el campo "Publish Date"
+                    } : {},
+                    input: {
+                        maxLength: maxLength, // Limita la longitud de caracteres
+                    }
+                }}
                 sx={{
                     color: paletteColors.textColor,
                     '& .MuiInputLabel-root': {
@@ -62,6 +75,8 @@ BookSocialTextField.propTypes = {
     sx: PropTypes.object,
     errorMessage: PropTypes.string,
     status: PropTypes.oneOf(['default', 'error', 'success']),
+    required: PropTypes.bool,
+    maxLength: PropTypes.number,
 };
 
 export default BookSocialTextField;
