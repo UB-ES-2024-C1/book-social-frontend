@@ -46,7 +46,7 @@ const BookSocialGenereSelector = ({ genres, selectedGenres, onGenreChange }) => 
                         </Box>
                     ) : (
                         <Box sx={{ textAlign: 'left', width: '100%', color: paletteColors.textColor }}>
-                            Select genres
+                            Generes *
                         </Box>
                     )
                 }

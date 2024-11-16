@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import defaultbook from '../assets/books/DefaultBook.jpg';
 import BookSocialTextField from '../components/BookSocialTextField';
 import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
@@ -21,7 +21,7 @@ const NewBook = () => {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const fileInputRef = useRef(null);
 
-    const [error, setError] = useState('');
+    const [titleError, setTitleError] = useState('');
     const [authorError, setAuthorError] = useState('');
     const [synopsisError, setSynopsisError] = useState('');
     const [genresError, setGenresError] = useState('');
@@ -29,40 +29,73 @@ const NewBook = () => {
     const [isbnError, setIsbnError] = useState('');
     const [imageError, setImageError] = useState('');
 
+    const [openPopup, setOpenPopup] = useState(false); // Controla la visibilidad del popup
+    const [popupMessage, setPopupMessage] = useState(''); // Mensaje del popup
+
+    const [openSuccessPopup, setOpenSuccessPopup] = useState(false); // Success popup state
+    const [successMessage, setSuccessMessage] = useState(''); // Success popup message
+
+    const [openConnectionErrorPopup, setOpenConnectionErrorPopup] = useState(false); // Connection error popup state
+    const [connectionErrorMessage, setConnectionErrorMessage] = useState(''); // Connection error message
+
+
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
         if (e.target.value.length > 200) {
-            setError('The title cannot exceed 200 characters.');
+            setTitleError('The title cannot exceed 200 characters.');
         } else {
-            setError('');
+            setTitleError('');
         }
     };
 
     const handleAuthorsChange = (e) => {
-        setAuthors(e.target.value);
+        const value = e.target.value;
+        setAuthors(value);
+    
+        // Limpiar el error si el usuario comienza a escribir
+        if (value.trim()) {
+            setAuthorError('');
+        }
     };
+    
 
     const handleSynopsisChange = (e) => {
-        setSynopsis(e.target.value);
+        const value = e.target.value;
+        setSynopsis(value);
+    
+        // Limpiar el error si el usuario comienza a escribir
+        if (value.trim()) {
+            setSynopsisError('');
+        }
     };
+    
 
     const handleGenreChange = (newGenres) => {
         setSelectedGenres(newGenres);
+    
+        // Limpiar el error si se seleccionan géneros
+        if (newGenres.length > 0) {
+            setGenresError('');
+        }
     };
+    
 
     const handlePublishDateChange = (e) => {
         const selectedDate = e.target.value;
-        const currentDate = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
-
+        const today = new Date(); // Current date and time
+        const currentDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    
         setPublishDate(selectedDate);
-
-        // Validar que la fecha no sea futura
+    
+        // Check if the date is in the future
         if (selectedDate > currentDate) {
-            setPublishDateError('The publish date cannot be in the future');
+            setPublishDateError('The publish date cannot be in the future.');
         } else {
-            setPublishDateError('');
+            setPublishDateError(''); // Clear error if the date is valid
         }
     };
+    
+    
 
     const validateISBN = (value) => {
         // Expresión regular para ISBN-10
@@ -79,7 +112,7 @@ const NewBook = () => {
             return ''; // Si es un ISBN válido
         }
         
-        return 'El ISBN ingresado no es válido';
+        return 'ISBN not valid';
     };
 
     const handleIsbnChange = (e) => {
@@ -96,14 +129,14 @@ const NewBook = () => {
             // Validar formato
             const validFormats = ['image/png', 'image/jpeg']; // PNG o JPG
             if (!validFormats.includes(file.type)) {
-                setImageError('Solo se permiten archivos PNG o JPG');
+                setImageError('Only PNG or JPG files');
                 setCoverImage(null); // Restablecer la imagen cargada
                 return;
             }
 
             // Validar tamaño (máximo 10MB)
             if (file.size > 10 * 1024 * 1024) {  // 10MB en bytes
-                setImageError('El tamaño máximo de la imagen es 10MB');
+                setImageError('Maximum size of 10MB');
                 setCoverImage(null); // Restablecer la imagen cargada
                 return;
             }
@@ -120,37 +153,88 @@ const NewBook = () => {
     };
 
     const handleSubmit = () => {
-        // Validación de los campos
-        if (!title) {
-            setError('Title is required');
-        } else if (title.length > 200) {
-            setError('The title cannot exceed 200 characters.');
-        } else if (!authors.trim()) {
-            setAuthorError('At least one author is required');
-        } else if (!synopsis.trim()) {
-            setSynopsisError('Synopsis is required');
-        } else if (selectedGenres.length === 0) {
-            setGenresError('At least one genre is required');
-        } else if (genres.length === 0) {
-            setGenresError('At least one genre is required');
-        } else if (!publishDate) {
-            setPublishDateError('Publish date is required');
-        } else {
-            // Reseteamos los errores
-            setError('');
-            setAuthorError('');
-            setSynopsisError('');
-            setGenresError('');
-            setPublishDateError('');
+        let missingFields = [];
+        let hasErrors = false;
+    
+        // Resetear errores antes de validar
+        setTitleError('');
+        setAuthorError('');
+        setSynopsisError('');
+        setGenresError('');
+        setPublishDateError('');
+    
+        if (!title.trim()) {
+            setTitleError('Missing field: Title');
+            hasErrors = true;
+            missingFields.push('Title');
+        }
+        if (!authors.trim()) {
+            setAuthorError('Missing field: Authors');
+            hasErrors = true;
+            missingFields.push('Authors');
+        }
+        if (!synopsis.trim()) {
+            setSynopsisError('Missing field: Synopsis');
+            hasErrors = true;
+            missingFields.push('Synopsis');
+        }
+        if (selectedGenres.length === 0) {
+            setGenresError('Please select at least one genre');
+            hasErrors = true;
+            missingFields.push('Genres');
+        }
+        if (!publishDate.trim()) {
+            setPublishDateError('Missing field: Publish Date');
+            hasErrors = true;
+            missingFields.push('Publish Date');
+        }
+    
+        if (hasErrors) {
+            // Muestra el popup con los campos faltantes
+            setPopupMessage(`Please, fill the required field(s): ${missingFields.join(', ')}`);
+            setOpenPopup(true);
+            return;
+        }
+    
+        // Simulate API call for book submission
+        try {
+            // Replace this with your API call, e.g., a POST request
+            const response = fetch('/api/registerBook', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title,
+                    authors,
+                    synopsis,
+                    selectedGenres,
+                    publishDate,
+                    isbn,
+                    coverImage,
+                }),
+            });
 
-            // Lógica para enviar los datos
-            console.log('Book registered with title:', title);
-            console.log('Authors:', authors);
-            console.log('Synopsis:', synopsis);
-            console.log('Genres:', selectedGenres);
-            console.log('Publish Date:', publishDate);
+            if (!response.ok) {
+                throw new Error('Failed to send data to the backend');
+            }
+
+            setSuccessMessage('Book registered successfully!');
+            setOpenSuccessPopup(true);
+        } catch (error) {
+            setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+            setOpenConnectionErrorPopup(true);
         }
     };
+
+    const handleCloseConnectionErrorPopup = () => {
+        setOpenConnectionErrorPopup(false);
+    };
+
+    const handleCloseSuccessPopup = () => {
+        setOpenSuccessPopup(false);
+    };
+    
 
     return (
         <Box
@@ -230,8 +314,8 @@ const NewBook = () => {
                             onChange={handleTitleChange}
                             required={true}
                             maxLength={200}
-                            status={error ? 'error' : 'default'}
-                            errorMessage={error}
+                            status={titleError ? 'error' : 'default'}
+                            errorMessage={titleError}
                         />
                     </div>
                     {/* Authors Field */}
@@ -275,11 +359,13 @@ const NewBook = () => {
                             type="date"
                             value={publishDate}
                             onChange={handlePublishDateChange}
-                            required = {true}
-                            errorMessage={publishDateError ? 'error' : 'default'}
-                            isDate= {true}
+                            required={true}
+                            status={publishDateError ? 'error' : 'default'}
+                            errorMessage={publishDateError} // Display the error message
+                            isDate={true}
                         />
                     </div>
+
                     {/* ISBN Field*/}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
                         <BookSocialTextField
@@ -303,8 +389,73 @@ const NewBook = () => {
                             bgColor={paletteColors.color_primary}
                         />
                     </div>
+                    
                 </form>
             </Box>
+
+            {/* Popup de Errores */}
+            <Dialog open={openPopup} onClose={() => setOpenPopup(false)} 
+                PaperProps={{
+                    sx: {
+                        backgroundColor: paletteColors.color_primary_weak, // Cambia a tu color deseado
+                        color: paletteColors.textColor, // Cambia el color del texto si es necesario
+                    },
+                }}>
+                <DialogTitle>Error</DialogTitle>
+                <DialogContent>
+                    <Typography>{popupMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <BookSocialPrimaryButton buttonText={'Close'}  onClick={() => setOpenPopup(false)} bgColor={paletteColors.color_primary}/>
+                </DialogActions>
+            </Dialog>
+            {/* Success Popup */}
+            <Dialog
+                open={openSuccessPopup}
+                onClose={handleCloseSuccessPopup}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: paletteColors.color_primary_weak,
+                        color: paletteColors.textColor,
+                    },
+                }}
+            >
+                <DialogTitle>Success</DialogTitle>
+                <DialogContent>
+                    <Typography>{successMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <BookSocialPrimaryButton
+                        buttonText={'Confirm'}
+                        onClick={handleCloseSuccessPopup}
+                        bgColor={paletteColors.color_primary}
+                    />
+                </DialogActions>
+            </Dialog>
+
+            {/* Connection Error Popup */}
+            <Dialog
+                open={openConnectionErrorPopup}
+                onClose={handleCloseConnectionErrorPopup}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: paletteColors.color_primary_weak,
+                        color: paletteColors.textColor,
+                    },
+                }}
+            >
+                <DialogTitle>Connection Error</DialogTitle>
+                <DialogContent>
+                    <Typography>{connectionErrorMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <BookSocialPrimaryButton
+                        buttonText="Close"
+                        onClick={handleCloseConnectionErrorPopup}
+                        bgColor={paletteColors.color_primary}
+                    />
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
