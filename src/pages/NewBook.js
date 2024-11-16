@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { Box, Typography } from '@mui/material';
 import defaultbook from '../assets/books/DefaultBook.jpg';
 import BookSocialTextField from '../components/BookSocialTextField';
 import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
+import BookSocialGenereSelector from '../components/BookSocialGenereSelector';
+import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
+
+
+const genresList = ['Fantasy', 'Science Fiction', 'Mystery', 'Romance', 'Thriller', 'Non-fiction'];
 
 const NewBook = () => {
     const [title, setTitle] = useState('');
@@ -13,6 +18,8 @@ const NewBook = () => {
     const [publishDate, setPublishDate] = useState('');
     const [isbn, setIsbn] = useState('');
     const [coverImage, setCoverImage] = useState(null);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const fileInputRef = useRef(null);
 
     const [error, setError] = useState('');
     const [authorError, setAuthorError] = useState('');
@@ -39,8 +46,8 @@ const NewBook = () => {
         setSynopsis(e.target.value);
     };
 
-    const handleGenresChange = (e) => {
-        setGenres(e.target.value);
+    const handleGenreChange = (newGenres) => {
+        setSelectedGenres(newGenres);
     };
 
     const handlePublishDateChange = (e) => {
@@ -101,10 +108,15 @@ const NewBook = () => {
                 return;
             }
 
-            setImageError(''); // Restablecer error si todo está bien
-            const imageUrl = URL.createObjectURL(file); // Crear una URL temporal para la imagen
-            setCoverImage(imageUrl); // Establecer la imagen cargada
+            setImageError(''); // Reset error message
+            const imageUrl = URL.createObjectURL(file); // Create temporary URL for the image
+            setCoverImage(imageUrl); // Set the image preview
         }
+    };
+
+    const handleButtonImageClick = () => {
+        // Trigger file input when the button is clicked
+        fileInputRef.current.click();
     };
 
     const handleSubmit = () => {
@@ -117,6 +129,8 @@ const NewBook = () => {
             setAuthorError('At least one author is required');
         } else if (!synopsis.trim()) {
             setSynopsisError('Synopsis is required');
+        } else if (selectedGenres.length === 0) {
+            setGenresError('At least one genre is required');
         } else if (genres.length === 0) {
             setGenresError('At least one genre is required');
         } else if (!publishDate) {
@@ -133,7 +147,7 @@ const NewBook = () => {
             console.log('Book registered with title:', title);
             console.log('Authors:', authors);
             console.log('Synopsis:', synopsis);
-            console.log('Genres:', genres);
+            console.log('Genres:', selectedGenres);
             console.log('Publish Date:', publishDate);
         }
     };
@@ -156,6 +170,8 @@ const NewBook = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    flexDirection: 'column',
+                    gap: '16px',
                 }}
             >
                 <img
@@ -168,6 +184,25 @@ const NewBook = () => {
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                     }}
                 />
+                {/* Campo para cargar la imagen de portada */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
+                    {/* Hidden File Input */}
+                    <input 
+                        ref={fileInputRef} 
+                        type="file" 
+                        accept=".png, .jpg, .jpeg"
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }} // Hide the input, but it's still accessible
+                    />
+
+                    {/* Upload Button */}
+                    <BookSocialPrimaryButton
+                        buttonText="Upload Cover Image"
+                        onClick={handleButtonImageClick} // Trigger file input click
+                        isExpanded={false}
+                        bgColor={paletteColors.color_primary} // Use your desired background color
+                    />
+                </Box>
             </Box>
 
             {/* Formulario */}
@@ -177,7 +212,10 @@ const NewBook = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    maxWidth: '500px',
+                    maxWidth: '1500px', // Adjust to your preferred max width
+                    width: '100%', // Make it take up the full available width
+                    padding: '40px', // Increase padding to make the box feel bigger
+                    boxSizing: 'border-box', // Ensure padding doesn't break layout
                 }}
             >
                 <Typography variant="h4" sx={{ marginBottom: '20px' }}>
@@ -185,7 +223,7 @@ const NewBook = () => {
                 </Typography>
                 <form onSubmit={handleSubmit} style={{ width: '100%' }}>
                     {/* Title Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
                         <BookSocialTextField
                             label="Title"
                             value={title}
@@ -194,11 +232,10 @@ const NewBook = () => {
                             maxLength={200}
                             status={error ? 'error' : 'default'}
                             errorMessage={error}
-                            sx={{ marginTop: '16px' }}
                         />
                     </div>
                     {/* Authors Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop:'16px' }}>
                         <BookSocialTextField
                             label="Authors (separate by commas)"
                             value={authors}
@@ -206,25 +243,33 @@ const NewBook = () => {
                             required={true}
                             status={authorError ? 'error' : 'default'}
                             errorMessage={authorError}
-                            sx={{ marginTop: '16px' }}
                         />
                     </div>
                     {/* Synopsis Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <BookSocialTextField
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'  }}>
+                        <BookSocialLargeTextField
                             label="Synopsis"
                             value={synopsis}
                             onChange={handleSynopsisChange}
                             required={true}
                             status={synopsisError ? 'error' : 'default'}
                             errorMessage={synopsisError}
-                            sx={{ marginTop: '16px'}} // Estilo para hacer el campo más grande
+                            rows={3} // Set the desired number of rows
+                        />
+
+                    </div>
+
+                    {/* Genres Field */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                        <BookSocialGenereSelector
+                            genres={genresList}
+                            selectedGenres={selectedGenres}
+                            onGenreChange={handleGenreChange}
                         />
                     </div>
-                    {/* Genres Field */}
                     
                     {/* Publish Date Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
                         <BookSocialTextField
                             label="Publish Date"
                             type="date"
@@ -232,7 +277,6 @@ const NewBook = () => {
                             onChange={handlePublishDateChange}
                             required = {true}
                             errorMessage={publishDateError ? 'error' : 'default'}
-                            sx={{ marginTop: '16px'}}
                             isDate= {true}
                         />
                     </div>
@@ -247,16 +291,10 @@ const NewBook = () => {
                         />
 
                     </div>
-                    {/* Campo para cargar la imagen de portada */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
-                        <input 
-                            type="file" 
-                            accept=".png, .jpg, .jpeg" 
-                            onChange={handleImageChange} 
-                            style={{ marginBottom: '10px' }}
-                        />
-                        {imageError && <div style={{ color: 'red', marginTop: '5px' }}>{imageError}</div>}
-                    </div>
+                    <Typography variant="body2" color= {paletteColors.textColor} sx={{ marginTop: '8px', textAlign: 'left' }}>
+                        * Required field
+                    </Typography>
+            
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
                         <BookSocialPrimaryButton 
                             buttonText={'Submit'} 
