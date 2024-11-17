@@ -4,19 +4,7 @@ import {Box, Rating} from '@mui/material';
 import StarIcon from '@mui/icons-material/StarBorder';
 import paletteColors from "../resources/palette";
 import BookSocialText from "./BookSocialText";
-
-const labels = {
-    0.5: 'Terrible',
-    1: 'Very Bad',
-    1.5: 'Bad',
-    2: 'Below Average',
-    2.5: 'Average',
-    3: 'Good',
-    3.5: 'Very Good',
-    4: 'Great',
-    4.5: 'Excellent',
-    5: 'Masterpiece',
-};
+import BookSocialTitle from "./BookSocialTitle";
 
 
 const BookSocialRating = ({value = 0, size = 'lg', numberRatings = null, showLabel = true}) => {
@@ -28,26 +16,22 @@ const BookSocialRating = ({value = 0, size = 'lg', numberRatings = null, showLab
 
     const roundedValue = Math.floor(value * 2) / 2;
 
-    const getLabelText = (ratingValue) =>
-        `${ratingValue} Star${ratingValue !== 1 ? 's' : ''}, ${labels[ratingValue]}`;
-
     return (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
             <Rating
                 name="hover-feedback"
                 value={value}
                 precision={0.25}
-                getLabelText={getLabelText}
                 readOnly
                 size={hoverSizeMap[size]}
                 emptyIcon={<StarIcon style={{color: paletteColors.textColor_weakest, opacity: 0.55}}
                                      fontSize="inherit"/>}
             />
-            {roundedValue !== null && showLabel && (
+            {showLabel && (
                 <Box sx={{ml: 2}}>
-                    <BookSocialText
-                        level={"p"}
-                        text={labels[roundedValue]}
+                    <BookSocialTitle
+                        level={4}
+                        text={value.toFixed(2)}
                         color={paletteColors.textColorWeakest}
                     />
                 </Box>
