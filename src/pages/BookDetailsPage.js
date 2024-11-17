@@ -38,6 +38,27 @@ const BookDetailsPage = () => {
                         <BookSocialImage size={"lg"} url={book.image}/>
                         <Spacer size={24}/>
                         <BookSocialRating value={book.goodReadsMeanRating || 0}/>
+                        <Spacer size={24}/>
+                        <div style={{alignSelf: "flex-start"}}>
+                            <BookSocialTitle level={4} text="Additional Info" textAlign="left"
+                                             color={paletteColors.textColorWeakest}/>
+                            <Spacer size={16}/>
+                            <BookSocialText level="medium" text={`**ISBN**: ${book.ISBN}`}
+                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
+                            <Spacer size={8}/>
+                            <BookSocialText level="medium" text={`**ASIN**: ${book.ASIN}`}
+                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
+                            <Spacer size={8}/>
+                            <BookSocialText level="medium" text={`**Language**: ${book.language}`}
+                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
+                            <Spacer size={8}/>
+                            <BookSocialText level="medium" text={`**Published**: ${book.published}`}
+                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
+                            <Spacer size={8}/>
+                            <BookSocialText level="medium" text={`**Edition**: ${book.edition}`}
+                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
+                            <Spacer size={8}/>
+                        </div>
                     </Grid>
                     <Grid item size={8}>
                         <BookSocialTitle level={2} text={book.title} textAlign={"left"}/>
