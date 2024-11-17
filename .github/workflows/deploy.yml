@@ -20,10 +20,11 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build the project
-        run: npm run build
+        run: |
+          CI=false npm run build
 
       - name: Deploy to Firebase Hosting (Production)
         if: github.ref == 'refs/heads/main'   # Despliega a producción solo si el push es a main
