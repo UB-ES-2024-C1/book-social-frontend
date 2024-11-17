@@ -19,13 +19,12 @@ const BookDetailsPage = () => {
     const {id} = useParams();
     const {book, loading, error, fetchBook} = useBook(id);
 
-    useEffect(() => {
-        const book = BookDetails.fromJSON(bookData);
-        setBook(book);
-    }, []);
+    if (loading) {
+        return <LoadingPage/>;
+    }
 
-    if (!book) {
-        return <div>Loading...</div>;
+    if (error) {
+        return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
 
     return (
