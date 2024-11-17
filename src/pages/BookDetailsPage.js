@@ -30,7 +30,7 @@ const BookDetailsPage = () => {
     return (
         <PageContainer children={
             <div>
-                <Grid container spacing={2} justifyContent="center" alignItems={"start"}>
+                <Grid container spacing={6} justifyContent="center" alignItems={"start"}>
                     <Grid item size={2} style={{
                         alignItems: "center", justifyContent: "center", display: "flex",
                         flexDirection: "column",
