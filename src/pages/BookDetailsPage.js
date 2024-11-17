@@ -63,12 +63,23 @@ const BookDetailsPage = () => {
                     <Grid item size={8}>
                         <BookSocialTitle level={2} text={book.title} textAlign={"left"}/>
                         <Spacer size={16}/>
-                        <BookSocialTitle level={4} text={`${book.authorName}, ${book.coauthorName}`}
-                                         textAlign={"left"} color={paletteColors.textColor_weakest}/>
+                        <BookSocialTitle
+                            level={4}
+                            text={
+                                book.authorName && book.coauthorName
+                                    ? `${book.authorName}, ${book.coauthorName}`
+                                    : book.authorName || book.coauthorName
+                            }
+                            textAlign={"left"}
+                            color={paletteColors.textColor_weakest}
+                        />
+
                         <Spacer size={24}/>
                         <BookSocialText level={"large"} text={book.synopsis} style={{textAlign: "justify"}}/>
                         <Spacer size={24}/>
-                        <BookSocialAccordion title={"About the author"} body={book.authorDescription}/>
+                        {book.authorDescription && (
+                            <BookSocialAccordion title={"About the author"} body={book.authorDescription}/>
+                        )}
                         <Spacer size={24}/>
                         <BookSocialTitle level={4} text={"Genres"}
                                          textAlign={"left"}/>
