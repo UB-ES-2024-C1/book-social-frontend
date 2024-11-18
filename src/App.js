@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import {BrowserRouter as Router, Outlet, Route, Routes} from 'react-router-dom';
 import './App.css';
@@ -11,6 +10,7 @@ import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
 import {AuthProvider} from "./hooks/authentication";
 import Drawer from "@mui/material/Drawer";
+import BookDetailsPage from './pages/BookDetailsPage';
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -48,6 +48,14 @@ function AppContent() {
                 <Route path="/saved" element={<SavedPage/>}/>
                 <Route path="/profile" element={<Profile/>}/>
             </Route>
+            <Route
+                path="/book-details/:id"
+                element={
+                    // <ProtectedRoute>
+                    <BookDetailsPage/>
+                    // </ProtectedRoute>
+                }
+            />
         </Routes>
     );
 }
