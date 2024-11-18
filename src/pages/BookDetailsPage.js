@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useParams} from 'react-router-dom';
 import PageContainer from "../components/PageContainer";
 import {Spacer} from "../resources/spacer";
@@ -6,25 +6,25 @@ import Grid from "@mui/material/Grid2";
 import BookSocialImage from "../components/Image";
 import BookSocialRating from "../components/Rating";
 import BookSocialAccordion from "../components/Accordion";
-import BookDetails from "../dto/BookDetails";
-import bookData from '../mocks/book_1.json';
 import BookSocialTitle from "../components/BookSocialTitle";
 import BookSocialText from "../components/BookSocialText";
 import paletteColors from "../resources/palette";
 import BookSocialChip from "../components/Chip";
 import BookSocialLinealRating from "../components/LinealRating";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
+import useBook from "../hooks/book";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
-    const [book, setBook] = useState(null);
+    const {book, loading, error, fetchBook} = useBook(id);
 
-    useEffect(() => {
-        const book = BookDetails.fromJSON(bookData);
-        setBook(book);
-    }, []);
+    if (loading) {
+        return <LoadingPage/>;
+    }
 
-    if (!book) {
-        return <div>Loading...</div>;
+    if (error) {
+        return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
 
     return (
