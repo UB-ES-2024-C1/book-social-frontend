@@ -7,59 +7,94 @@ const AuthContext = createContext();
 // Provider del contexto
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [password2, setRepeatPassword] = useState('');
-    const [genre, setGenre] = useState('');
-    const [person, setPerson] = useState('');
+    const [error, setError] = useState(null);
 
-
-    // Función para actualizar el estado (ej. llamado cuando hay login/logout)
+    // Maneja el login
     const login = async (name, pass) => {
-        setUsername(name);
-        setPassword(pass);
-        // console.log("Username:", username);
-        // console.log("Password:", password);
-        const response = await api.post('/auth/login', {"username": name, "password": pass});
-        console.log("Response:", response);
-        if (response.status === 200) {
-            setIsLoggedIn(true);
-        } else {
+        try {
+            const response = await api.post('/auth/login', {email: name, password: pass});
+            if (response.status === 200) {
+                const {token} = response.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('isLoggedIn', 'true');
+                setIsLoggedIn(true);
+            } else {
+                setIsLoggedIn(false);
+                setError(`Error on try to login: ${response.data.message}`);
+            }
+        } catch (error) {
+            if (error.isAxiosError) {
+                const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
+                setError(`Error on try to login: ${errorMessage}`);
+            } else {
+                setError('An unexpected error occurred.');
+            }
             setIsLoggedIn(false);
         }
     };
-    const logout = () => setIsLoggedIn(false);
 
+    // Maneja el logout
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('isLoggedIn');
+        setIsLoggedIn(false);
+    };
+
+    // Maneja el registro de un usuario
     const signIn = async (firstName, username, email, pass, genre, personType) => {
-        const response = await api.post('/auth/register', {
-            firstName,
-            username,
-            email,
-            password: pass,
-            genre,
-            personType
-        });
-        console.log("Response:", response);
-        if (response.status === 201) {
-            setIsLoggedIn(true);
-        } else {
+        try {
+            const response = await api.post('/auth/register', {
+                firstName,
+                lastName: "",
+                username,
+                email,
+                password: pass,
+                role: personType,
+            });
+            console.log("Response:", response);
+
+            if (response.status === 201) {
+                setIsLoggedIn(true);
+                login(email, pass);
+            } else {
+                setError(`Error on try to register: ${response.data.message}`);
+            }
+        } catch (error) {
+            if (error.isAxiosError) {
+                const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
+                setError(`Error on try to register: ${errorMessage}`);
+            } else {
+                setError('An unexpected error occurred.');
+            }
             setIsLoggedIn(false);
         }
     };
 
+    // Verifica si el usuario está autenticado al cargar la app
     useEffect(() => {
-        // Simulación de una autenticación inicial
-        const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(userLoggedIn);
+        const token = localStorage.getItem('token');
+        if (token) {
+            // Opcional: Validar token con el backend
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
     }, []);
 
-    // Escucha en tiempo real
+    // Escucha en tiempo real cambios en el almacenamiento local
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
         const handleAuthChange = (event) => {
-            if (event.key === 'isLoggedIn') {
+            if (event.key === 'isLoggedIn' && event.newValue !== null) {
                 setIsLoggedIn(event.newValue === 'true');
+            }
+            if (event.key === 'token' && event.newValue === null) {
+                setIsLoggedIn(false);
             }
         };
 
@@ -71,13 +106,12 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{isLoggedIn, login, logout, signIn}}>
+        <AuthContext.Provider value={{isLoggedIn, login, logout, signIn, error}}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-// Hook personalizado para usar el contexto de autenticación
 export const useAuth = () => {
     return useContext(AuthContext);
 };
