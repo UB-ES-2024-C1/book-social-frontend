@@ -14,7 +14,6 @@ const NewBook = () => {
     const [title, setTitle] = useState('');
     const [authors, setAuthors] = useState('');
     const [synopsis, setSynopsis] = useState('');
-    const [genres, setGenres] = useState([]);
     const [publishDate, setPublishDate] = useState('');
     const [isbn, setIsbn] = useState('');
     const [coverImage, setCoverImage] = useState(null);
@@ -37,6 +36,8 @@ const NewBook = () => {
 
     const [openConnectionErrorPopup, setOpenConnectionErrorPopup] = useState(false); // Connection error popup state
     const [connectionErrorMessage, setConnectionErrorMessage] = useState(''); // Connection error message
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const handleTitleChange = (e) => {
@@ -142,6 +143,9 @@ const NewBook = () => {
             }
 
             setImageError(''); // Reset error message
+            if (coverImage) {
+                URL.revokeObjectURL(coverImage);
+            }
             const imageUrl = URL.createObjectURL(file); // Create temporary URL for the image
             setCoverImage(imageUrl); // Set the image preview
         }
@@ -152,58 +156,37 @@ const NewBook = () => {
         fileInputRef.current.click();
     };
 
-    const handleSubmit = () => {
-        let missingFields = [];
-        let hasErrors = false;
-    
-        // Resetear errores antes de validar
-        setTitleError('');
-        setAuthorError('');
-        setSynopsisError('');
-        setGenresError('');
-        setPublishDateError('');
-    
-        if (!title.trim()) {
-            setTitleError('Missing field: Title');
-            hasErrors = true;
-            missingFields.push('Title');
-        }
-        if (!authors.trim()) {
-            setAuthorError('Missing field: Authors');
-            hasErrors = true;
-            missingFields.push('Authors');
-        }
-        if (!synopsis.trim()) {
-            setSynopsisError('Missing field: Synopsis');
-            hasErrors = true;
-            missingFields.push('Synopsis');
-        }
-        if (selectedGenres.length === 0) {
-            setGenresError('Please select at least one genre');
-            hasErrors = true;
-            missingFields.push('Genres');
-        }
-        if (!publishDate.trim()) {
-            setPublishDateError('Missing field: Publish Date');
-            hasErrors = true;
-            missingFields.push('Publish Date');
-        }
-    
+
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+
+        const hasErrors = [
+            titleError,
+            authorError,
+            synopsisError,
+            genresError,
+            publishDateError,
+            isbnError,
+            imageError,
+        ].some((error) => error !== '');
+        
+        const missingFields = [];
+        if (!title.trim()) missingFields.push('Title');
+        if (!authors.trim()) missingFields.push('Authors');
+        if (!synopsis.trim()) missingFields.push('Synopsis');
+        if (!selectedGenres.length) missingFields.push('Genres');
+        if (!publishDate.trim()) missingFields.push('Publish Date');
+
+        // Validación previa
         if (hasErrors) {
-            // Muestra el popup con los campos faltantes
             setPopupMessage(`Please, fill the required field(s): ${missingFields.join(', ')}`);
             setOpenPopup(true);
             return;
         }
-    
-        // Simulate API call for book submission
         try {
-            // Replace this with your API call, e.g., a POST request
-            const response = fetch('/api/registerBook', {
+            const response = await fetch('/api/registerBook', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title,
                     authors,
@@ -214,18 +197,21 @@ const NewBook = () => {
                     coverImage,
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to send data to the backend');
             }
-
+    
             setSuccessMessage('Book registered successfully!');
             setOpenSuccessPopup(true);
         } catch (error) {
             setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
             setOpenConnectionErrorPopup(true);
+        } finally {
+            setIsSubmitting(false);
         }
     };
+    
 
     const handleCloseConnectionErrorPopup = () => {
         setOpenConnectionErrorPopup(false);
@@ -296,10 +282,11 @@ const NewBook = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    maxWidth: '1500px', // Adjust to your preferred max width
-                    width: '100%', // Make it take up the full available width
-                    padding: '40px', // Increase padding to make the box feel bigger
-                    boxSizing: 'border-box', // Ensure padding doesn't break layout
+                    justifyContent: 'center',
+                    width: '100%',
+                    maxWidth: '800px', // Ajusta el tamaño máximo
+                    padding: '20px',
+                    flexWrap: 'wrap',
                 }}
             >
                 <Typography variant="h4" sx={{ marginBottom: '20px' }}>
@@ -383,10 +370,11 @@ const NewBook = () => {
             
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
                         <BookSocialPrimaryButton 
-                            buttonText={'Submit'} 
+                            buttonText={isSubmitting ? 'Submitting...' : 'Submit'}
                             onClick={handleSubmit} 
                             isExpanded={false}
                             bgColor={paletteColors.color_primary}
+                            disabled={isSubmitting}
                         />
                     </div>
                     
