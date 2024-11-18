@@ -131,7 +131,7 @@ export default function PermanentDrawer({isLogged}) {
             }}>
                 {[
                     {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
-                    ...(/*user?.type === 'escritor'*/ true ? [{ text: 'New book', icon: <AiOutlinePlus />, route: 'New book' }] : []), // Modificar el true cuan sapiguem el user type
+                    ...(user?.role === 'author'? [{ text: 'New book', icon: <AiOutlinePlus />, route: 'New book' }] : []), 
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
                     {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
                     {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
