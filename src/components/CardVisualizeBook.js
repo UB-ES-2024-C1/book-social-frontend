@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Card, CardContent, CardMedia, Rating, Typography} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, Rating, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 
 const CardvisualizeBook = ({image, title, author, summary, rating}) => {
@@ -26,23 +26,31 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                textAlign: 'left',
                 padding: 2,
                 flex: 1,
                 overflow: 'hidden',
             }}>
-                <CardContent sx={{flex: '1 0 auto', padding: '25px', textAlign: 'center', cursor: 'pointer'}}>
-                    <Typography variant="h6" component="div" sx={{
-                        color: 'white',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        maxWidth: '100%',
-                    }}>
-                        {title}
-                    </Typography>
+                <CardContent sx={{
+                    flex: '1 0 auto',
+                    padding: '25px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                }}>
+                    <Tooltip title={title} placement="top" arrow>
+                        <Typography variant="h6" component="div" sx={{
+                            color: 'white',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis', // Truncar con "..."
+                            maxWidth: '100%',
+                            fontSize: '1.1rem', // Ajustar tamaño de fuente
+                        }}>
+                            {title}
+                        </Typography>
+                    </Tooltip>
                     <Typography variant="subtitle2" sx={{
                         color: paletteColors.color_primary,
                         whiteSpace: 'nowrap',
@@ -55,6 +63,7 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                     <Typography variant="body2" color="text.secondary" sx={{
                         my: 1,
                         color: paletteColors.textColor_weakest,
+                        textAlign: 'justify',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -66,7 +75,7 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'flex-end',
+                        justifyContent: 'flex-start',
                         mt: 2,
                         color: 'white',
                     }}>

@@ -1,47 +1,67 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef} from "react";
 import BookSocialTitle from "../components/BookSocialTitle";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import CardvisualizeBook from "../components/CardVisualizeBook";
-import book1 from '../assets/books/book1.jpg';
-import book2 from '../assets/books/book2.jpg';
-import book3 from '../assets/books/book3.jpg';
-import book4 from '../assets/books/book4.jpg';
-import book5 from '../assets/books/book5.jpg';
-import {Card, Typography} from '@mui/material';
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import book1 from "../assets/books/book1.jpg";
+import book2 from "../assets/books/book2.jpg";
+import book3 from "../assets/books/book3.jpg";
+import book4 from "../assets/books/book4.jpg";
+import book5 from "../assets/books/book5.jpg";
 import paletteColors from "../resources/palette";
 
-const HomePage = ({isLogged}) => {
+const HomePage = () => {
     const containerRef = useRef(null);
-    const [scrollX, setScrollX] = useState(0);
 
-    const handleMouseMove = (event) => {
+    const scrollContainer = (direction) => {
         if (containerRef.current) {
-            const containerWidth = containerRef.current.clientWidth;
-            const contentWidth = containerRef.current.scrollWidth;
-            const maxScroll = contentWidth - containerWidth;
-
-            const cursorPosition = event.clientX;
-            const scrollPercentage = cursorPosition / window.innerWidth;
-
-            setScrollX(scrollPercentage * maxScroll);
+            const scrollAmount = direction === "left" ? -300 : 300;
+            containerRef.current.scrollBy({
+                left: scrollAmount,
+                behavior: "smooth",
+            });
         }
     };
 
-    useEffect(() => {
-        const container = containerRef.current;
-
-        window.addEventListener('mousemove', handleMouseMove);
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTo(scrollX, 0);
-        }
-    }, [scrollX]);
+    const books = [
+        {
+            image: book1,
+            title: "Cuando reescribamos la historia",
+            author: "Belén Martínez",
+            summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
+            rating: 4.5,
+        },
+        {
+            image: book2,
+            title: "Muertes perfectamente evitables",
+            author: "Deirdre Sullivan",
+            summary: "Las gemelas Maddy y Catlin acaban de mudarse a Ballyfrann, un pueblo...",
+            rating: 3.0,
+        },
+        {
+            image: book3,
+            title: "La sombra del viento",
+            author: "Carlos Ruiz Zafón",
+            summary: "En la Barcelona de la postguerra, un joven llamado Daniel descubre un libro...",
+            rating: 5.0,
+        },
+        {
+            image: book4,
+            title: "Cien años de soledad",
+            author: "Gabriel García Márquez",
+            summary: "La historia de la familia Buendía, que vive en el pueblo ficticio de Macondo...",
+            rating: 4.8,
+        },
+        {
+            image: book5,
+            title: "1984",
+            author: "George Orwell",
+            summary: "En una sociedad totalitaria gobernada por el Gran Hermano, Winston Smith lucha por mantener su libertad...",
+            rating: 4.7,
+        },
+    ];
 
     return (
         <div
@@ -52,95 +72,85 @@ const HomePage = ({isLogged}) => {
                 alignItems: "center",
                 height: "100vh",
                 marginTop: "68px",
-                marginLeft: "240px",
+                marginLeft: "280px",
             }}
         >
-            <Card
-                sx={{
-                    fontFamily: 'Roboto, Arial, sans-serif',
-                    padding: "20px",
-                    marginBottom: "40px",
-                    borderRadius: 10,
-                    backgroundColor: paletteColors.color_primary_weak,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Typography variant="h4" color="white">
-                    Welcome Joshua to bookSocial!!
-                </Typography>
-            </Card>
+            <div style={{width: "100%", marginTop: "40px", alignItems: "flex-start"}}>
+                <BookSocialTitle level={4} text={<>Books of your favourite genre</>} textAlign={'left'}
+                                 sx={{margin: '20px'}}/>
 
-            <div style={{width: "100%", marginTop: "40px", alignItems: 'flex-start'}}>
-                <BookSocialTitle level={4} text={<>Books of your favourite genre</>}/>
-
-                <div
-                    ref={containerRef}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'start',
-                        overflowX: 'hidden',
-                        gap: '16px',
-                        padding: '16px 30px',
-                        scrollBehavior: 'smooth',
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        position: "relative",
+                        width: "100%",
                     }}
                 >
-                    {[{
-                        image: book1,
-                        title: "Cuando reescribamos la historia",
-                        author: "Belén Martínez",
-                        summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
-                        rating: 4.5
-                    }, {
-                        image: book2,
-                        title: "Muertes perfectamente evitables",
-                        author: "Deirdre Sullivan",
-                        summary: "Las gemelas Maddy y Catlin acaban de mudarse a Ballyfrann, un pueblo...",
-                        rating: 3.0
-                    }, {
-                        image: book3,
-                        title: "La sombra del viento",
-                        author: "Carlos Ruiz Zafón",
-                        summary: "En la Barcelona de la postguerra, un joven llamado Daniel descubre un libro...",
-                        rating: 5.0
-                    }, {
-                        image: book4,
-                        title: "Cien años de soledad",
-                        author: "Gabriel García Márquez",
-                        summary: "La historia de la familia Buendía, que vive en el pueblo ficticio de Macondo...",
-                        rating: 4.8
-                    }, {
-                        image: book5,
-                        title: "1984",
-                        author: "George Orwell",
-                        summary: "En una sociedad totalitaria gobernada por el Gran Hermano, Winston Smith lucha por mantener su libertad...",
-                        rating: 4.7
-                    }].map((book, index) => (
-                        <Box
-                            key={index}
-                            sx={{
-                                margin: '16px',
-                                transition: 'transform 0.2s',
-                                '&:hover': {
-                                    transform: 'scale(1.05)',
-                                },
-                                cursor: 'pointer',
-                            }}
-                        >
-                            <CardvisualizeBook
-                                image={book.image}
-                                title={book.title}
-                                author={book.author}
-                                summary={book.summary}
-                                rating={book.rating}
-                            />
-                        </Box>
-                    ))}
-                </div>
+                    <IconButton
+                        onClick={() => scrollContainer("left")}
+                        sx={{
+                            position: "absolute",
+                            left: 10,
+                            zIndex: 1,
+                            backgroundColor: paletteColors.color_primary,
+                            color: "white",
+                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
+                        }}
+                    >
+                        <ArrowBackIosIcon/>
+                    </IconButton>
+
+                    <div
+                        ref={containerRef}
+                        style={{
+                            display: "flex",
+                            overflowX: "hidden",
+                            scrollBehavior: "smooth",
+                            gap: "16px",
+                            padding: "16px 30px",
+                        }}
+                    >
+                        {books.map((book, index) => (
+                            <Box
+                                key={index}
+                                sx={{
+                                    flex: "0 0 auto",
+                                    transition: "transform 0.2s",
+                                    "&:hover": {
+                                        transform: "scale(1.05)",
+                                    },
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <CardvisualizeBook
+                                    image={book.image}
+                                    title={book.title}
+                                    author={book.author}
+                                    summary={book.summary}
+                                    rating={book.rating}
+                                />
+                            </Box>
+                        ))}
+                    </div>
+
+                    <IconButton
+                        onClick={() => scrollContainer("right")}
+                        sx={{
+                            position: "absolute",
+                            right: 10,
+                            zIndex: 1,
+                            backgroundColor: paletteColors.color_primary,
+                            color: "white",
+                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
+                        }}
+                    >
+                        <ArrowForwardIosIcon/>
+                    </IconButton>
+                </Box>
             </div>
         </div>
     );
-}
+};
 
 export default HomePage;
