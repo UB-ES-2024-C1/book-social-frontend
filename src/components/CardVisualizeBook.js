@@ -44,9 +44,9 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                             color: 'white',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
-                            textOverflow: 'ellipsis', // Truncar con "..."
+                            textOverflow: 'ellipsis',
                             maxWidth: '100%',
-                            fontSize: '1.1rem', // Ajustar tamaño de fuente
+                            fontSize: '1.1rem',
                         }}>
                             {title}
                         </Typography>
@@ -67,7 +67,7 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
-                        WebkitLineClamp: 3, // Limitar a 3 líneas
+                        WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
                     }}>
                         {summary}

@@ -10,9 +10,12 @@ import book2 from "../assets/books/book2.jpg";
 import book3 from "../assets/books/book3.jpg";
 import book4 from "../assets/books/book4.jpg";
 import book5 from "../assets/books/book5.jpg";
+import userImage from "../assets/books/book.svg";
 import paletteColors from "../resources/palette";
 
-const HomePage = () => {
+
+// Reusable component for book list
+const BookList = ({title, books}) => {
     const containerRef = useRef(null);
 
     const scrollContainer = (direction) => {
@@ -25,6 +28,93 @@ const HomePage = () => {
         }
     };
 
+    return (
+        <div style={{width: "100%", marginTop: "40px", alignItems: "flex-start"}}>
+            <BookSocialTitle
+                level={4}
+                text={title}
+                textAlign={"left"}
+                sx={{margin: "20px"}}
+            />
+            <Box
+                sx={{
+                    width: "98%",
+                    height: "1px",
+                    backgroundColor: "#ddd",
+                }}
+            />
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    width: "100%",
+                }}
+            >
+                <IconButton
+                    onClick={() => scrollContainer("left")}
+                    sx={{
+                        position: "absolute",
+                        left: 10,
+                        zIndex: 1,
+                        backgroundColor: paletteColors.color_primary,
+                        color: "white",
+                        "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
+                    }}
+                >
+                    <ArrowBackIosIcon/>
+                </IconButton>
+                <div
+                    ref={containerRef}
+                    style={{
+                        display: "flex",
+                        overflowX: "hidden",
+                        scrollBehavior: "smooth",
+                        gap: "16px",
+                        padding: "16px 30px",
+                    }}
+                >
+                    {books.map((book, index) => (
+                        <Box
+                            key={index}
+                            sx={{
+                                flex: "0 0 auto",
+                                transition: "transform 0.2s",
+                                "&:hover": {
+                                    transform: "scale(1.05)",
+                                },
+                                cursor: "pointer",
+                            }}
+                        >
+                            <CardvisualizeBook
+                                image={book.image}
+                                title={book.title}
+                                author={book.author}
+                                summary={book.summary}
+                                rating={book.rating}
+                            />
+                        </Box>
+                    ))}
+                </div>
+                <IconButton
+                    onClick={() => scrollContainer("right")}
+                    sx={{
+                        position: "absolute",
+                        right: 10,
+                        zIndex: 1,
+                        backgroundColor: paletteColors.color_primary,
+                        color: "white",
+                        "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
+                    }}
+                >
+                    <ArrowForwardIosIcon/>
+                </IconButton>
+            </Box>
+        </div>
+    );
+};
+
+const HomePage = () => {
     const books = [
         {
             image: book1,
@@ -70,85 +160,32 @@ const HomePage = () => {
                 justifyContent: "flex-start",
                 flexDirection: "column",
                 alignItems: "center",
-                height: "100vh",
                 marginTop: "68px",
-                marginLeft: "280px",
+                marginLeft: "300px",
             }}
         >
-            <div style={{width: "100%", marginTop: "40px", alignItems: "flex-start"}}>
-                <BookSocialTitle level={4} text={<>Books of your favourite genre</>} textAlign={'left'}
-                                 sx={{margin: '20px'}}/>
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        position: "relative",
-                        width: "100%",
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                    padding: '5px',
+                }}
+            >
+                <img
+                    src={userImage}
+                    alt="User Avatar"
+                    style={{
+                        width: "70px",
+                        height: "70px",
+                        marginRight: "15px",
                     }}
-                >
-                    <IconButton
-                        onClick={() => scrollContainer("left")}
-                        sx={{
-                            position: "absolute",
-                            left: 10,
-                            zIndex: 1,
-                            backgroundColor: paletteColors.color_primary,
-                            color: "white",
-                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
-                        }}
-                    >
-                        <ArrowBackIosIcon/>
-                    </IconButton>
-
-                    <div
-                        ref={containerRef}
-                        style={{
-                            display: "flex",
-                            overflowX: "hidden",
-                            scrollBehavior: "smooth",
-                            gap: "16px",
-                            padding: "16px 30px",
-                        }}
-                    >
-                        {books.map((book, index) => (
-                            <Box
-                                key={index}
-                                sx={{
-                                    flex: "0 0 auto",
-                                    transition: "transform 0.2s",
-                                    "&:hover": {
-                                        transform: "scale(1.05)",
-                                    },
-                                    cursor: "pointer",
-                                }}
-                            >
-                                <CardvisualizeBook
-                                    image={book.image}
-                                    title={book.title}
-                                    author={book.author}
-                                    summary={book.summary}
-                                    rating={book.rating}
-                                />
-                            </Box>
-                        ))}
-                    </div>
-
-                    <IconButton
-                        onClick={() => scrollContainer("right")}
-                        sx={{
-                            position: "absolute",
-                            right: 10,
-                            zIndex: 1,
-                            backgroundColor: paletteColors.color_primary,
-                            color: "white",
-                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
-                        }}
-                    >
-                        <ArrowForwardIosIcon/>
-                    </IconButton>
-                </Box>
+                />
+                <BookSocialTitle level={1} text={"Welcome $username!"}/>
             </div>
+            <BookList title="Books of your favourite genre" books={books} sx={{margin: "15px"}}/>
+            <BookList title="Books recently added" books={books}/>
+            <BookList title="Most popular books" books={books}/>
         </div>
     );
 };
