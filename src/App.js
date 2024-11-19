@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
 import {AuthProvider} from "./hooks/authentication";
 import Drawer from "@mui/material/Drawer";
+import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 
 // Layout without Drawer (for LandingPage)
@@ -46,6 +47,7 @@ function AppContent() {
                 <Route path="/discovery" element={<DiscoveryPage/>}/>
                 <Route path="/saved" element={<SavedPage/>}/>
                 <Route path="/profile" element={<Profile/>}/>
+                <Route path="/new-book" element={<NewBook/>}/>
             </Route>
             <Route
                 path="/book-details/:id"
