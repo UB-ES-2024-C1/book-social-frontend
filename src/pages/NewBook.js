@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import React, {useRef, useState} from 'react';
+import {Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from '@mui/material';
 import defaultbook from '../assets/books/DefaultBook.jpg';
 import BookSocialTextField from '../components/BookSocialTextField';
 import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
@@ -52,42 +52,42 @@ const NewBook = () => {
     const handleAuthorsChange = (e) => {
         const value = e.target.value;
         setAuthors(value);
-    
+
         // Limpiar el error si el usuario comienza a escribir
         if (value.trim()) {
             setAuthorError('');
         }
     };
-    
+
 
     const handleSynopsisChange = (e) => {
         const value = e.target.value;
         setSynopsis(value);
-    
+
         // Limpiar el error si el usuario comienza a escribir
         if (value.trim()) {
             setSynopsisError('');
         }
     };
-    
+
 
     const handleGenreChange = (newGenres) => {
         setSelectedGenres(newGenres);
-    
+
         // Limpiar el error si se seleccionan géneros
         if (newGenres.length > 0) {
             setGenresError('');
         }
     };
-    
+
 
     const handlePublishDateChange = (e) => {
         const selectedDate = e.target.value;
         const today = new Date(); // Current date and time
         const currentDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    
+
         setPublishDate(selectedDate);
-    
+
         // Check if the date is in the future
         if (selectedDate > currentDate) {
             setPublishDateError('The publish date cannot be in the future.');
@@ -95,24 +95,23 @@ const NewBook = () => {
             setPublishDateError(''); // Clear error if the date is valid
         }
     };
-    
-    
+
 
     const validateISBN = (value) => {
         // Expresión regular para ISBN-10
         const isbn10Pattern = /^(?:\d{9}[\dX]|\d{10})$/;
         // Expresión regular para ISBN-13
         const isbn13Pattern = /^(?:\d{13})$/;
-        
+
         if (!value) {
             // Si está vacío, no se considera un error (porque es opcional)
             return '';
         }
-        
+
         if (isbn10Pattern.test(value) || isbn13Pattern.test(value)) {
             return ''; // Si es un ISBN válido
         }
-        
+
         return 'ISBN not valid';
     };
 
@@ -206,36 +205,36 @@ const NewBook = () => {
         setSuccessMessage('Book registered successfully!');
         setOpenSuccessPopup(true);
         setIsSubmitting(false);
-    /*
-        try {
-            const response = await fetch('/api/registerBook', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title,
-                    authors,
-                    synopsis,
-                    selectedGenres,
-                    publishDate,
-                    isbn,
-                    coverImage,
-                }),
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to send data to the backend');
-            }
-    
-            setSuccessMessage('Book registered successfully!');
-            setOpenSuccessPopup(true);
-        } catch (error) {
-            setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
-            setOpenConnectionErrorPopup(true);
-        } finally {
-            setIsSubmitting(false);
-        }*/
+        /*
+            try {
+                const response = await fetch('/api/registerBook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        authors,
+                        synopsis,
+                        selectedGenres,
+                        publishDate,
+                        isbn,
+                        coverImage,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send data to the backend');
+                }
+
+                setSuccessMessage('Book registered successfully!');
+                setOpenSuccessPopup(true);
+            } catch (error) {
+                setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+                setOpenConnectionErrorPopup(true);
+            } finally {
+                setIsSubmitting(false);
+            }*/
     };
-    
+
 
     const handleCloseConnectionErrorPopup = () => {
         setOpenConnectionErrorPopup(false);
@@ -244,17 +243,18 @@ const NewBook = () => {
     const handleCloseSuccessPopup = () => {
         setOpenSuccessPopup(false);
     };
-    
+
 
     return (
         <Box
             sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
+                flexDirection: {xs: 'column', md: 'row'},
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '20px',
-                padding: '20px',
+                padding: '60px',
+                marginLeft: '50px',
+                marginTop: '40px'
             }}
         >
             {/* Imagen del libro */}
@@ -279,14 +279,14 @@ const NewBook = () => {
                     }}
                 />
                 {/* Campo para cargar la imagen de portada */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px'}}>
                     {/* Hidden File Input */}
-                    <input 
-                        ref={fileInputRef} 
-                        type="file" 
+                    <input
+                        ref={fileInputRef}
+                        type="file"
                         accept=".png, .jpg, .jpeg"
                         onChange={handleImageChange}
-                        style={{ display: 'none' }} // Hide the input, but it's still accessible
+                        style={{display: 'none'}} // Hide the input, but it's still accessible
                     />
 
                     {/* Upload Button */}
@@ -313,12 +313,12 @@ const NewBook = () => {
                     flexWrap: 'wrap',
                 }}
             >
-                <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+                <Typography variant="h4" sx={{marginBottom: '20px'}}>
                     Register a New Book
                 </Typography>
-                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                <form onSubmit={handleSubmit} style={{width: '100%'}}>
                     {/* Title Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialTextField
                             label="Title"
                             value={title}
@@ -330,7 +330,7 @@ const NewBook = () => {
                         />
                     </div>
                     {/* Authors Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop:'16px' }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialTextField
                             label="Authors (separate by commas)"
                             value={authors}
@@ -341,7 +341,7 @@ const NewBook = () => {
                         />
                     </div>
                     {/* Synopsis Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'  }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialLargeTextField
                             label="Synopsis"
                             value={synopsis}
@@ -355,16 +355,16 @@ const NewBook = () => {
                     </div>
 
                     {/* Genres Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialGenereSelector
                             genres={genresList}
                             selectedGenres={selectedGenres}
                             onGenreChange={handleGenreChange}
                         />
                     </div>
-                    
+
                     {/* Publish Date Field */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialTextField
                             label="Publish Date"
                             type="date"
@@ -378,7 +378,7 @@ const NewBook = () => {
                     </div>
 
                     {/* ISBN Field*/}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialTextField
                             label="ISBN"
                             value={isbn}
@@ -388,37 +388,39 @@ const NewBook = () => {
                         />
 
                     </div>
-                    <Typography variant="body2" color= {paletteColors.textColor} sx={{ marginTop: '8px', textAlign: 'left' }}>
+                    <Typography variant="body2" color={paletteColors.textColor}
+                                sx={{marginTop: '8px', textAlign: 'left'}}>
                         * Required field
                     </Typography>
-            
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
-                        <BookSocialPrimaryButton 
+
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialPrimaryButton
                             buttonText={isSubmitting ? 'Submitting...' : 'Submit'}
-                            onClick={handleSubmit} 
+                            onClick={handleSubmit}
                             isExpanded={false}
                             bgColor={paletteColors.color_primary}
                             disabled={isSubmitting}
                         />
                     </div>
-                    
+
                 </form>
             </Box>
 
             {/* Popup de Errores */}
-            <Dialog open={openPopup} onClose={() => setOpenPopup(false)} 
-                PaperProps={{
-                    sx: {
-                        backgroundColor: paletteColors.color_primary_weak, // Cambia a tu color deseado
-                        color: paletteColors.textColor, // Cambia el color del texto si es necesario
-                    },
-                }}>
+            <Dialog open={openPopup} onClose={() => setOpenPopup(false)}
+                    PaperProps={{
+                        sx: {
+                            backgroundColor: paletteColors.color_primary_weak, // Cambia a tu color deseado
+                            color: paletteColors.textColor, // Cambia el color del texto si es necesario
+                        },
+                    }}>
                 <DialogTitle>Error</DialogTitle>
                 <DialogContent>
                     <Typography>{popupMessage}</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <BookSocialPrimaryButton buttonText={'Close'}  onClick={() => setOpenPopup(false)} bgColor={paletteColors.color_primary}/>
+                    <BookSocialPrimaryButton buttonText={'Close'} onClick={() => setOpenPopup(false)}
+                                             bgColor={paletteColors.color_primary}/>
                 </DialogActions>
             </Dialog>
             {/* Success Popup */}
