@@ -1,27 +1,26 @@
 import React from 'react';
-import {TextField} from '@mui/material';
+import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import paletteColors from "../resources/palette";
 
-const BookSocialTextField = ({
-                                 value,
-                                 onChange,
-                                 label,
-                                 type,
-                                 minLength,
-                                 maxLength,
-                                 sx = {},
-                                 errorMessage = "",
-                                 status = "default", // 'default', 'error', or 'success'
-                                 required = false, 
-                                 isDate = false,
-
-                             }) => {
+const BookSocialLargeTextField = ({
+    value,
+    onChange,
+    label,
+    type = "text",
+    minLength,
+    maxLength,
+    sx = {},
+    errorMessage = "",
+    status = "default", // 'default', 'error', or 'success'
+    required = false,
+    rows = 4, // Default rows to 4, but can be adjusted as needed
+}) => {
     const isError = status === "error";
     const isSuccess = status === "success";
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <TextField
                 label={label}
                 type={type}
@@ -32,13 +31,15 @@ const BookSocialTextField = ({
                 error={isError}
                 helperText={isError ? errorMessage : ""}
                 required={required}
+                multiline // Enables multi-line input (for longer text like synopsis)
+                rows={rows} // Number of rows for the text area
                 slotProps={{
-                    inputLabel: isDate ? {
-                        shrink: true, // Aplica solo cuando es el campo "Publish Date"
-                    } : {},
+                    inputLabel: {
+                        shrink: true, // Apply shrink style to the label
+                    },
                     input: {
-                        maxLength: maxLength, // Limita la longitud de caracteres
-                    }
+                        maxLength: maxLength, // Limit character length
+                    },
                 }}
                 sx={{
                     color: paletteColors.textColor,
@@ -46,7 +47,7 @@ const BookSocialTextField = ({
                         color: isError ? 'red' : isSuccess ? 'green' : paletteColors.textColor,
                     },
                     '& .MuiOutlinedInput-root': {
-                        '&:hover .MuiOutlinedInput-input': {color: paletteColors.textColor},
+                        '&:hover .MuiOutlinedInput-input': { color: paletteColors.textColor },
                         '& fieldset': {
                             borderColor: isError ? 'red' : isSuccess ? 'green' : 'white',
                         },
@@ -67,8 +68,8 @@ const BookSocialTextField = ({
     );
 };
 
-// PropTypes para una mejor validación de tipos
-BookSocialTextField.propTypes = {
+// PropTypes for better type validation
+BookSocialLargeTextField.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string,
@@ -77,6 +78,7 @@ BookSocialTextField.propTypes = {
     status: PropTypes.oneOf(['default', 'error', 'success']),
     required: PropTypes.bool,
     maxLength: PropTypes.number,
+    rows: PropTypes.number, // Defines the number of rows for the text field
 };
 
-export default BookSocialTextField;
+export default BookSocialLargeTextField;

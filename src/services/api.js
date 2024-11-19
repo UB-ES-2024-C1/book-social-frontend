@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/'
+    baseURL: process.env.REACT_APP_API_URL || 'https://booksocial-dev-development.up.railway.app/'
 });
 
 api.interceptors.request.use(config => {
@@ -9,6 +9,11 @@ api.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Asegúrate de incluir estos encabezados en todas las solicitudes
+    config.headers['accept'] = 'application/json';
+    config.headers['Content-Type'] = 'application/json';
+
     return config;
 });
 

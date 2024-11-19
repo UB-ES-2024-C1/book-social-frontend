@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Checkbox, FormControlLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom';
 import * as routes from '../resources/routes_name';
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
 import BookSocialTextField from "./BookSocialTextField";
-
+import BookSocialText from "./BookSocialText";
 
 const style = {
     position: 'absolute',
@@ -29,23 +29,33 @@ const style = {
 };
 
 const LoginModal = ({open, handleClose}) => {
-    const {login} = useAuth();
-
+    const {login, error} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Local error message state
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleLogin = () => {
-        login(username, password);
-        handleClose();
-        navigate(routes.HOME);
+    const handleLogin = async () => {
+        await login(username, password);
+        if (error) {
+            setErrorMessage(error); // Set the error message from context
+        } else {
+            setErrorMessage(''); // Clear error message on successful login
+            navigate(routes.HOME);
+        }
     };
+
+    useEffect(() => {
+        if (open) { // If the modal is opened, clear any previous error
+            setErrorMessage('');
+        }
+    }, [open]);
 
     return (
         <Modal
@@ -136,8 +146,14 @@ const LoginModal = ({open, handleClose}) => {
                     }
                     label="Remember me" sx={{color: paletteColors.textColor}}
                 />
+                {errorMessage && (
+                    <BookSocialText level={"small"} text={errorMessage} sx={{textAlign: 'left'}}
+                                    color={paletteColors.warning_error}
+                    />
+                )}
                 <BookSocialPrimaryButton buttonText={'Login'} onClick={handleLogin} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>
+
             </Box>
         </Modal>
     );

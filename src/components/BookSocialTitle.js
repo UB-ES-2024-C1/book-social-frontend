@@ -17,6 +17,17 @@ const BookSocialTitle = ({level, text, color = paletteColors.textColor, textAlig
     // Determine the appropriate heading level and size
     const variant = `h${level}`; // Material-UI Typography variant
 
+    // Function to parse markdown-like syntax for bold and italic
+    const parseText = (text) => {
+        // Replace ** with <strong> (bold) and _ with <em> (italic)
+        const boldRegex = /\*\*(.*?)\*\*/g;
+        const italicRegex = /_(.*?)_/g;
+
+        return text
+            .replace(boldRegex, '<strong>$1</strong>') // Bold
+            .replace(italicRegex, '<em>$1</em>');    // Italic
+    };
+
     return (
         <Typography
             variant={variant}
@@ -26,9 +37,8 @@ const BookSocialTitle = ({level, text, color = paletteColors.textColor, textAlig
                 fontFamily: 'Montserrat',
                 textAlign: textAlign, // Apply text alignment
             }}
-        >
-            {text} {/* Render the text passed as a prop */}
-        </Typography>
+            dangerouslySetInnerHTML={{__html: parseText(text)}} // Use dangerouslySetInnerHTML to inject HTML
+        />
     );
 };
 

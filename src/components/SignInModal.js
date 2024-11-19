@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, FormControl, InputLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -11,7 +11,7 @@ import {useNavigate} from "react-router-dom";
 import * as routes from '../resources/routes_name';
 import BookSocialTextField from "./BookSocialTextField";
 import BookSocialDropdown from "./BookSocialDropdown";
-
+import BookSocialText from "./BookSocialText";
 
 const style = {
     position: 'absolute',
@@ -30,7 +30,7 @@ const style = {
 };
 
 const SignInModal = ({open, handleClose}) => {
-    const {signIn} = useAuth();
+    const {signIn, error} = useAuth();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -39,6 +39,7 @@ const SignInModal = ({open, handleClose}) => {
     const [password2, setPassword2] = useState('');
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -51,26 +52,35 @@ const SignInModal = ({open, handleClose}) => {
         setShowPassword2(!showPassword2);
     };
 
-    const types_genre = ['Horror', 'Comedy', 'Fantasy', 'Fiction'];
-    const types_person = ['Lector', 'Autor', 'Critic']
+    const types_genre = ['Fiction', 'Non-fiction', 'Poetry', 'Theater', 'Fantasy', 'Nature'];
+    const types_person = ['Reader', 'Writer'];
 
     const handleSignIn = async () => {
-        try {
-            await signIn(
-                name,
-                username,
-                email,
-                password,
-                password2,
-                genre,
-                personType
-            );
+        // Intentamos realizar el registro
+        await signIn(
+            name,
+            username,
+            email,
+            password,
+            password2,
+            genre,
+            personType
+        );
+        if (error) {
+            setErrorMessage(error);
+        } else {
+            setErrorMessage('');
             handleClose();
             navigate(routes.HOME);
-        } catch (error) {
-            console.error('Error during sign in:', error);
         }
     };
+
+    useEffect(() => {
+        if (open) { // If the modal is opened, clear any previous error
+            setErrorMessage('');
+        }
+    }, [open]);
+
 
     return (
         <Modal
@@ -166,7 +176,7 @@ const SignInModal = ({open, handleClose}) => {
                     <BookSocialTextField
                         value={password2}
                         type={showPassword2 ? 'text' : 'password'}
-                        label={'Enter your password'}
+                        label={'Confirm your password'}
                         onChange={(e) => setPassword2(e.target.value)}
                     />
                     <IconButton
@@ -213,11 +223,18 @@ const SignInModal = ({open, handleClose}) => {
                         />
                     </FormControl>
                 </Box>
+
+                {errorMessage && (
+                    <BookSocialText level={"small"} text={errorMessage} sx={{textAlign: 'left'}}
+                                    color={paletteColors.warning_error}
+                    />
+                )}
                 <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
                                          bgColor={paletteColors.color_primary}/>
             </Box>
         </Modal>
     );
 };
+
 
 export default SignInModal;
