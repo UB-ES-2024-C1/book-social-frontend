@@ -1,8 +1,15 @@
 import React from 'react';
 import {Box, Card, CardContent, CardMedia, Rating, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
+import {useNavigate} from "react-router-dom";
 
 const CardvisualizeBook = ({image, title, author, summary, rating}) => {
+    const navigate = useNavigate();
+
+    const goToDetails = () => {
+        console.log('Card clicked');
+        navigate(`/book-details/1`);
+    };
     return (
         <Card sx={{
             fontFamily: 'Roboto, Arial, sans-serif',
@@ -12,7 +19,7 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
             width: 500,
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
-        }}>
+        }} onClick={goToDetails}>
             <CardMedia
                 component="img"
                 sx={{

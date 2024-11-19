@@ -118,8 +118,8 @@ const HomePage = () => {
     const books = [
         {
             image: book1,
-            title: "Cuando reescribamos la historia",
-            author: "Belén Martínez",
+            title: "Animals in Translation",
+            author: "Temple Grandin",
             summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
             rating: 4.5,
         },
