@@ -160,29 +160,53 @@ const NewBook = () => {
     const handleSubmit = async () => {
         setIsSubmitting(true);
 
-        const hasErrors = [
-            titleError,
-            authorError,
-            synopsisError,
-            genresError,
-            publishDateError,
-            isbnError,
-            imageError,
-        ].some((error) => error !== '');
-        
-        const missingFields = [];
-        if (!title.trim()) missingFields.push('Title');
-        if (!authors.trim()) missingFields.push('Authors');
-        if (!synopsis.trim()) missingFields.push('Synopsis');
-        if (!selectedGenres.length) missingFields.push('Genres');
-        if (!publishDate.trim()) missingFields.push('Publish Date');
+        // Validar campos y asignar errores si faltan
+        let hasErrors = false;
 
-        // Validación previa
+        if (!title.trim()) {
+            setTitleError('Title is required.');
+            hasErrors = true;
+        }
+
+        if (!authors.trim()) {
+            setAuthorError('Author(s) are required.');
+            hasErrors = true;
+        }
+
+        if (!synopsis.trim()) {
+            setSynopsisError('Synopsis is required.');
+            hasErrors = true;
+        }
+
+        if (!selectedGenres.length) {
+            setGenresError('At least one genre must be selected.');
+            hasErrors = true;
+        }
+
+        if (!publishDate.trim()) {
+            setPublishDateError('Publish date is required.');
+            hasErrors = true;
+        } else if (publishDateError) {
+            hasErrors = true; // Si ya hay un error en la fecha, considerarlo
+        }
+
+        if (isbn && isbnError) {
+            hasErrors = true; // Si el ISBN no es válido, detener el flujo
+        }
+
+        // Detener el flujo si hay errores
         if (hasErrors) {
-            setPopupMessage(`Please, fill the required field(s): ${missingFields.join(', ')}`);
+            setPopupMessage('Please fix the errors and try again.');
             setOpenPopup(true);
+            setIsSubmitting(false);
             return;
         }
+
+        // Simulación de envío exitoso
+        setSuccessMessage('Book registered successfully!');
+        setOpenSuccessPopup(true);
+        setIsSubmitting(false);
+    /*
         try {
             const response = await fetch('/api/registerBook', {
                 method: 'POST',
@@ -209,7 +233,7 @@ const NewBook = () => {
             setOpenConnectionErrorPopup(true);
         } finally {
             setIsSubmitting(false);
-        }
+        }*/
     };
     
 
