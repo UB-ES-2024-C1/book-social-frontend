@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "prod-book-social",
+      "site": "prod-book-social",
       "public": "build",
       "ignore": [
         "firebase.json",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "dev-book-social",
+      "site": "dev-book-social",
       "public": "build",
       "ignore": [
         "firebase.json",
