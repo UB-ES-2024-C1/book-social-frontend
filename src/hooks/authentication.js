@@ -8,14 +8,10 @@ const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState(null);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
     // Función para actualizar el estado (ej. llamado cuando hay login/logout)
     const login = async (name, pass) => {
         try {
-            setUsername(name);
-            setPassword(pass);
             const payload = {
                 email: name, password: pass
             };
