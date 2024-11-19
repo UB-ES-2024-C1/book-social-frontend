@@ -43,15 +43,16 @@ export const AuthProvider = ({children}) => {
     // Maneja el registro de un usuario
     const signIn = async (firstName, username, email, pass, genre, personType) => {
         try {
-            const response = await api.post('/auth/register', {
+            const payload = {
                 firstName,
                 lastName: "",
                 username,
                 email,
                 password: pass,
-                role: personType,
-            });
-            console.log("Response:", response);
+                role: "writer"
+            };
+            console.log("payload", payload);
+            const response = await api.post('/auth/register', payload);
 
             if (response.status === 201) {
                 setIsLoggedIn(true);
