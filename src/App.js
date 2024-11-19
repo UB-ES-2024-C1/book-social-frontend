@@ -12,6 +12,7 @@ import NavAppBar from './components/NavAppBar';
 import {AuthProvider} from "./hooks/authentication";
 import Drawer from "@mui/material/Drawer";
 import NewBook from './pages/NewBook';
+import BookDetailsPage from './pages/BookDetailsPage';
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -50,6 +51,14 @@ function AppContent() {
                 <Route path="/profile" element={<Profile/>}/>
                 <Route path="/new-book" element={<NewBook/>}/>
             </Route>
+            <Route
+                path="/book-details/:id"
+                element={
+                    // <ProtectedRoute>
+                    <BookDetailsPage/>
+                    // </ProtectedRoute>
+                }
+            />
         </Routes>
     );
 }

@@ -1,134 +1,90 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import defaultbook from '../assets/books/DefaultBook.jpg';
-import BookSocialTextField from '../components/BookSocialTextField';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Typography} from '@mui/material';
+import paletteColors from "../resources/palette";
 
-const NewBook = () => {
-    const [formData, setFormData] = useState({
-        title: '',
-        author: '',
-        description: '',
-        genre: '',
-    });
-
-    const [fieldStatus, setFieldStatus] = useState({
-        title: 'default',
-        author: 'default',
-        description: 'default',
-        genre: 'default',
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-
-        // Ejemplo de validación simple
-        if (value.trim() === '') {
-            setFieldStatus({ ...fieldStatus, [name]: 'error' });
-        } else {
-            setFieldStatus({ ...fieldStatus, [name]: 'default' });
-        }
+const BookSocialText = ({level, text, color = paletteColors.textColor, style = {}, sx = {}}) => {
+    // Define font sizes for each text level
+    const fontSizes = {
+        p: '1rem', // Paragraph
+        small: '0.875rem', // Small text
+        large: '1.25rem', // Larger text
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('New book data:', formData);
-        // Aquí puedes enviar los datos al backend
+    // Function to process Markdown-like syntax for bold, italic, line breaks, and bullet points
+    const processText = (text) => {
+        // Split the text into parts
+        const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|__.*?__|_.*?_|\~.*?(\n|$))/g);
+
+        let bulletList = []; // To hold all bullet point items
+
+        return parts.map((part, index) => {
+            // Ensure that part is a string before calling `startsWith`
+            if (typeof part !== 'string') return part; // If it's not a string, return as is
+            
+            // Handle newlines by converting them to <br /> elements
+            if (part.includes('\n')) {
+                const textWithBreaks = part.split('\n').map((line, i) => (
+                    <React.Fragment key={`${index}-${i}`}>
+                        {i > 0 && <br/>}
+                        {line}
+                    </React.Fragment>
+                ));
+                return textWithBreaks;
+            }
+
+            // Handle bold text
+            if (part.startsWith('**') || part.startsWith('__')) {
+                return <strong key={index} style={{fontWeight: 'bold'}}>{part.replace(/\*\*|\_\_/g, '')}</strong>;
+            }
+            // Handle italic text
+            if (part.startsWith('*') || part.startsWith('_')) {
+                return <em key={index} style={{fontStyle: 'italic'}}>{part.replace(/\*|\_/g, '')}</em>;
+            }
+
+            // Return regular text if no special formatting is applied
+            return part;
+        })
+            .concat(
+                bulletList.length > 0 ? (
+                    <ul style={{paddingLeft: '20px', marginTop: '4px', marginBottom: '0px', listStyleType: 'disc'}}>
+                        {bulletList}
+                    </ul>
+                ) : null // Reduce margin and padding for the list
+            );
     };
+
+    // Determine the appropriate text level and size
+    const variant = level === 'large' ? 'body1' : level === 'small' ? 'body2' : 'body1';
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '20px',
-                padding: '20px',
+        <Typography
+            variant={variant}
+            style={{
+                color: color,
+                fontSize: fontSizes[level] || fontSizes.p, // Default to paragraph size if level is not found
+                fontFamily: 'Roboto',
+                ...style, // Merge any additional custom styles passed in `style`
             }}
+            sx={sx} // Allow passing additional styles using sx
         >
-            {/* Imagen del libro */}
-            <Box
-                sx={{
-                    flex: '1',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <img
-                    src={defaultbook}
-                    alt="Default Book"
-                    style={{
-                        width: '100%',
-                        maxWidth: '300px',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-                    }}
-                />
-            </Box>
-
-            {/* Formulario */}
-            <Box
-                sx={{
-                    flex: '1',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    maxWidth: '500px',
-                }}
-            >
-                <Typography variant="h4" sx={{ marginBottom: '20px' }}>
-                    Register a New Book
-                </Typography>
-                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-                    <BookSocialTextField
-                        label="Title"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        status={fieldStatus.title}
-                        errorMessage="Title is required"
-                    />
-                    <BookSocialTextField
-                        label="Author"
-                        name="author"
-                        value={formData.author}
-                        onChange={handleChange}
-                        status={fieldStatus.author}
-                        errorMessage="Author is required"
-                    />
-                    <BookSocialTextField
-                        label="Description"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        status={fieldStatus.description}
-                        errorMessage="Description is required"
-                        sx={{ marginTop: '16px' }}
-                    />
-                    <BookSocialTextField
-                        label="Genre"
-                        name="genre"
-                        value={formData.genre}
-                        onChange={handleChange}
-                        status={fieldStatus.genre}
-                        errorMessage="Genre is required"
-                        sx={{ marginTop: '16px' }}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        sx={{ marginTop: '20px' }}
-                    >
-                        Submit
-                    </Button>
-                </form>
-            </Box>
-        </Box>
+            {processText(text)} {/* Render the processed text with Markdown-like formatting */}
+        </Typography>
     );
 };
 
-export default NewBook;
+// Define prop types
+BookSocialText.propTypes = {
+    level: PropTypes.oneOf(['small', 'p', 'large']).isRequired, // Only allow paragraph or size variations
+    text: PropTypes.string.isRequired, // Text to display
+    color: PropTypes.string, // Optional color
+    style: PropTypes.object, // Optional additional styles
+    sx: PropTypes.object, // Optional additional styles using sx
+};
+
+BookSocialText.defaultProps = {
+    style: {},
+    sx: {},
+};
+
+export default BookSocialText;

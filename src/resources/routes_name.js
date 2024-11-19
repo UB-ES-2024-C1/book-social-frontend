@@ -4,3 +4,4 @@ export const SAVED = '/saved';
 export const PROFILE = '/profile';
 export const LANDING = '/';
 export const NEW_BOOK = '/new-book';
+export const BOOK_DETAILS = '/book-details/';
