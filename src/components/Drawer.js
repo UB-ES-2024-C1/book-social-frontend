@@ -188,11 +188,11 @@ export default function PermanentDrawer({isLogged}) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginTop: '300px',
+                    marginTop: 'auto',
                     cursor: 'pointer',
                     color: paletteColors.textColor_weakest
                 }}
-                onClick={handleOpenDialog} // Abre el diálogo al hacer clic
+                onClick={handleOpenDialog}
             >
                 <Logout sx={{mr: 1}}/>
                 Logout

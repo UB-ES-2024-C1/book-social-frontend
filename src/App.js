@@ -28,9 +28,7 @@ const DrawerLayout = () => (
         <Drawer/>
         <div className="App-header">
             <PermanentDrawer isLogged={true}/>
-            <div className="page-content">
-                <Outlet/>
-            </div>
+            <Outlet/>
         </div>
     </div>
 );
