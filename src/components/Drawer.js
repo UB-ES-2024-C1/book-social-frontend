@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus, AiOutlineSave} from 'react-icons/ai';
+import {AiOutlineHome} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
@@ -96,6 +96,7 @@ export default function PermanentDrawer({isLogged}) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 background: paletteColors.background_color,
+                position: 'relative', // Permite posicionar elementos absolutos dentro
             }}
             role="presentation"
         >
@@ -112,7 +113,6 @@ export default function PermanentDrawer({isLogged}) {
                      alt="logo"
                      style={{
                          width: '225px',
-
                      }}/>
             </div>
             <Divider/>
@@ -124,10 +124,10 @@ export default function PermanentDrawer({isLogged}) {
                 width: '100%',
             }}>
                 {[
-                    {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
+                    // {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
-                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
-                    {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
+                    // {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
@@ -175,21 +175,24 @@ export default function PermanentDrawer({isLogged}) {
                 id="modal-title"
                 sx={{
                     fontFamily: 'Roboto',
-                    textAlign: 'left',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: '300px',
+                    textAlign: 'left', // Alinea el texto a la izquierda
+                    display: 'flex', // Usar flexbox para organizar el contenido
+                    alignItems: 'center', // Centra el icono verticalmente respecto al texto
+                    position: 'absolute', // Alinea al contenedor padre
+                    bottom: '20px', // Coloca el botón cerca del fondo
+                    left: '20px', // Alinea a la izquierda del contenedor
                     cursor: 'pointer',
-                    color: paletteColors.textColor_weakest
+                    color: paletteColors.textColor_weakest,
+                    justifyContent: 'flex-start', // Asegura que todo se alinee al inicio (izquierda)
                 }}
                 onClick={handleOpenDialog} // Abre el diálogo al hacer clic
             >
-                <Logout sx={{mr: 1}}/>
-                Logout
+                <Logout sx={{mr: 1, color: paletteColors.textColor_weakest}}/> {/* Icono de logout */}
+                Logout {/* Texto de logout */}
             </Typography>
         </Box>
     );
+
 
     return (
         <>
