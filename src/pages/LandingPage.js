@@ -4,8 +4,6 @@ import book2 from '../assets/books/book2.jpg';
 import book3 from '../assets/books/book3.jpg';
 import book4 from '../assets/books/book4.jpg';
 import book5 from '../assets/books/book5.jpg';
-import post1 from '../assets/posts/post2.png';
-import post2 from '../assets/posts/post1.png';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import paletteColors from "../resources/palette";
@@ -17,6 +15,8 @@ import {Spacer} from "../resources/spacer";
 import AppBar from "@mui/material/AppBar";
 import NavAppBar from "../components/NavAppBar";
 import {FaBook} from "react-icons/fa";
+import CardvisualizeBook from "../components/CardVisualizeBook";
+
 
 const LandingPage = ({isLogged}) => {
     const [fadeIn, setFadeIn] = useState(false);
@@ -52,7 +52,6 @@ const LandingPage = ({isLogged}) => {
     ];
 
     const bookCovers = [book1, book2, book3, book4, book5];
-    const postImage = [post1, post2];
 
     return (
         <Box
@@ -156,31 +155,41 @@ const LandingPage = ({isLogged}) => {
                     <Grid item xs={12}>
                         <Spacer size={24}/>
                         <BookSocialTitle level={2} text={'Create New Posts'} textAlign={"center"}/>
-                        <BookSocialTitle level={3} color={paletteColors.textColorStrong} textAlign={"center"}
-                                         text={'Post what you think, see opinions, and share your reader\'s world'}/>
+                        <BookSocialTitle
+                            level={3}
+                            color={paletteColors.textColorStrong}
+                            textAlign={"center"}
+                            text={"Post what you think, see opinions, and share your reader's world"}
+                        />
                         <Spacer size={16}/>
                         <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
-                            {postImage.map((posts, index) => (
+                            {[{
+                                image: book1,
+                                title: "Cuando reescribamos la historia",
+                                author: "Belén Martínez",
+                                summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
+                                rating: 4.5
+                            }, {
+                                image: book2,
+                                title: "Muertes perfectamente evitables",
+                                author: "Deirdre Sullivan",
+                                summary: "Las gemelas Maddy y Catlin acaban de mudarse a Ballyfrann, un pueblo...",
+                                rating: 3.0
+                            }].map((book, index) => (
                                 <Box key={index} sx={{
-                                    borderRadius: '10px',
-                                    overflow: 'hidden',
-                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.3)',
                                     margin: '16px',
-                                    cursor: 'pointer',
                                     transition: 'transform 0.2s',
                                     '&:hover': {
-                                        transform: 'scale(1.05)',
-                                    }
+                                        transform: 'scale(1.05)'
+                                    },
+                                    cursor: 'pointer'
                                 }}>
-                                    <img
-                                        src={posts}
-                                        alt={`Post ${index + 1}`}
-                                        style={{
-                                            width: '400px',
-                                            height: '300px',
-                                            borderRadius: '30px',
-                                            cursor: 'pointer'
-                                        }}
+                                    <CardvisualizeBook
+                                        image={book.image}
+                                        title={book.title}
+                                        author={book.author}
+                                        summary={book.summary}
+                                        rating={book.rating}
                                     />
                                 </Box>
                             ))}
