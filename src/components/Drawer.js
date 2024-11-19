@@ -25,7 +25,7 @@ import {useAuth} from "../hooks/authentication";
 
 
 export default function PermanentDrawer({isLogged}) {
-    const {logout} = useAuth();
+    const {logout, user} = useAuth(); // Comprobar el tipo de user
     const [selected, setSelected] = useState('');
     const [openDialog, setOpenDialog] = useState(false); // Estado para controlar el diálogo
     const navigate = useNavigate();
@@ -63,6 +63,9 @@ export default function PermanentDrawer({isLogged}) {
             case routes.SAVED:
                 setSelected('Saved');
                 break;
+            case routes.NEW_BOOK:
+                setSelected('New book');
+                break;
             default:
                 setSelected('');
                 break;
@@ -80,6 +83,9 @@ export default function PermanentDrawer({isLogged}) {
                 break;
             case 'Saved':
                 navigate(routes.SAVED);
+                break;
+            case 'New book':
+                navigate(routes.NEW_BOOK);
                 break;
             default:
                 break;
@@ -124,6 +130,7 @@ export default function PermanentDrawer({isLogged}) {
                 width: '100%',
             }}>
                 {[
+                    {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
                     // {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
                     // {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
@@ -135,13 +142,13 @@ export default function PermanentDrawer({isLogged}) {
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: item.route === 'New post' ? 'center' : 'flex-start',
+                                justifyContent: item.route === 'New post' || item.route === 'New book' ? 'center' : 'flex-start',
                                 width: item.route === 'Add' ? '80%' : '100%',
                                 padding: item.route === 'Add' ? '5px' : '8px',
                                 gap: '5px',
                                 cursor: 'pointer',
                                 borderRadius: '8px',
-                                border: item.route === 'New post'
+                                border: item.route === 'New post' || item.route === 'New book'
                                     ? '1px solid #FFFFFF'
                                     : selected === item.route
                                         ? '1px solid #6055CF'
@@ -154,6 +161,7 @@ export default function PermanentDrawer({isLogged}) {
                             }}
                             className={selected === item.route ? 'active' : ''}
                         >
+
                             <ListItemIcon sx={{
                                 color: selected === item.route ? paletteColors.color_primary : 'inherit',
                                 fontSize: '15px',
@@ -170,6 +178,7 @@ export default function PermanentDrawer({isLogged}) {
                         </ListItemButton>
                     </ListItem>
                 ))}
+
             </List>
             <Typography
                 id="modal-title"
@@ -185,7 +194,7 @@ export default function PermanentDrawer({isLogged}) {
                     color: paletteColors.textColor_weakest,
                     justifyContent: 'flex-start', // Asegura que todo se alinee al inicio (izquierda)
                 }}
-                onClick={handleOpenDialog} // Abre el diálogo al hacer clic
+                onClick={handleOpenDialog}
             >
                 <Logout sx={{mr: 1, color: paletteColors.textColor_weakest}}/> {/* Icono de logout */}
                 Logout {/* Texto de logout */}
