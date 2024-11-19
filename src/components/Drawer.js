@@ -130,8 +130,12 @@ export default function PermanentDrawer({isLogged}) {
                 width: '100%',
             }}>
                 {[
-                    {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
                     // {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
+                    {
+                        text: 'New book',
+                        icon: <AiOutlinePlus/>,
+                        route: 'New book'
+                    },
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
                     // {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
