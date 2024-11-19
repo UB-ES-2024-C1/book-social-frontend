@@ -9,6 +9,11 @@ api.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Asegúrate de incluir estos encabezados en todas las solicitudes
+    config.headers['accept'] = 'application/json';
+    config.headers['Content-Type'] = 'application/json';
+
     return config;
 });
 

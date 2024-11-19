@@ -12,6 +12,10 @@ export const AuthProvider = ({children}) => {
     // Maneja el login
     const login = async (name, pass) => {
         try {
+            const payload = {
+                email: name, password: pass
+            };
+            console.log("payload", payload);
             const response = await api.post('/auth/login', {email: name, password: pass});
             if (response.status === 200) {
                 const {token} = response.data;
@@ -45,7 +49,7 @@ export const AuthProvider = ({children}) => {
         try {
             const payload = {
                 firstName,
-                lastName: "",
+                lastName: "lastname",
                 username,
                 email,
                 password: pass,
