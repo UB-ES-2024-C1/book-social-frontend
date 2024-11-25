@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import {BrowserRouter as Router, Outlet, Route, Routes} from 'react-router-dom';
 import './App.css';
@@ -13,6 +12,7 @@ import {AuthProvider} from "./hooks/authentication";
 import Drawer from "@mui/material/Drawer";
 import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -43,18 +43,28 @@ function AppContent() {
 
             {/* Routes with Drawer */}
             <Route element={<DrawerLayout/>}>
-                <Route path="/home" element={<HomePage/>}/>
-                <Route path="/discovery" element={<DiscoveryPage/>}/>
-                <Route path="/saved" element={<SavedPage/>}/>
-                <Route path="/profile" element={<Profile/>}/>
-                <Route path="/new-book" element={<NewBook/>}/>
+                <Route path="/home" element={<ProtectedRoute>
+                    <HomePage/>
+                </ProtectedRoute>}/>
+                <Route path="/discovery" element={<ProtectedRoute>
+                    <DiscoveryPage/>
+                </ProtectedRoute>}/>
+                <Route path="/saved" element={<ProtectedRoute>
+                    <SavedPage/>
+                </ProtectedRoute>}/>
+                <Route path="/profile" element={<ProtectedRoute>
+                    <Profile/>
+                </ProtectedRoute>}/>
+                <Route path="/new-book" element={<ProtectedRoute>
+                    <NewBook/>
+                </ProtectedRoute>}/>
             </Route>
             <Route
                 path="/book-details/:id"
                 element={
-                    // <ProtectedRoute>
-                    <BookDetailsPage/>
-                    // </ProtectedRoute>
+                    <ProtectedRoute>
+                        <BookDetailsPage/>
+                    </ProtectedRoute>
                 }
             />
         </Routes>
@@ -72,3 +82,5 @@ function App() {
 }
 
 export default App;
+
+

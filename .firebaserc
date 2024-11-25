@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "book-social-b2c6b"
-  }
+    "default": "book-social-b2c6b",
+    "prod-book-social": "book-social-b2c6b"
+  },
+  "targets": {},
+  "etags": {}
 }

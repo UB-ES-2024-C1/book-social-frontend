@@ -102,13 +102,7 @@ const LandingPage = ({isLogged}) => {
                         <>
                             <div style={{width: '80%', margin: '10%', cursor: 'pointer'}} onClick={goToHome}>
                                 <BookSocialTitle level={1}
-                                                 text={
-                                                     <>Welcome to <span style={{
-                                                         color: paletteColors.highlight,
-                                                         fontWeight: 'bold',
-                                                         textShadow: '2px 2px 15px rgba(0, 0, 0, 0.3)'
-                                                     }}>bookSocial</span>, the social network for books!</>
-                                                 }/>
+                                                 text={"Welcome to **bookSocial**, the social network for books!"}/>
                                 <Spacer size={16}/>
                                 <BookSocialTitle level={3}
                                                  text={'Feel free to publish all your thoughts and fantasies about the literary world.'}

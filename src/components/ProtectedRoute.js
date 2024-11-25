@@ -4,9 +4,9 @@ import {Navigate} from 'react-router-dom';
 import {useAuth} from '../hooks/authentication';
 
 const ProtectedRoute = ({children}) => {
-    const {isAuthenticated} = useAuth();
+    const {isLoggedIn} = useAuth();
 
-    if (!isAuthenticated) {
+    if (!isLoggedIn) {
         return <Navigate to="/" replace/>; // Goes to the landing page if user is not authenticated
     }
 
@@ -14,3 +14,4 @@ const ProtectedRoute = ({children}) => {
 };
 
 export default ProtectedRoute;
+

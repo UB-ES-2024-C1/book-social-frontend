@@ -24,10 +24,10 @@
   "good_reads_mean_rating": 4.15,
   "good_reads_number_rating": 9695,
   "good_reads_summary_ratings": {
-    "five_starts": 3949,
-    "four_starts": 3736,
-    "three_starts": 1583,
-    "two_starts": 325,
-    "one_starts": 102
+    "five_stars": 3949,
+    "four_stars": 3736,
+    "three_stars": 1583,
+    "two_stars": 325,
+    "one_stars": 102
   }
 }
