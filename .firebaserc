@@ -1,7 +1,9 @@
 {
   "projects": {
     "default": "book-social-b2c6b",
-    "prod-book-social": "book-social-b2c6b"
+    "prod-book-social": "book-social-b2c6b",
+    "nuria": "694420954259",
+    "bookSocialdeploy": "book-social-b2c6b"
   },
   "targets": {},
   "etags": {}

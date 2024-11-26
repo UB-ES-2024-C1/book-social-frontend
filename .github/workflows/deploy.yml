@@ -33,7 +33,8 @@ jobs:
           firebase use --add
           firebase deploy --only hosting:prod-book-social
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Usamos el token desde los secretos de GitHub Actions
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
 
       - name: Deploy to Firebase Hosting (Development)
         if: github.ref == 'refs/heads/development'   # Despliega a desarrollo solo si el push es a development
@@ -42,4 +43,5 @@ jobs:
           firebase use --add
           firebase deploy --only hosting:dev-book-social
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Usamos el token desde los secretos de GitHub Actions
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
