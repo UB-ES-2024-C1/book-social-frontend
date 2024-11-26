@@ -29,6 +29,21 @@
           "destination": "/index.html"
         }
       ]
+    },
+    {
+      "site": "book-social-b2c6b",
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }
