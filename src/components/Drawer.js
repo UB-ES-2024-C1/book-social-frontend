@@ -200,7 +200,11 @@ export default function PermanentDrawer({isLogged}) {
                 }}
                 onClick={handleOpenDialog}
             >
-                <Logout sx={{mr: 1, color: paletteColors.textColor_weakest}}/> {/* Icono de logout */}
+                <Logout
+                    sx={{
+                        mr: 1,
+                        color: paletteColors.textColor_weakest,
+                    }}/> {/* Icono de logout */}
                 Logout {/* Texto de logout */}
             </Typography>
         </Box>

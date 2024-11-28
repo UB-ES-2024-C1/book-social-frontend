@@ -9,26 +9,27 @@
 }
 
 
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
 .App-link {
     color: #61dafb;
 }
 
 .page-content {
-    margin-left: 240px;
-    width: calc(100% - 240px);
-    height: 100vh;
+    margin-left: 260px;
+    margin-top: 65px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #282c34;
+}
+
+
+@media (max-width: 600px) {
+    .page-content {
+        margin-left: 0;
+        width: 100%;
+    }
 }

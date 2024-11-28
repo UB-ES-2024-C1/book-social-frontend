@@ -13,7 +13,7 @@ import BookSocialChip from "../components/Chip";
 import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
-import useBook from "../hooks/book";
+import useBook from "../hooks/book/book";
 
 const BookDetailsPage = () => {
     const {id} = useParams();

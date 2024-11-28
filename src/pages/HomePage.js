@@ -157,11 +157,12 @@ const HomePage = () => {
         <div
             style={{
                 display: "flex",
-                justifyContent: "flex-start",
                 flexDirection: "column",
                 alignItems: "center",
-                marginTop: "68px",
-                marginLeft: "300px",
+                width: "100%", // Aseguramos que ocupe todo el ancho disponible
+                height: "100%", // Ajustamos a la altura del contenedor
+                padding: "16px", // Añadimos un poco de espacio alrededor
+                boxSizing: "border-box", // Evitamos que el padding afecte dimensiones
             }}
         >
             <div
@@ -169,7 +170,7 @@ const HomePage = () => {
                     display: "flex",
                     alignItems: "center",
                     marginBottom: "20px",
-                    padding: '5px',
+                    padding: "5px",
                 }}
             >
                 <img
@@ -183,11 +184,12 @@ const HomePage = () => {
                 />
                 <BookSocialTitle level={1} text={"Welcome $username!"}/>
             </div>
-            <BookList title="Books of your favourite genre" books={books} sx={{margin: "15px"}}/>
+            <BookList title="Books of your favourite genre" books={books}/>
             <BookList title="Books recently added" books={books}/>
             <BookList title="Most popular books" books={books}/>
         </div>
     );
+
 };
 
 export default HomePage;
