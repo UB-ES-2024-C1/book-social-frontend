@@ -22,8 +22,8 @@
     align-items: flex-start;
     padding: 16px;
     box-sizing: border-box;
-    overflow-y: auto;
     background-color: #282c34;
+    min-height: calc(100vh - 64px);
 }
 
 

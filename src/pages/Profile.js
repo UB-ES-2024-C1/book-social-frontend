@@ -6,16 +6,15 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
     IconButton,
     Snackbar,
-    Typography
+    Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import paletteColors from "../resources/palette";
-import CardvisualizeBook from "../components/CardVisualizeBook"; // Asegúrate de que este componente existe.
+import CardvisualizeBook from "../components/CardVisualizeBook";
 import errorImage from "../assets/no_image_available.png";
 import BookSocialTextField from "../components/BookSocialTextField";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
@@ -24,15 +23,17 @@ const Profile = () => {
     const [profileImage, setProfileImage] = useState(
         "https://via.placeholder.com/150" // Imagen de perfil por defecto
     );
-    const [isEditing, setIsEditing] = useState(false);
+    const [coverImage, setCoverImage] = useState(
+        "https://via.placeholder.com/800x200" // Imagen de portada por defecto
+    );
     const [description, setDescription] = useState(
         "Book lover and avid reader."
     );
     const [name, setName] = useState("Núria Pallejà");
-    const [username, setUsername] = useState("nuriapalleja"); // Añadido el estado para el username
+    const [username, setUsername] = useState("nuriapalleja");
     const [openModal, setOpenModal] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const containerRef = useRef(null); // Definición del ref para el contenedor
+    const containerRef = useRef(null);
     const savedBooks = [
         {
             image: errorImage,
@@ -57,11 +58,17 @@ const Profile = () => {
         },
     ];
 
-    const handleImageChange = (event) => {
+    const handleImageChange = (event, type) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => setProfileImage(reader.result);
+            reader.onload = () => {
+                if (type === "profile") {
+                    setProfileImage(reader.result);
+                } else if (type === "cover") {
+                    setCoverImage(reader.result);
+                }
+            };
             reader.readAsDataURL(file);
         }
     };
@@ -96,10 +103,51 @@ const Profile = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 padding: "20px",
-                width: "100%",
-                boxSizing: "border-box",
+                overflow: "hidden",
+                flexGrow: 1,
+
             }}
         >
+            {/* Imagen de portada */}
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 200,
+                    backgroundImage: `url(${coverImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+
+                }}
+            >
+                <Button
+                    component="label"
+                    sx={{
+                        position: "absolute",
+                        bottom: 10,
+                        right: 10,
+                        backgroundColor: paletteColors.color_primary,
+                        color: "#fff",
+                        borderRadius: "20px",
+                        padding: "6px 12px",
+                        fontSize: "12px",
+                        "&:hover": {
+                            backgroundColor: "rgba(120,58,236,0.7)",
+                        },
+                    }}
+                >
+                    Change Cover
+                    <input
+                        type="file"
+                        hidden
+                        accept="image/*"
+                        onChange={(event) => handleImageChange(event, "cover")}
+                    />
+                </Button>
+            </Box>
+
             {/* Imagen de perfil */}
             <Box sx={{position: "relative"}}>
                 <Avatar
@@ -133,7 +181,7 @@ const Profile = () => {
                         type="file"
                         hidden
                         accept="image/*"
-                        onChange={handleImageChange}
+                        onChange={(event) => handleImageChange(event, "profile")}
                     />
                 </Button>
             </Box>
@@ -166,7 +214,6 @@ const Profile = () => {
                 {description}
             </Typography>
 
-
             {/* Botón de editar perfil */}
             <Button
                 variant="contained"
@@ -177,22 +224,25 @@ const Profile = () => {
                     "&:hover": {
                         backgroundColor: "rgba(120,58,236,0.7)",
                     },
+                    borderRadius: "20px"
                 }}
             >
                 Edit Profile
             </Button>
 
             {/* Modal para editar perfil */}
-            <Dialog open={openModal} onClose={() => setOpenModal(false)}
-                    maxWidth="sm"
-                    fullWidth
-                    PaperProps={{
-                        sx: {
-                            backgroundColor: paletteColors.color_primary_weak,
-                            color: paletteColors.textColor,
-                        },
-                    }}>
-                <DialogTitle sx={{color: 'white', textAlign: 'center'}}>Edit Profile</DialogTitle>
+            <Dialog
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                maxWidth="sm"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        backgroundColor: paletteColors.color_primary_weak,
+                        color: paletteColors.textColor,
+                    },
+                }}
+            >
                 <DialogContent>
                     <BookSocialTextField
                         label="Name"
@@ -200,7 +250,7 @@ const Profile = () => {
                         fullWidth
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        sx={{marginBottom: "16px", color: 'white', paddingTop: '10px'}}
+                        sx={{marginBottom: '16px'}}
                     />
                     <BookSocialTextField
                         label="Username"
@@ -208,14 +258,20 @@ const Profile = () => {
                         fullWidth
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                    />
+                        sx={{marginBottom: '16px'}}
+                    /> <BookSocialTextField
+                    label="Description"
+                    type="text"
+                    fullWidth
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
                 </DialogContent>
-                <DialogActions sx={{textAlign: 'center'}}>
-                    <BookSocialPrimaryButton onClick={toggleModal} buttonText={'Cancel'}/>
-                    <BookSocialPrimaryButton onClick={handleSaveChanges} buttonText={'Save'}/>
+                <DialogActions>
+                    <BookSocialPrimaryButton onClick={toggleModal} buttonText={"Cancel"}/>
+                    <BookSocialPrimaryButton onClick={handleSaveChanges} buttonText={"Save"}/>
                 </DialogActions>
             </Dialog>
-
 
             {/* Snackbar de notificación */}
             <Snackbar
@@ -223,6 +279,7 @@ const Profile = () => {
                 autoHideDuration={6000}
                 onClose={handleSnackbarClose}
                 message="Profile updated successfully!"
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             />
 
             {/* Lista de libros guardados */}
@@ -286,15 +343,14 @@ const Profile = () => {
                                     "&:hover": {
                                         transform: "scale(1.05)",
                                     },
-                                    cursor: "pointer",
                                 }}
                             >
                                 <CardvisualizeBook
-                                    image={book.image}
                                     title={book.title}
                                     author={book.author}
-                                    summary={book.summary}
+                                    image={book.image}
                                     rating={book.rating}
+                                    summary={book.summary}
                                 />
                             </Box>
                         ))}

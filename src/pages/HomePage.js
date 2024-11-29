@@ -182,7 +182,7 @@ const HomePage = () => {
                         marginRight: "15px",
                     }}
                 />
-                <BookSocialTitle level={1} text={"Welcome $username!"}/>
+                <BookSocialTitle level={1} text={"Welcome Núria!"}/>
             </div>
             <BookList title="Books of your favourite genre" books={books}/>
             <BookList title="Books recently added" books={books}/>
