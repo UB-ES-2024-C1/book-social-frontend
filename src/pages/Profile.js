@@ -1,62 +1,33 @@
 import React, {useRef, useState} from "react";
-import {
-    Avatar,
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    IconButton,
-    Snackbar,
-    Typography,
-} from "@mui/material";
+import {Avatar, Box, Button, Dialog, DialogActions, DialogContent, Snackbar, Typography,} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import paletteColors from "../resources/palette";
-import CardvisualizeBook from "../components/CardVisualizeBook";
-import errorImage from "../assets/no_image_available.png";
 import BookSocialTextField from "../components/BookSocialTextField";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
+import BookList from "../components/BookList";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
+import useProfile from "../hooks/profile/profile";
 
 const Profile = () => {
-    const [profileImage, setProfileImage] = useState(
-        "https://via.placeholder.com/150" // Imagen de perfil por defecto
-    );
-    const [coverImage, setCoverImage] = useState(
-        "https://via.placeholder.com/800x200" // Imagen de portada por defecto
-    );
+    const [openModal, setOpenModal] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const containerRef = useRef(null);
+
     const [description, setDescription] = useState(
         "Book lover and avid reader."
     );
     const [name, setName] = useState("Núria Pallejà");
     const [username, setUsername] = useState("nuriapalleja");
-    const [openModal, setOpenModal] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const containerRef = useRef(null);
-    const savedBooks = [
-        {
-            image: errorImage,
-            title: "Book 1",
-            author: "Author 1",
-            summary: "This is a summary of Book 1.",
-            rating: 4.5,
-        },
-        {
-            image: errorImage,
-            title: "Book 2",
-            author: "Author 2",
-            summary: "This is a summary of Book 2.",
-            rating: 4.0,
-        },
-        {
-            image: errorImage,
-            title: "Book 3",
-            author: "Author 3",
-            summary: "This is a summary of Book 3.",
-            rating: 3.5,
-        },
-    ];
+    const {profile, loading, error, fetchProfile} = useProfile();
+
+    if (loading) {
+        return <LoadingPage/>;
+    }
+
+    if (error) {
+        return <ErrorPage errorMessage={error} onClick={() => fetchProfile()}/>;
+    }
 
     const handleImageChange = (event, type) => {
         const file = event.target.files[0];
@@ -64,10 +35,11 @@ const Profile = () => {
             const reader = new FileReader();
             reader.onload = () => {
                 if (type === "profile") {
-                    setProfileImage(reader.result);
+                    //setProfileImage(reader.result);
                 } else if (type === "cover") {
-                    setCoverImage(reader.result);
+                    //setCoverImage(reader.result);
                 }
+                console.log(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -78,6 +50,7 @@ const Profile = () => {
     };
 
     const handleSaveChanges = () => {
+        //cridar upadte back i mostrar dialog de error
         setSnackbarOpen(true);
         toggleModal();
     };
@@ -97,23 +70,23 @@ const Profile = () => {
     };
 
     return (
-        <Box
-            sx={{
+        <div
+            style={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 padding: "20px",
-                overflow: "hidden",
+                width: "100%",
+                height: "100%",
                 flexGrow: 1,
-
+                boxSizing: "border-box",
             }}
         >
-            {/* Imagen de portada */}
             <Box
                 sx={{
                     width: "100%",
                     height: 200,
-                    backgroundImage: `url(${coverImage})`,
+                    backgroundImage: `url(${profile.coverImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     position: "absolute",
@@ -147,11 +120,9 @@ const Profile = () => {
                     />
                 </Button>
             </Box>
-
-            {/* Imagen de perfil */}
             <Box sx={{position: "relative"}}>
                 <Avatar
-                    src={profileImage}
+                    src={profile.image}
                     alt="Profile"
                     sx={{
                         width: 150,
@@ -185,8 +156,6 @@ const Profile = () => {
                     />
                 </Button>
             </Box>
-
-            {/* Nombre y Username */}
             <Typography
                 variant="h4"
                 sx={{
@@ -195,7 +164,7 @@ const Profile = () => {
                     color: paletteColors.color_primary,
                 }}
             >
-                {name}
+                {profile.name}
             </Typography>
             <Typography
                 sx={{
@@ -203,7 +172,7 @@ const Profile = () => {
                     marginTop: "10px",
                 }}
             >
-                @{username}
+                @{profile.username}
             </Typography>
             <Typography
                 sx={{
@@ -211,10 +180,8 @@ const Profile = () => {
                     marginTop: "10px",
                 }}
             >
-                {description}
+                {profile.description}
             </Typography>
-
-            {/* Botón de editar perfil */}
             <Button
                 variant="contained"
                 onClick={toggleModal}
@@ -229,8 +196,6 @@ const Profile = () => {
             >
                 Edit Profile
             </Button>
-
-            {/* Modal para editar perfil */}
             <Dialog
                 open={openModal}
                 onClose={() => setOpenModal(false)}
@@ -248,7 +213,7 @@ const Profile = () => {
                         label="Name"
                         type="text"
                         fullWidth
-                        value={name}
+                        value={profile.name}
                         onChange={(e) => setName(e.target.value)}
                         sx={{marginBottom: '16px'}}
                     />
@@ -256,14 +221,14 @@ const Profile = () => {
                         label="Username"
                         type="text"
                         fullWidth
-                        value={username}
+                        value={profile.username}
                         onChange={(e) => setUsername(e.target.value)}
                         sx={{marginBottom: '16px'}}
                     /> <BookSocialTextField
                     label="Description"
                     type="text"
                     fullWidth
-                    value={description}
+                    value={profile.description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 </DialogContent>
@@ -272,8 +237,6 @@ const Profile = () => {
                     <BookSocialPrimaryButton onClick={handleSaveChanges} buttonText={"Save"}/>
                 </DialogActions>
             </Dialog>
-
-            {/* Snackbar de notificación */}
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={6000}
@@ -281,96 +244,8 @@ const Profile = () => {
                 message="Profile updated successfully!"
                 anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             />
-
-            {/* Lista de libros guardados */}
-            <Box sx={{width: "100%", marginTop: "40px"}}>
-                <Typography
-                    variant="h5"
-                    sx={{
-                        fontWeight: "bold",
-                        color: paletteColors.color_primary,
-                        marginBottom: "10px",
-                        textAlign: "left",
-                    }}
-                >
-                    Saved Books
-                </Typography>
-                <Box
-                    sx={{
-                        width: "98%",
-                        height: "1px",
-                        backgroundColor: "#ddd",
-                        marginBottom: "20px",
-                    }}
-                />
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        position: "relative",
-                        width: "100%",
-                    }}
-                >
-                    <IconButton
-                        onClick={() => scrollContainer("left")}
-                        sx={{
-                            position: "absolute",
-                            left: 10,
-                            zIndex: 1,
-                            backgroundColor: paletteColors.color_primary,
-                            color: "white",
-                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
-                        }}
-                    >
-                        <ArrowBackIosIcon/>
-                    </IconButton>
-                    <div
-                        ref={containerRef}
-                        style={{
-                            display: "flex",
-                            overflowX: "hidden",
-                            scrollBehavior: "smooth",
-                            gap: "16px",
-                            padding: "16px 30px",
-                        }}
-                    >
-                        {savedBooks.map((book, index) => (
-                            <Box
-                                key={index}
-                                sx={{
-                                    flex: "0 0 auto",
-                                    transition: "transform 0.2s",
-                                    "&:hover": {
-                                        transform: "scale(1.05)",
-                                    },
-                                }}
-                            >
-                                <CardvisualizeBook
-                                    title={book.title}
-                                    author={book.author}
-                                    image={book.image}
-                                    rating={book.rating}
-                                    summary={book.summary}
-                                />
-                            </Box>
-                        ))}
-                    </div>
-                    <IconButton
-                        onClick={() => scrollContainer("right")}
-                        sx={{
-                            position: "absolute",
-                            right: 10,
-                            zIndex: 1,
-                            backgroundColor: paletteColors.color_primary,
-                            color: "white",
-                            "&:hover": {backgroundColor: "rgba(120,58,236,0.35)"},
-                        }}
-                    >
-                        <ArrowForwardIosIcon/>
-                    </IconButton>
-                </Box>
-            </Box>
-        </Box>
+            <BookList title="Posts published" books={profile.books}/>
+        </div>
     );
 };
 
