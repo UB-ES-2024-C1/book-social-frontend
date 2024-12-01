@@ -8,25 +8,31 @@ import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
 
 
-const genresList = ['Fantasy', 'Science Fiction', 'Mystery', 'Romance', 'Thriller', 'Non-fiction'];
+const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
 
 const NewBook = () => {
     const [title, setTitle] = useState('');
-    const [authors, setAuthors] = useState('');
+    const [author, setAuthor] = useState('');
+    const [language, setLanguage] = useState('');
     const [synopsis, setSynopsis] = useState('');
     const [publishDate, setPublishDate] = useState('');
     const [isbn, setIsbn] = useState('');
     const [coverImage, setCoverImage] = useState(null);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const fileInputRef = useRef(null);
+    const [edition, setEdition] = useState('');
+    const [publisher, setPublisher] = useState('');
 
     const [titleError, setTitleError] = useState('');
     const [authorError, setAuthorError] = useState('');
+    const [languageError, setLanguageError] = useState('');
     const [synopsisError, setSynopsisError] = useState('');
     const [genresError, setGenresError] = useState('');
     const [publishDateError, setPublishDateError] = useState('');
     const [isbnError, setIsbnError] = useState('');
     const [imageError, setImageError] = useState('');
+    const [editionError, setEditionError] = useState('');
+    const [publisherError, setPublisherError] = useState('');
 
     const [openPopup, setOpenPopup] = useState(false); // Controla la visibilidad del popup
     const [popupMessage, setPopupMessage] = useState(''); // Mensaje del popup
@@ -49,15 +55,24 @@ const NewBook = () => {
         }
     };
 
-    const handleAuthorsChange = (e) => {
+    const handleAuthorChange = (e) => {
         const value = e.target.value;
-        setAuthors(value);
+        setAuthor(value);
 
         // Limpiar el error si el usuario comienza a escribir
         if (value.trim()) {
             setAuthorError('');
         }
     };
+
+    const handleLanguageChange = (e) => {
+        const value = e.target.value;
+        setLanguage(value);
+
+        if (value.trim()) {
+            setLanguageError('');
+        }
+    }
 
 
     const handleSynopsisChange = (e) => {
@@ -150,6 +165,25 @@ const NewBook = () => {
         }
     };
 
+    const handleEditionChange = (e) => {
+        const value = e.target.value;
+        setEdition(value);
+
+        // Limpiar el error si el usuario comienza a escribir
+        if (value.trim()) {
+            setEditionError('');
+        }
+    };
+    const handlePublisherChange = (e) => {
+        const value = e.target.value;
+        setPublisher(value);
+
+        // Limpiar el error si el usuario comienza a escribir
+        if (value.trim()) {
+            setPublisherError('');
+        }
+    };
+
     const handleButtonImageClick = () => {
         // Trigger file input when the button is clicked
         fileInputRef.current.click();
@@ -167,8 +201,13 @@ const NewBook = () => {
             hasErrors = true;
         }
 
-        if (!authors.trim()) {
-            setAuthorError('Author(s) are required.');
+        if (!author.trim()) {
+            setAuthorError('Author is required.');
+            hasErrors = true;
+        }
+
+        if(!language.trim()) {
+            setLanguageError('Language is required.')
             hasErrors = true;
         }
 
@@ -189,8 +228,11 @@ const NewBook = () => {
             hasErrors = true; // Si ya hay un error en la fecha, considerarlo
         }
 
-        if (isbn && isbnError) {
-            hasErrors = true; // Si el ISBN no es válido, detener el flujo
+        if(!isbn.trim()) {
+            setIsbnError('ISBN is required.');
+            hasErrors = true;
+        } else if (isbn && isbnError) {
+            hasErrors = true;
         }
 
         // Detener el flujo si hay errores
@@ -201,38 +243,57 @@ const NewBook = () => {
             return;
         }
 
-        // Simulación de envío exitoso
-        setSuccessMessage('Book registered successfully!');
-        setOpenSuccessPopup(true);
-        setIsSubmitting(false);
-        /*
-            try {
-                const response = await fetch('/api/registerBook', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title,
-                        authors,
-                        synopsis,
-                        selectedGenres,
-                        publishDate,
-                        isbn,
-                        coverImage,
-                    }),
-                });
+        const postData = {
+            title,
+            author,
+            publication_date: publishDate,
+            genres: selectedGenres,
+            synopsis,
+            image_url: coverImage || '', 
+            publisher,
+            ISBN: isbn,
+            edition,
+            language
+        };
 
-                if (!response.ok) {
-                    throw new Error('Failed to send data to the backend');
-                }
+        try {
+            const response = await fetch('https://booksocial-dev-development.up.railway.app/books/book-list', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(postData),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to send data to the backend');
+            }
+    
+            // Mostrar un popup de éxito si todo funciona bien
+            setSuccessMessage('Book registered successfully!');
+            setOpenSuccessPopup(true);
+    
+            // Resetear el formulario
+            setTitle('');
+            setAuthor('');
+            setPublishDate('');
+            setSelectedGenres([]);
+            setSynopsis('');
+            setCoverImage(null);
+            setPublisher('');
+            setIsbn('');
+            setEdition('');
+            setLanguage('');
+            
+        } catch (error) {
+            setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+            setOpenConnectionErrorPopup(true);
+        } finally {
+            setIsSubmitting(false); // Rehabilitar el botón de envío
+        }
 
-                setSuccessMessage('Book registered successfully!');
-                setOpenSuccessPopup(true);
-            } catch (error) {
-                setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
-                setOpenConnectionErrorPopup(true);
-            } finally {
-                setIsSubmitting(false);
-            }*/
+        
     };
 
 
@@ -329,12 +390,12 @@ const NewBook = () => {
                             errorMessage={titleError}
                         />
                     </div>
-                    {/* Authors Field */}
+                    {/* Author Field */}
                     <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialTextField
-                            label="Authors (separate by commas)"
-                            value={authors}
-                            onChange={handleAuthorsChange}
+                            label="Author"
+                            value={author}
+                            onChange={handleAuthorChange}
                             required={true}
                             status={authorError ? 'error' : 'default'}
                             errorMessage={authorError}
@@ -351,7 +412,18 @@ const NewBook = () => {
                             errorMessage={synopsisError}
                             rows={3} // Set the desired number of rows
                         />
+                    </div>
 
+                    {/* Language Field */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialTextField
+                            label="Language"
+                            value={language}
+                            onChange={handleLanguageChange}
+                            required={true}
+                            status={languageError ? 'error' : 'default'}
+                            errorMessage={languageError}
+                        />
                     </div>
 
                     {/* Genres Field */}
@@ -383,11 +455,33 @@ const NewBook = () => {
                             label="ISBN"
                             value={isbn}
                             onChange={handleIsbnChange}
+                            required={true}
                             errorMessage={isbnError}
                             status={isbnError ? 'error' : 'default'}
                         />
-
                     </div>
+                    {/* Edition Field*/}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialTextField
+                            label="Edition"
+                            value={edition}
+                            onChange={handleEditionChange}
+                            errorMessage={editionError}
+                            status={editionError ? 'error' : 'default'}
+                        />
+                    </div>
+
+                    {/* Publisher Field*/}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialTextField
+                            label="Publisher"
+                            value={publisher}
+                            onChange={handlePublisherChange}
+                            errorMessage={publisherError}
+                            status={publisherError ? 'error' : 'default'}
+                        />
+                    </div>
+
                     <Typography variant="body2" color={paletteColors.textColor}
                                 sx={{marginTop: '8px', textAlign: 'left'}}>
                         * Required field
