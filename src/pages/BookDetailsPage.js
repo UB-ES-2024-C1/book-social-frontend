@@ -32,9 +32,10 @@ const BookDetailsPage = () => {
     return (
         <PageContainer children={
             <div>
+                <Spacer size={70}/>
                 {/* Flecha para volver atrás */}
                 <div
-                    style={{display: "flex", alignItems: "center", justifyContent: "left", marginBottom: "16px"}}>
+                    style={{display: "flex", alignItems: "center", justifyContent: "left", padding: "10px"}}>
                     <button
                         onClick={() => navigate(-1)}
                         style={{
@@ -45,7 +46,7 @@ const BookDetailsPage = () => {
                             color: paletteColors.textColorStrong,
                             cursor: "pointer",
                             textDecoration: "none",
-                            fontSize: "16px",
+                            fontSize: "25px",
                         }}
                     >
                         <AiOutlineArrowLeft size={24} style={{marginRight: "8px"}}/>

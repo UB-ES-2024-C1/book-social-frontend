@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react';
 import api from "../../services/api";
-import profileData from '../../mocks/profileWriter.json';
-import Profile from '../../dto/Profile';
 
 const useProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -21,17 +19,16 @@ const useProfile = () => {
         }
         setError(null);
         try {
-            const data = profileData;
-            const fetchedProfile = Profile.fromJSON(data);
-            setProfile(fetchedProfile);
+            const response = await api.get('auth/me')
+            console.log(response);
             setLoading(false);
-            /*            if (response.status === 200) {
-                            setProfile(response.data);
-                            setLoading(false);
-                        } else {
-                            setError("Error fetching profile data");
-                            setLoading(false);
-                        }*/
+            if (response.status === 200) {
+                setProfile(response.data);
+                setLoading(false);
+            } else {
+                setError("Error fetching profile data");
+                setLoading(false);
+            }
         } catch (err) {
             setError("Error fetching profile data");
             setLoading(false);

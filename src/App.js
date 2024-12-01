@@ -12,6 +12,7 @@ import {AuthProvider} from "./hooks/authentication";
 import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
+import Drawer from "@mui/material/Drawer";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -24,6 +25,7 @@ const MainLayout = () => (
 const DrawerLayout = () => (
     <div className="App">
         <NavAppBar/>
+        <Drawer/>
         <PermanentDrawer isLogged={true}/>
         <div className="page-content">
             <Outlet/>

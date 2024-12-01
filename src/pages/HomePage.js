@@ -7,8 +7,22 @@ import book4 from "../assets/books/book4.jpg";
 import book5 from "../assets/books/book5.jpg";
 import userImage from "../assets/no_image_available.png";
 import BookList from "../components/BookList";
+import useProfile from "../hooks/profile/profile";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
 
 const HomePage = () => {
+    const {profile, loading, error, fetchProfile} = useProfile();
+    console.log(profile);
+
+    if (loading) {
+        return <LoadingPage/>;
+    }
+
+    if (error) {
+        return <ErrorPage errorMessage={error} onClick={() => fetchProfile()}/>;
+    }
+
     const books = [
         {
             image: book1,
@@ -79,7 +93,7 @@ const HomePage = () => {
 
                     }}
                 />
-                <BookSocialTitle level={1} text={"Welcome Núria!"}/>
+                <BookSocialTitle level={1} text={`Welcome ${profile.username}`}/>
             </div>
             <BookList title="Books of your favourite genre" books={books}/>
             <BookList title="Books recently added" books={books}/>

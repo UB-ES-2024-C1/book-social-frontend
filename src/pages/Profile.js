@@ -4,10 +4,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import paletteColors from "../resources/palette";
 import BookSocialTextField from "../components/BookSocialTextField";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
-import BookList from "../components/BookList";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useProfile from "../hooks/profile/profile";
+import BookList from "../components/BookList";
+import defaultCoverImage from '../assets/portada.jpeg'; // Importa la imagen por defecto
+
 
 const Profile = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -19,6 +21,7 @@ const Profile = () => {
     );
     const [name, setName] = useState("Núria Pallejà");
     const [username, setUsername] = useState("nuriapalleja");
+    const [genre, setGenre] = useState("nuriapalleja");
     const {profile, loading, error, fetchProfile} = useProfile();
 
     if (loading) {
@@ -86,7 +89,7 @@ const Profile = () => {
                 sx={{
                     width: "100%",
                     height: 200,
-                    backgroundImage: `url(${profile.coverImage})`,
+                    backgroundImage: `url(${profile.coverImage || defaultCoverImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     position: "absolute",
@@ -181,7 +184,24 @@ const Profile = () => {
                 }}
             >
                 {profile.description}
-            </Typography>
+            </Typography> <Typography
+            sx={{
+                color: "white",
+                marginTop: "10px",
+            }}
+        >
+            Favourite Genre: {profile.favGenre}
+        </Typography><Typography
+            sx={{
+                color: "white", // Color de "Description:"
+                marginTop: "10px",
+            }}
+        >
+            Description:{" "}
+            <span style={{color: profile.description ? "white" : "gray"}}>
+        {profile.description || "(Add your description)"}
+    </span>
+        </Typography>
             <Button
                 variant="contained"
                 onClick={toggleModal}
@@ -230,6 +250,13 @@ const Profile = () => {
                     fullWidth
                     value={profile.description}
                     onChange={(e) => setDescription(e.target.value)}
+                    sx={{marginBottom: '16px'}}
+                /><BookSocialTextField
+                    label="Favourite Genre"
+                    type="text"
+                    fullWidth
+                    value={profile.genre}
+                    onChange={(e) => setGenre(e.target.value)}
                 />
                 </DialogContent>
                 <DialogActions>
@@ -244,7 +271,31 @@ const Profile = () => {
                 message="Profile updated successfully!"
                 anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             />
-            <BookList title="Posts published" books={profile.books}/>
+            {profile.role === "reader" && profile.books?.length > 0 ? (
+                <BookList title="Posts published" books={profile.books}/>
+            ) : profile.role === "writer" && profile.books?.length > 0 ? (
+                <BookList title="Books published" books={profile.books}/>
+            ) : (
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginTop: "20px",
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            color: paletteColors.textColor_weakest,
+                            fontSize: "16px",
+                            textAlign: "center",
+                        }}
+                    >
+                        There is nothing available yet
+                    </Typography>
+                </Box>
+            )}
         </div>
     );
 };

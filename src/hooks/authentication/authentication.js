@@ -53,14 +53,15 @@ export const AuthProvider = ({children}) => {
                 username,
                 email,
                 password: pass,
-                role: "writer"
+                genre: genre,
+                role: personType
             };
-            //console.log("payload", payload);
+            console.log("payload", payload);
             const response = await api.post('/auth/register', payload);
 
             if (response.status === 201) {
                 setIsLoggedIn(true);
-                login(email, pass);
+                await login(email, pass);
             } else {
                 setError(`Error on try to register: ${response.data.message}`);
             }
