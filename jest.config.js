@@ -10,10 +10,10 @@ module.exports = {
     },
     testEnvironment: "jsdom",
     transform: {
-        "^.+\\.[tj]sx?$": "babel-jest", // Handles TypeScript and JavaScript files
+        "^.+\\.[tj]sx?$": "babel-jest",
     },
     transformIgnorePatterns: [
         "/node_modules/(?!axios|@mui)",
     ],
-    extensionsToTreatAsEsm: ['.ts', '.tsx', '.jsx'], // Removed '.js'
+    extensionsToTreatAsEsm: ['.ts', '.tsx', '.jsx'],
 };
