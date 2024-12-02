@@ -46,9 +46,6 @@ const BookDetailsPage = () => {
                             <BookSocialText level="medium" text={`**ISBN**: ${book.ISBN}`}
                                             style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
                             <Spacer size={8}/>
-                            <BookSocialText level="medium" text={`**ASIN**: ${book.ASIN}`}
-                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
-                            <Spacer size={8}/>
                             <BookSocialText level="medium" text={`**Language**: ${book.language}`}
                                             style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
                             <Spacer size={8}/>
@@ -96,19 +93,19 @@ const BookDetailsPage = () => {
                         <BookSocialRating value={book.goodReadsMeanRating} showLabel={false}
                                           numberRatings={book.goodReadsNumberRating}/>
                         <Spacer size={16}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fiveStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fiveStars}
                                                 total={book.goodReadsNumberRating} title={"5 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fourStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fourStars}
                                                 total={book.goodReadsNumberRating} title={"4 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.threeStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.threeStars}
                                                 total={book.goodReadsNumberRating} title={"3 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.twoStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.twoStars}
                                                 total={book.goodReadsNumberRating} title={"2 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStars}
                                                 total={book.goodReadsNumberRating} title={"1 start"}/>
                     </Grid>
                 </Grid>
