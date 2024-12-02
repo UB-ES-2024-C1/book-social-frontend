@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import bookData from '../../mocks/book_1.json';
-import BookDetails from '../../dto/BookDetails';
+import bookData from '../mocks/book_1.json';
+import BookDetails from '../dto/BookDetails';
 
 const useBook = (id) => {
     const [book, setBook] = useState(null);
@@ -13,10 +13,17 @@ const useBook = (id) => {
         }
         setError(null);
         try {
-            const data = bookData;
-            const fetchedBook = BookDetails.fromJSON(data);
-            setBook(fetchedBook);
-            setLoading(false);
+            const response = await api.get(`/books/book-detail/${id}`);
+            if (response.status === 200) {
+                console.log(response.data)
+                const fetchedBook = BookDetails.fromJSON(response.data);
+                setBook(fetchedBook);
+                setLoading(false);
+            } else {
+                setError(`Error on try to login: ${response.data.message}`);
+                setLoading(false);
+
+            }
         } catch (err) {
             setError('Error fetching book details');
             setLoading(false);
