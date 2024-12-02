@@ -5,15 +5,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(config => {
+    config.headers = {
+        'Accept': 'application/json',        // Encabezado Accept
+        'Content-Type': 'application/json'  // Encabezado Content-Type
+    };
     const token = localStorage.getItem('token');
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers['Authorization'] = `Bearer ${token}`;
     }
-
-    // Asegúrate de incluir estos encabezados en todas las solicitudes
-    config.headers['accept'] = 'application/json';
-    config.headers['Content-Type'] = 'application/json';
-
     return config;
 });
 

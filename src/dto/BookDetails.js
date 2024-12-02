@@ -4,7 +4,6 @@ class BookDetails {
     constructor(
         ISBN,
         title,
-        ASIN = null,
         language = null,
         published = null,
         edition = null,
@@ -23,7 +22,6 @@ class BookDetails {
         this.title = title;
 
         // Opcionales con valores predeterminados
-        this.ASIN = ASIN;
         this.language = language;
         this.published = published;
         this.edition = edition;
@@ -49,14 +47,13 @@ class BookDetails {
         return new BookDetails(
             json.ISBN,
             json.title,
-            json.ASIN,
             json.language,
             json.published,
             json.edition,
             json.image,
             json.synopsis,
             json.genres || [],
-            json.author_name,
+            json.author,
             json.coauthor_name,
             json.author_description,
             json.good_reads_mean_rating || 0,
@@ -64,7 +61,6 @@ class BookDetails {
             summaryRatings
         );
     }
-
 }
 
 export default BookDetails;

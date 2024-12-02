@@ -56,13 +56,13 @@ const SignInModal = ({open, handleClose}) => {
     const types_person = ['Reader', 'Writer'];
 
     const handleSignIn = async () => {
+        console.log(genre)
         // Intentamos realizar el registro
         await signIn(
             name,
             username,
             email,
             password,
-            password2,
             genre,
             personType
         );
