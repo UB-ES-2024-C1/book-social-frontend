@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import defaultImage from '../assets/no_image_available.png';
+import {Skeleton} from '@mui/material';
 
 const BookSocialImage = ({url, size = 'sm'}) => {
+    const [isLoading, setIsLoading] = useState(true);
+
     let dimensions;
 
     switch (size) {
@@ -20,16 +23,35 @@ const BookSocialImage = ({url, size = 'sm'}) => {
 
     const imageUrl = url ? new URL(url) : defaultImage;
 
+    const handleImageLoad = () => {
+        setIsLoading(false);
+    };
+
     return (
-        <img
-            src={imageUrl}
-            alt="Book"
-            style={{
-                ...dimensions,
-                borderRadius: '24px',
-                objectFit: 'cover',
-            }}
-        />
+        <>
+            {isLoading && (
+                <Skeleton
+                    variant="rectangular"
+                    width={dimensions.width}
+                    height={dimensions.height}
+                    style={{
+                        borderRadius: '24px',
+                        backgroundColor: '#e0e0e0',
+                    }}
+                />
+            )}
+            <img
+                src={imageUrl}
+                alt="Book"
+                style={{
+                    ...dimensions,
+                    borderRadius: '24px',
+                    objectFit: 'cover',
+                    display: isLoading ? 'none' : 'block',
+                }}
+                onLoad={handleImageLoad}
+            />
+        </>
     );
 };
 

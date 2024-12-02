@@ -1,8 +1,7 @@
-import React from 'react';
-import {Box, Card, CardContent, CardMedia, Rating, Tooltip, Typography} from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
-
 
 const truncateText = (text) => {
     const maxLength = 87;
@@ -14,12 +13,17 @@ const truncateText = (text) => {
 
 const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
     const navigate = useNavigate();
-    const genresList = ['Fantasy', 'Science Fiction', 'Fantasy', 'Science Fiction'];
+    const [isLoading, setIsLoading] = useState(true);
 
     const goToDetails = () => {
         console.log('Card clicked');
         navigate(`/book-details/${(id ?? 1).toString().trim()}`);
     };
+
+    const handleImageLoad = () => {
+        setIsLoading(false);
+    };
+
     return (
         <Card sx={{
             fontFamily: 'Roboto, Arial, sans-serif',
@@ -30,16 +34,28 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
         }} onClick={goToDetails}>
-            <CardMedia
-                component="img"
-                sx={{
-                    width: 150,
-                    padding: 1.5,
-                    borderRadius: 10,
-                }}
-                image={image}
-                alt={`${title} cover`}
-            />
+            <Box sx={{position: 'relative', width: 150, height: '100%'}}>
+                {isLoading && (
+                    <Skeleton
+                        variant="rectangular"
+                        width="100%"
+                        height="100%"
+                        sx={{borderRadius: 10}}
+                    />
+                )}
+                <CardMedia
+                    component="img"
+                    sx={{
+                        width: 150,
+                        padding: 1.5,
+                        borderRadius: 10,
+                        display: isLoading ? 'none' : 'block',
+                    }}
+                    image={image}
+                    alt={`${title} cover`}
+                    onLoad={handleImageLoad}
+                />
+            </Box>
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -88,16 +104,6 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                     }}>
                         {truncateText(summary)}
                     </Typography>
-                    {/*<Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        gap: 1
-                    }}>
-                        {genresList.map((genre) => (
-                            <BookSocialChip key={genre} text={genre} size="sm"/>
-                        ))}
-                    </Box>*/}
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'center',
