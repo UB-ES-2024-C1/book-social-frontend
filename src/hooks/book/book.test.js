@@ -1,52 +1,70 @@
-import {renderHook} from '@testing-library/react-hooks';
-import useBook from './useBook';
-import bookData from '../../mocks/book_1.json';
-import BookDetails from '../../dto/BookDetails';
-import {expect} from "@storybook/test";
+import { render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
+import useBook from './book';
+import api from '../../services/api';
 
-// Mock del módulo BookDetails
-jest.mock('../../dto/BookDetails', () => ({
-    fromJSON: jest.fn(),
+// Mock del módulo API
+jest.mock('../../services/api', () => ({
+    get: jest.fn(),
 }));
 
-describe('useBook', () => {
-    const bookId = '1'; // ID de libro de prueba
+// Componente de prueba para consumir el hook
+const TestComponent = ({ id }) => {
+    const { book, loading, error } = useBook(id);
 
+    if (loading) return <div data-testid="loading">Loading...</div>;
+    if (error) return <div data-testid="error">{error}</div>;
+    return <div data-testid="book-title">{book?.title}</div>;
+};
+
+describe('useBook', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it('should start with loading state', () => {
-        const {result} = renderHook(() => useBook(bookId));
-        expect(result.current.loading).toBe(true);
-        expect(result.current.book).toBeNull();
-        expect(result.current.error).toBeNull();
+    it('should render loading state initially', () => {
+        render(<TestComponent id="1" />);
+        expect(screen.getByTestId('loading')).toHaveTextContent('Loading...');
     });
 
     it('should fetch book details successfully', async () => {
-        BookDetails.fromJSON.mockReturnValue(bookData); // Mock del método fromJSON
+        const mockBook = { title: 'Mock Book Title' };
+        api.get.mockResolvedValueOnce({ status: 200, data: mockBook });
 
-        const {result, waitForNextUpdate} = renderHook(() => useBook(bookId));
+        render(<TestComponent id="1" />);
 
-        // Espera a que se complete la actualización
-        await waitForNextUpdate();
-
-        expect(result.current.loading).toBe(false);
-        expect(result.current.book).toEqual(bookData);
-        expect(result.current.error).toBeNull();
-    });
-
-    it('should handle errors when fetching book details', async () => {
-        BookDetails.fromJSON.mockImplementation(() => {
-            throw new Error('Error fetching book details');
+        // Esperamos a que el componente se re-renderice después de la llamada a la API
+        await act(async () => {
+            await Promise.resolve(); // Procesar el ciclo de eventos
         });
 
-        const {result, waitForNextUpdate} = renderHook(() => useBook(bookId));
+        expect(screen.getByTestId('book-title')).toHaveTextContent('Mock Book Title');
+        expect(api.get).toHaveBeenCalledWith('/books/book-detail/1');
+    });
 
-        await waitForNextUpdate();
+    it('should handle fetch error', async () => {
+        api.get.mockRejectedValueOnce(new Error('Error fetching book details'));
 
-        expect(result.current.loading).toBe(false);
-        expect(result.current.book).toBeNull();
-        expect(result.current.error).toBe('Error fetching book details');
+        render(<TestComponent id="1" />);
+
+        // Esperamos a que el componente se re-renderice después de la llamada a la API
+        await act(async () => {
+            await Promise.resolve(); // Procesar el ciclo de eventos
+        });
+
+        expect(screen.getByTestId('error')).toHaveTextContent('Error fetching book details');
+    });
+
+    it('should handle non-200 response', async () => {
+        api.get.mockResolvedValueOnce({ status: 400, data: { message: 'Bad Request' } });
+
+        render(<TestComponent id="1" />);
+
+        // Esperamos a que el componente se re-renderice después de la llamada a la API
+        await act(async () => {
+            await Promise.resolve(); // Procesar el ciclo de eventos
+        });
+
+        expect(screen.getByTestId('error')).toHaveTextContent('Error fetching book details');
     });
 });

@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import api from "../../services/api";
+import image from "../../components/Image";
 
 const useProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -19,6 +20,8 @@ const useProfile = () => {
         }
         setError(null);
         try {
+            const profileImage = localStorage.getItem('image');
+            const coverImage = localStorage.getItem('cover');
             const response = await api.get('auth/me')
             console.log(response);
             setLoading(false);
@@ -37,15 +40,34 @@ const useProfile = () => {
 
     const updateProfile = async (newProfileData) => {
         console.log('Update', newProfileData);
+
         if (!loading) {
             setLoading(true);
         }
         setUpdateStatus(Status.EMPTY);
         try {
-            const response = await api.patch('/auth/update', newProfileData);
+            localStorage.setItem('image', newProfileData.image);
+            localStorage.setItem('cover', newProfileData.coverImage);
+            const payload = {
+                firstName: newProfileData.name,
+                lastName: newProfileData.lastName,
+                username: newProfileData.username,
+                genre: newProfileData.favGenre,
+                description: newProfileData.description
+            };
+            const response = await api.post('/auth/update', payload);
+            console.log(response.data);
             if (response.status === 200) {
-                setProfile(response.data);
+                const result = {
+                    name: response.data.user.firstName,
+                    favGenre: response.data.user.genre,
+                    username: response.data.user.username,
+                    description: response.data.user.description,
+                    lastName: response.data.user.lastName
+                };
+                setProfile(result);
                 setUpdateStatus(Status.SUCCESS);
+                setLoading(false);
             } else {
                 setUpdateStatus(Status.ERROR);
                 setLoading(false);
