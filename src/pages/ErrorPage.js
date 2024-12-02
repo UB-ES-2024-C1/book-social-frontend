@@ -17,7 +17,7 @@ const ErrorPage = ({errorMessage, onClick}) => {
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    minHeight: 'calc(100vh - 50px)',
+                    minWidth: 'calc(100vh - 50px)',
                     textAlign: 'center',
                 }}
             >

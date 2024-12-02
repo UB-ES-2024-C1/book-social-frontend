@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import PageContainer from "../components/PageContainer";
 import {Spacer} from "../resources/spacer";
 import Grid from "@mui/material/Grid2";
@@ -13,11 +13,13 @@ import BookSocialChip from "../components/Chip";
 import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
-import useBook from "../hooks/book";
+import useBook from "../hooks/book/book";
+import {AiOutlineArrowLeft} from "react-icons/ai";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
     const {book, loading, error, fetchBook} = useBook(id);
+    const navigate = useNavigate(); // Hook para manejar navegación
 
     if (loading) {
         return <LoadingPage/>;
@@ -30,6 +32,27 @@ const BookDetailsPage = () => {
     return (
         <PageContainer children={
             <div>
+                <Spacer size={70}/>
+                {/* Flecha para volver atrás */}
+                <div
+                    style={{display: "flex", alignItems: "center", justifyContent: "left", padding: "10px"}}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{
+                            background: "none",
+                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            color: paletteColors.textColorStrong,
+                            cursor: "pointer",
+                            textDecoration: "none",
+                            fontSize: "25px",
+                        }}
+                    >
+                        <AiOutlineArrowLeft size={24} style={{marginRight: "8px"}}/>
+                        Back
+                    </button>
+                </div>
                 <Grid container spacing={6} justifyContent="center" alignItems={"start"}>
                     <Grid item size={2} style={{
                         alignItems: "center", justifyContent: "center", display: "flex",

@@ -195,12 +195,16 @@ export default function PermanentDrawer({isLogged}) {
                     bottom: '20px', // Coloca el botón cerca del fondo
                     left: '20px', // Alinea a la izquierda del contenedor
                     cursor: 'pointer',
-                    color: paletteColors.textColor_weakest,
+                    color: 'white',
                     justifyContent: 'flex-start', // Asegura que todo se alinee al inicio (izquierda)
                 }}
                 onClick={handleOpenDialog}
             >
-                <Logout sx={{mr: 1, color: paletteColors.textColor_weakest}}/> {/* Icono de logout */}
+                <Logout
+                    sx={{
+                        mr: 1,
+                        color: 'white',
+                    }}/> {/* Icono de logout */}
                 Logout {/* Texto de logout */}
             </Typography>
         </Box>

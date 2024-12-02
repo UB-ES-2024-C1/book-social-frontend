@@ -108,7 +108,7 @@ const LoginModal = ({open, handleClose}) => {
                 </Typography>
                 <BookSocialTextField
                     value={username}
-                    label={'Username'}
+                    label={'Email'}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <Box sx={{position: 'relative'}}>

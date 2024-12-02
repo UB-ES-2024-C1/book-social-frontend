@@ -10,7 +10,7 @@ const BookSocialImage = ({url, size = 'sm'}) => {
             dimensions = {width: '250px', height: '300px'};
             break;
         case 'md':
-            dimensions = {width: '200px', height: '200px'};
+            dimensions = {width: '150px'};
             break;
         case 'sm':
         default:

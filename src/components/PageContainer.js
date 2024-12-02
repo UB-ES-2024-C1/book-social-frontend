@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import paletteColors from "../resources/palette";
 import NavAppBar from "./NavAppBar";
-import {Spacer} from "../resources/spacer";
+import paletteColors from "../resources/palette";
 
 const PageContainer = ({children}) => {
     return (
         <div style={{
-            background: paletteColors.background_color,
+            background: paletteColors.background_header,
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
+            minWidth: '100%'
         }}>
             <NavAppBar/>
-            <Spacer size={50}/>
             {children}
         </div>
     );
