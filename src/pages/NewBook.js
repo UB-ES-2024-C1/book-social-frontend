@@ -303,11 +303,13 @@ const NewBook = () => {
                 flexDirection: {xs: 'column', md: 'row'},
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '60px',
+                padding: '30px',
                 marginLeft: '50px',
-                marginTop: '40px'
+                width: {xs: '100%', sm: '90%', md: '80%'},
+                overflow: 'auto', // Habilita el scroll si es necesario
             }}
         >
+
             {/* Imagen del libro */}
             <Box
                 sx={{
@@ -364,7 +366,7 @@ const NewBook = () => {
                     flexWrap: 'wrap',
                 }}
             >
-                <Typography variant="h4" sx={{marginBottom: '20px'}}>
+                <Typography variant="h4" sx={{marginBottom: '20px', color: 'white'}}>
                     Register a New Book
                 </Typography>
                 <form onSubmit={handleSubmit} style={{width: '100%'}}>

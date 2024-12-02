@@ -1,0 +1,42 @@
+{
+  "name": "Nuria",
+  "email": "nuria@gmail.com",
+  "description": "Book lover",
+  "id": "25",
+  "lastname": "Palleja Alguero",
+  "username": "palleja",
+  "role": "writer",
+  "favGenre": "fiction",
+  "image": "",
+  "coverImage": "",
+  "books": [
+    {
+      "image": null,
+      "title": "Book 1",
+      "author": "Author 1",
+      "summary": "This is a summary of Book 1.",
+      "rating": 4.5
+    },
+    {
+      "image": null,
+      "title": "Book 2",
+      "author": "Author 2",
+      "summary": "This is a summary of Book 2.",
+      "rating": 4.0
+    },
+    {
+      "image": null,
+      "title": "Book 3",
+      "author": "Author 3",
+      "summary": "This is a summary of Book 3.",
+      "rating": 3.5
+    },
+    {
+      "image": null,
+      "title": "Book 4",
+      "author": "Author 4",
+      "summary": "This is a summary of Book 4.",
+      "rating": 3.5
+    }
+  ]
+}

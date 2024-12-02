@@ -3,8 +3,9 @@ import {Box, Card, CardContent, CardMedia, Rating, Tooltip, Typography} from '@m
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
 
-const CardvisualizeBook = ({image, title, author, summary, rating}) => {
+const CardvisualizeBook = ({image, title, author, summary, genre, rating}) => {
     const navigate = useNavigate();
+    const genresList = ['Fantasy', 'Science Fiction', 'Fantasy', 'Science Fiction'];
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -42,7 +43,6 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
             }}>
                 <CardContent sx={{
                     flex: '1 0 auto',
-                    padding: '25px',
                     textAlign: 'left',
                     cursor: 'pointer',
                 }}>
@@ -79,6 +79,16 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                     }}>
                         {summary}
                     </Typography>
+                    {/*<Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        gap: 1
+                    }}>
+                        {genresList.map((genre) => (
+                            <BookSocialChip key={genre} text={genre} size="sm"/>
+                        ))}
+                    </Box>*/}
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'center',

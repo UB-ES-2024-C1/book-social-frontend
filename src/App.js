@@ -9,10 +9,10 @@ import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
 import {AuthProvider} from "./hooks/authentication";
-import Drawer from "@mui/material/Drawer";
 import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
+import Drawer from "@mui/material/Drawer";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -26,12 +26,13 @@ const DrawerLayout = () => (
     <div className="App">
         <NavAppBar/>
         <Drawer/>
-        <div className="App-header">
-            <PermanentDrawer isLogged={true}/>
+        <PermanentDrawer isLogged={true}/>
+        <div className="page-content">
             <Outlet/>
         </div>
     </div>
 );
+
 
 function AppContent() {
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import PageContainer from "../components/PageContainer";
 import {Spacer} from "../resources/spacer";
 import Grid from "@mui/material/Grid2";
@@ -13,11 +13,13 @@ import BookSocialChip from "../components/Chip";
 import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
-import useBook from "../hooks/book";
+import useBook from "../hooks/book/book";
+import {AiOutlineArrowLeft} from "react-icons/ai";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
     const {book, loading, error, fetchBook} = useBook(id);
+    const navigate = useNavigate(); // Hook para manejar navegación
 
     if (loading) {
         return <LoadingPage/>;
@@ -30,6 +32,27 @@ const BookDetailsPage = () => {
     return (
         <PageContainer children={
             <div>
+                <Spacer size={70}/>
+                {/* Flecha para volver atrás */}
+                <div
+                    style={{display: "flex", alignItems: "center", justifyContent: "left", padding: "10px"}}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{
+                            background: "none",
+                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            color: paletteColors.textColorStrong,
+                            cursor: "pointer",
+                            textDecoration: "none",
+                            fontSize: "25px",
+                        }}
+                    >
+                        <AiOutlineArrowLeft size={24} style={{marginRight: "8px"}}/>
+                        Back
+                    </button>
+                </div>
                 <Grid container spacing={6} justifyContent="center" alignItems={"start"}>
                     <Grid item size={2} style={{
                         alignItems: "center", justifyContent: "center", display: "flex",
@@ -44,9 +67,6 @@ const BookDetailsPage = () => {
                                              color={paletteColors.textColorWeakest}/>
                             <Spacer size={16}/>
                             <BookSocialText level="medium" text={`**ISBN**: ${book.ISBN}`}
-                                            style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
-                            <Spacer size={8}/>
-                            <BookSocialText level="medium" text={`**ASIN**: ${book.ASIN}`}
                                             style={{textAlign: "left"}} color={paletteColors.textColorStrong}/>
                             <Spacer size={8}/>
                             <BookSocialText level="medium" text={`**Language**: ${book.language}`}
@@ -96,19 +116,19 @@ const BookDetailsPage = () => {
                         <BookSocialRating value={book.goodReadsMeanRating} showLabel={false}
                                           numberRatings={book.goodReadsNumberRating}/>
                         <Spacer size={16}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fiveStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fiveStars}
                                                 total={book.goodReadsNumberRating} title={"5 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fourStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.fourStars}
                                                 total={book.goodReadsNumberRating} title={"4 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.threeStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.threeStars}
                                                 total={book.goodReadsNumberRating} title={"3 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.twoStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.twoStars}
                                                 total={book.goodReadsNumberRating} title={"2 starts"}/>
                         <Spacer size={8}/>
-                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStarts}
+                        <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStars}
                                                 total={book.goodReadsNumberRating} title={"1 start"}/>
                     </Grid>
                 </Grid>
