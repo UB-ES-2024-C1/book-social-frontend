@@ -257,7 +257,7 @@ const NewBook = () => {
         };
 
         try {
-            const response = await fetch('https://booksocial-dev-development.up.railway.app/books/book-list', {
+            const response = await fetch('https://booksocial-dev-development.up.railway.app/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
