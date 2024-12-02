@@ -2,12 +2,7 @@
   "name": "book-social",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "main": "index.js",
-  "exports": {
-    "import": "./lib/axios.js",
-    "require": "./index.js"
-  },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -32,7 +27,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    }
   },
   "browserslist": {
     "production": [
