@@ -1,6 +1,5 @@
 import React from 'react';
 import BookSocialTitle from "../components/BookSocialTitle";
-import paletteColors from "../resources/palette";
 import {Spacer} from "../resources/spacer";
 import {useParams} from "react-router-dom";
 import LoadingPage from "./LoadingPage";
@@ -22,17 +21,15 @@ const DiscoveryPage = () => {
 
     return (
         <div style={{
-            background: paletteColors.background_color,
             minHeight: '100vh',
             maxWidth: '100%',
+            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyItems: 'flex-start',
-            paddingTop: '100px',
-            paddingLeft: '350px',
-            paddingRight: '50px',
-            paddingBottom: '50px'
         }}>
+            <Spacer size={24}/>
+
             <BookSocialTitle level={3}
                              text={"Welcome to our book library where you can discover a new literary world!"}
                              textAlign={'center'}
@@ -50,7 +47,7 @@ const DiscoveryPage = () => {
                                        rating={item.googleAverageRating} summary={item.synopsis}/>
                 ))}
             </div>
-
+            <Spacer size={24}/>
         </div>
     );
 };
