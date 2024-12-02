@@ -29,11 +29,33 @@ const useBooks = () => {
         }
     };
 
+    const fetchBooksByTitle = async (title) => {
+        if (!loading) {
+            setLoading(true);
+        }
+        setError(null);
+        try {
+            const response = await api.get(`/books/search?title=${encodeURIComponent(title)}`);
+            if (response.status === 200) {
+                console.log(response.data);
+                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                setBooks(fetchedBooks);
+                setLoading(false);
+            } else {
+                setError(`Error fetching books by title: ${response.data.message}`);
+                setLoading(false);
+            }
+        } catch (err) {
+            setError('Error fetching books by title');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchBooks();
     }, []);
 
-    return {books, loading, error, fetchBooks};
+    return {books, loading, error, fetchBooks, fetchBooksByTitle};
 };
 
 export default useBooks;
