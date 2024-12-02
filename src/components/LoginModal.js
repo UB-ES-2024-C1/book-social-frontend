@@ -154,7 +154,7 @@ const LoginModal = ({open, handleClose}) => {
                     />
                 )}
                 <BookSocialPrimaryButton buttonText={'Login'} onClick={handleLogin} isExpanded={false}
-                                         bgColor={paletteColors.color_primary} data-testid="login-button"/>
+                                         bgColor={paletteColors.color_primary} dataTestId={'login-button'}/>
 
             </Box>
         </Modal>
