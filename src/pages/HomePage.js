@@ -93,7 +93,7 @@ const HomePage = () => {
 
                     }}
                 />
-                <BookSocialTitle level={1} text={`Welcome ${profile.username}`}/>
+                <BookSocialTitle level={1} text={`Welcome ${profile.name}`}/>
             </div>
             <BookList title="Books of your favourite genre" books={books}/>
             <BookList title="Books recently added" books={books}/>
