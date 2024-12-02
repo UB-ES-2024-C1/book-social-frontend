@@ -6,7 +6,8 @@ import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
 import BookSocialGenereSelector from '../components/BookSocialGenereSelector';
 import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
-import useProfile from "../hooks/profile/profile";
+import useProfile from '../hooks/profile/profile';
+import api from '../services/api';
 
 
 const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
@@ -242,23 +243,13 @@ const NewBook = () => {
         };
 
         try {
-            const response = await fetch('https://booksocial-dev-development.up.railway.app/books', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                body: JSON.stringify(postData),
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to send data to the backend');
-            }
-    
+            // Realizar la solicitud POST usando la instancia de axios
+            const response = await api.post('/books', postData);
+        
             // Mostrar un popup de éxito si todo funciona bien
             setSuccessMessage('Book registered successfully!');
             setOpenSuccessPopup(true);
-    
+        
             // Resetear el formulario
             setTitle('');
             setPublishDate('');
@@ -271,11 +262,26 @@ const NewBook = () => {
             setLanguage('');
             
         } catch (error) {
-            setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+            // Manejo de errores
+            if (error.response) {
+                // Error de respuesta del servidor
+                console.error('Error en la respuesta del backend:', error.response.data);
+                setConnectionErrorMessage('There was an issue with the backend. The book could not be sent.');
+            } else if (error.request) {
+                // Error de la solicitud (no hubo respuesta)
+                console.error('Error en la solicitud:', error.request);
+                setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+            } else {
+                // Otros errores
+                console.error('Error:', error.message);
+                setConnectionErrorMessage('An unexpected error occurred.');
+            }
+        
             setOpenConnectionErrorPopup(true);
         } finally {
             setIsSubmitting(false); // Rehabilitar el botón de envío
         }
+        
 
         
     };
