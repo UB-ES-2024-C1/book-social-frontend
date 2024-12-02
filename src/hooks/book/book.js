@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import bookData from '../mocks/book_1.json';
-import BookDetails from '../dto/BookDetails';
+import api from "../../services/api";
+import BookDetails from "../../dto/BookDetails";
 
 const useBook = (id) => {
     const [book, setBook] = useState(null);

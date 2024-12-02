@@ -36,12 +36,13 @@ const useProfile = () => {
     };
 
     const updateProfile = async (newProfileData) => {
+        console.log('Update', newProfileData);
         if (!loading) {
             setLoading(true);
         }
         setUpdateStatus(Status.EMPTY);
         try {
-            const response = await api.put('/profile', newProfileData);
+            const response = await api.patch('/auth/update', newProfileData);
             if (response.status === 200) {
                 setProfile(response.data);
                 setUpdateStatus(Status.SUCCESS);

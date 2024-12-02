@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Avatar, Box, Button, Dialog, DialogActions, DialogContent, Snackbar, Typography,} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import paletteColors from "../resources/palette";
@@ -14,15 +14,29 @@ import defaultCoverImage from '../assets/portada.jpeg'; // Importa la imagen por
 const Profile = () => {
     const [openModal, setOpenModal] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+
     const containerRef = useRef(null);
 
-    const [description, setDescription] = useState(
-        "Book lover and avid reader."
-    );
-    const [name, setName] = useState("Núria Pallejà");
-    const [username, setUsername] = useState("nuriapalleja");
-    const [genre, setGenre] = useState("nuriapalleja");
-    const {profile, loading, error, fetchProfile} = useProfile();
+    const [localProfile, setLocalProfile] = useState({
+        name: "",
+        username: "",
+        description: "",
+        favGenre: "",
+    });
+
+    const {profile, loading, error, fetchProfile, updateProfile, updateStatus} = useProfile();
+
+    useEffect(() => {
+        if (profile) {
+            setLocalProfile({
+                name: profile.name || "",
+                username: profile.username || "",
+                description: profile.description || "",
+                favGenre: profile.favGenre || "",
+            });
+        }
+    }, [profile]);
 
     if (loading) {
         return <LoadingPage/>;
@@ -52,14 +66,26 @@ const Profile = () => {
         setOpenModal((prev) => !prev);
     };
 
-    const handleSaveChanges = () => {
-        //cridar upadte back i mostrar dialog de error
+    const handleSaveChanges = async () => {
+        await updateProfile(localProfile);
+        if (updateStatus === "SUCCESS") {
+            setSnackbarMessage("Profile updated successfully!");
+        } else {
+            setSnackbarMessage("Failed to update profile.");
+        }
         setSnackbarOpen(true);
         toggleModal();
     };
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
+    };
+
+    const handleInputChange = (field, value) => {
+        setLocalProfile((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
     };
 
     const scrollContainer = (direction) => {
@@ -233,34 +259,36 @@ const Profile = () => {
                         label="Name"
                         type="text"
                         fullWidth
-                        value={profile.name}
-                        onChange={(e) => setName(e.target.value)}
-                        sx={{marginBottom: '16px'}}
+                        value={localProfile.name}
+                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        sx={{marginBottom: "16px"}}
                     />
                     <BookSocialTextField
                         label="Username"
                         type="text"
                         fullWidth
-                        value={profile.username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        sx={{marginBottom: '16px'}}
-                    /> <BookSocialTextField
-                    label="Description"
-                    type="text"
-                    fullWidth
-                    value={profile.description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    sx={{marginBottom: '16px'}}
-                /><BookSocialTextField
-                    label="Favourite Genre"
-                    type="text"
-                    fullWidth
-                    value={profile.genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                />
+                        value={localProfile.username}
+                        onChange={(e) => handleInputChange("username", e.target.value)}
+                        sx={{marginBottom: "16px"}}
+                    />
+                    <BookSocialTextField
+                        label="Description"
+                        type="text"
+                        fullWidth
+                        value={localProfile.description}
+                        onChange={(e) => handleInputChange("description", e.target.value)}
+                        sx={{marginBottom: "16px"}}
+                    />
+                    <BookSocialTextField
+                        label="Favourite Genre"
+                        type="text"
+                        fullWidth
+                        value={localProfile.favGenre}
+                        onChange={(e) => handleInputChange("favGenre", e.target.value)}
+                    />
                 </DialogContent>
                 <DialogActions>
-                    <BookSocialPrimaryButton onClick={toggleModal} buttonText={"Cancel"}/>
+                    <BookSocialPrimaryButton onClick={() => setOpenModal(false)} buttonText={"Cancel"}/>
                     <BookSocialPrimaryButton onClick={handleSaveChanges} buttonText={"Save"}/>
                 </DialogActions>
             </Dialog>
