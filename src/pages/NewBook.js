@@ -6,13 +6,13 @@ import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
 import BookSocialGenereSelector from '../components/BookSocialGenereSelector';
 import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
+import useProfile from "../hooks/profile/profile";
 
 
 const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
 
 const NewBook = () => {
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
     const [language, setLanguage] = useState('');
     const [synopsis, setSynopsis] = useState('');
     const [publishDate, setPublishDate] = useState('');
@@ -22,9 +22,9 @@ const NewBook = () => {
     const fileInputRef = useRef(null);
     const [edition, setEdition] = useState('');
     const [publisher, setPublisher] = useState('');
+    const {profile, loading, error, fetchProfile} = useProfile();
 
     const [titleError, setTitleError] = useState('');
-    const [authorError, setAuthorError] = useState('');
     const [languageError, setLanguageError] = useState('');
     const [synopsisError, setSynopsisError] = useState('');
     const [genresError, setGenresError] = useState('');
@@ -52,16 +52,6 @@ const NewBook = () => {
             setTitleError('The title cannot exceed 200 characters.');
         } else {
             setTitleError('');
-        }
-    };
-
-    const handleAuthorChange = (e) => {
-        const value = e.target.value;
-        setAuthor(value);
-
-        // Limpiar el error si el usuario comienza a escribir
-        if (value.trim()) {
-            setAuthorError('');
         }
     };
 
@@ -201,11 +191,6 @@ const NewBook = () => {
             hasErrors = true;
         }
 
-        if (!author.trim()) {
-            setAuthorError('Author is required.');
-            hasErrors = true;
-        }
-
         if(!language.trim()) {
             setLanguageError('Language is required.')
             hasErrors = true;
@@ -245,7 +230,7 @@ const NewBook = () => {
 
         const postData = {
             title,
-            author,
+            author: profile.id,
             publication_date: publishDate,
             genres: selectedGenres,
             synopsis,
@@ -276,7 +261,6 @@ const NewBook = () => {
     
             // Resetear el formulario
             setTitle('');
-            setAuthor('');
             setPublishDate('');
             setSelectedGenres([]);
             setSynopsis('');
@@ -388,17 +372,6 @@ const NewBook = () => {
                             maxLength={200}
                             status={titleError ? 'error' : 'default'}
                             errorMessage={titleError}
-                        />
-                    </div>
-                    {/* Author Field */}
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
-                        <BookSocialTextField
-                            label="Author"
-                            value={author}
-                            onChange={handleAuthorChange}
-                            required={true}
-                            status={authorError ? 'error' : 'default'}
-                            errorMessage={authorError}
                         />
                     </div>
                     {/* Synopsis Field */}
