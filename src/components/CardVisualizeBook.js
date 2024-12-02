@@ -3,12 +3,19 @@ import {Box, Card, CardContent, CardMedia, Rating, Tooltip, Typography} from '@m
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
 
-const CardvisualizeBook = ({image, title, author, summary, rating}) => {
+const truncateText = (text) => {
+    const maxLength = 87;
+    if (text.length > maxLength) {
+        return text.slice(0, maxLength) + '...';
+    }
+    return text;
+};
+const CardvisualizeBook = ({id, image, title, author, summary, rating}) => {
     const navigate = useNavigate();
 
     const goToDetails = () => {
         console.log('Card clicked');
-        navigate(`/book-details/1`);
+        navigate(`/book-details/${(id ?? 1).toString().trim()}`);
     };
     return (
         <Card sx={{
@@ -77,7 +84,7 @@ const CardvisualizeBook = ({image, title, author, summary, rating}) => {
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
                     }}>
-                        {summary}
+                        {truncateText(summary)}
                     </Typography>
                     <Box sx={{
                         display: 'flex',
