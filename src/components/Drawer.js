@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
+import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
@@ -137,7 +137,7 @@ export default function PermanentDrawer({isLogged}) {
                         route: 'New book'
                     },
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
-                    // {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>

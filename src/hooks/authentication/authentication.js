@@ -60,7 +60,6 @@ export const AuthProvider = ({children}) => {
             const response = await api.post('/auth/register', payload);
 
             if (response.status === 201) {
-                setIsLoggedIn(true);
                 await login(email, pass);
             } else {
                 setError(`Error on try to register: ${response.data.message}`);

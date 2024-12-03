@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Outlet, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Outlet, Route, Routes} from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
 import NavAppBar from './components/NavAppBar';
-import {AuthProvider} from "./hooks/authentication";
+import {AuthProvider, useAuth} from "./hooks/authentication";
 import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -35,11 +35,13 @@ const DrawerLayout = () => (
 
 
 function AppContent() {
+    const {isLoggedIn} = useAuth(); // Assumes useAuth returns an isAuthenticated property
+
     return (
         <Routes>
             {/* Routes without Drawer */}
             <Route element={<MainLayout/>}>
-                <Route path="/" element={<LandingPage/>}/>
+                <Route path="/" element={isLoggedIn ? <Navigate to="/home"/> : <LandingPage/>}/>
             </Route>
 
             {/* Routes with Drawer */}

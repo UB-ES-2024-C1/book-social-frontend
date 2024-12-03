@@ -1,65 +1,34 @@
 import React from "react";
 import BookSocialTitle from "../components/BookSocialTitle";
-import book1 from "../assets/books/book1.jpg";
-import book2 from "../assets/books/book2.jpg";
-import book3 from "../assets/books/book3.jpg";
-import book4 from "../assets/books/book4.jpg";
-import book5 from "../assets/books/book5.jpg";
 import userImage from "../assets/no_image_available.png";
 import BookList from "../components/BookList";
 import useProfile from "../hooks/profile/profile";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
+import useBooks from "../hooks/books";
+import {useNavigate} from "react-router-dom";
+import * as routes from "../resources/routes_name";
+import {Spacer} from "../resources/spacer";
+
 
 const HomePage = () => {
-    const {profile, loading, error, fetchProfile} = useProfile();
-    console.log(profile);
+    const {profile, loadingProfile, errorProfile} = useProfile();
+    const {
+        booksRecent,
+        booksGenre,
+        booksTopRated,
+        loading,
+        error,
+    } = useBooks('', true);
+    const navigate = useNavigate();
 
-    if (loading) {
+    if (loadingProfile || loading) {
         return <LoadingPage/>;
     }
 
-    if (error) {
-        return <ErrorPage errorMessage={error} onClick={() => fetchProfile()}/>;
+    if (errorProfile || error) {
+        return <ErrorPage errorMessage={errorProfile || error} onClick={() => navigate(routes.HOME)}/>;
     }
-
-    const books = [
-        {
-            image: book1,
-            title: "Animals in Translation",
-            author: "Temple Grandin",
-            summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
-            rating: 4.5,
-        },
-        {
-            image: book2,
-            title: "Muertes perfectamente evitables",
-            author: "Deirdre Sullivan",
-            summary: "Las gemelas Maddy y Catlin acaban de mudarse a Ballyfrann, un pueblo...",
-            rating: 3.0,
-        },
-        {
-            image: book3,
-            title: "La sombra del viento",
-            author: "Carlos Ruiz Zafón",
-            summary: "En la Barcelona de la postguerra, un joven llamado Daniel descubre un libro...",
-            rating: 5.0,
-        },
-        {
-            image: book4,
-            title: "Cien años de soledad",
-            author: "Gabriel García Márquez",
-            summary: "La historia de la familia Buendía, que vive en el pueblo ficticio de Macondo...",
-            rating: 4.8,
-        },
-        {
-            image: book5,
-            title: "1984",
-            author: "George Orwell",
-            summary: "En una sociedad totalitaria gobernada por el Gran Hermano, Winston Smith lucha por mantener su libertad...",
-            rating: 4.7,
-        },
-    ];
 
     return (
         <div
@@ -93,11 +62,20 @@ const HomePage = () => {
 
                     }}
                 />
-                <BookSocialTitle level={1} text={`Welcome ${profile.username}`}/>
+                <BookSocialTitle level={1} text={`Welcome ${profile.name}`}/>
             </div>
-            <BookList title="Books of your favourite genre" books={books}/>
-            <BookList title="Books recently added" books={books}/>
-            <BookList title="Most popular books" books={books}/>
+            {booksGenre.length > 0 && (
+                <BookList title="Books of your favourite genre" books={booksGenre}/>
+            )}
+            <Spacer size={24}/>
+            {booksRecent.length > 0 && (
+                <BookList title="Books recently added" books={booksRecent}/>
+            )}
+            <Spacer size={24}/>
+            {booksTopRated.length > 0 && (
+                <BookList title="Most popular books" books={booksTopRated}/>
+            )}
+
         </div>
     );
 
