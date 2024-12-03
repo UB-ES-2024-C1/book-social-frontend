@@ -99,7 +99,7 @@ const DiscoveryPage = () => {
             }}>
                 {books.map((item) => (
                     <CardvisualizeBook
-                        key={item.id} // Añade una clave única para cada elemento de la lista
+                        key={item.id}
                         id={item.id}
                         title={item.title}
                         image={item.image}
