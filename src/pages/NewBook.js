@@ -231,15 +231,15 @@ const NewBook = () => {
 
         const postData = {
             title,
-            author: profile.id,
+            author: parseInt(profile.id, 10),
             publication_date: publishDate,
             genres: selectedGenres,
             synopsis,
-            image_url: coverImage || '', 
-            publisher,
+            image_url: coverImage || '',
+            publisher: publisher || '',
             ISBN: isbn,
-            edition,
-            language
+            edition: edition || '',
+            language,
         };
 
         try {
@@ -266,11 +266,11 @@ const NewBook = () => {
             if (error.response) {
                 // Error de respuesta del servidor
                 console.error('Error en la respuesta del backend:', error.response.data);
-                setConnectionErrorMessage('There was an issue with the backend. The book could not be sent.');
+                setConnectionErrorMessage('There was an issue. The book could not be registered.');
             } else if (error.request) {
                 // Error de la solicitud (no hubo respuesta)
                 console.error('Error en la solicitud:', error.request);
-                setConnectionErrorMessage('There was a connection issue. The book could not be sent.');
+                setConnectionErrorMessage('There was a connection issue. The book could not be registered.');
             } else {
                 // Otros errores
                 console.error('Error:', error.message);
