@@ -45,7 +45,7 @@ const Profile = () => {
     }
 
     if (error) {
-        return <ErrorPage errorMessage={error} onClick={() => fetchProfile()}/>;
+        return <ErrorPage insideMainPage={true} errorMessage={error} onClick={() => fetchProfile()}/>;
     }
 
     const handleImageChange = (event, type) => {
@@ -56,10 +56,10 @@ const Profile = () => {
                 const imageData = reader.result;
                 if (type === "profile") {
                     localStorage.setItem("profileImage", imageData);
-                    setLocalProfile((prev) => ({ ...prev, image: imageData }));
+                    setLocalProfile((prev) => ({...prev, image: imageData}));
                 } else if (type === "cover") {
                     localStorage.setItem("coverImage", imageData);
-                    setLocalProfile((prev) => ({ ...prev, coverImage: imageData }));
+                    setLocalProfile((prev) => ({...prev, coverImage: imageData}));
                 }
             };
             reader.readAsDataURL(file);
