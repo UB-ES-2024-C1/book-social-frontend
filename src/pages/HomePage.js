@@ -9,11 +9,10 @@ import useBooks from "../hooks/books";
 import {useNavigate} from "react-router-dom";
 import * as routes from "../resources/routes_name";
 import {Spacer} from "../resources/spacer";
-import defaultCoverImage from "../assets/portada.jpeg";
 
 
 const HomePage = () => {
-    const {profile, loadingProfile, errorProfile} = useProfile();
+    const {profile, loading: loadingProfile, error: errorProfile} = useProfile();
     const {
         booksRecent,
         booksGenre,
