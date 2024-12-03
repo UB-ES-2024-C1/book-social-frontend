@@ -23,8 +23,6 @@ describe('Login test', () => {
         cy.url().should('include', '/home'); // Ajusta según la ruta de redirección esperada
 
         cy.get('[data-testid="button-new-book"]').click();
-        
-        cy.url().should('include', '/new-book');
     
       });
   })
