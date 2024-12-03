@@ -35,13 +35,14 @@ const useProfile = () => {
             console.log(response);
             setLoading(false);
             if (response.status === 200) {
-
                 setProfile({
                     ...response.data,
                     books: fetchedBooks,
                     image: profileImage,
                     coverImage: coverImage,
                 });
+                console.log('profile');
+                console.log(profile);
                 setLoading(false);
             } else {
                 setError("Error fetching profile data");
