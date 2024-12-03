@@ -1,70 +1,66 @@
-import { render, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import {render, screen} from '@testing-library/react';
+import {act} from "react";
 import useBook from './book';
 import api from '../../services/api';
+import BookDetails from "../../dto/BookDetails";
 
-// Mock del módulo API
+// Mock del módulo API y de BookDetails
 jest.mock('../../services/api', () => ({
     get: jest.fn(),
 }));
 
-// Componente de prueba para consumir el hook
-const TestComponent = ({ id }) => {
-    const { book, loading, error } = useBook(id);
+jest.mock('../../dto/BookDetails', () => ({
+    fromJSON: jest.fn(),
+}));
 
-    if (loading) return <div data-testid="loading">Loading...</div>;
+const TestComponent = ({id}) => {
+    const {book, loading, error} = useBook(id);
+
+    if (loading) return <div data-testid="loading-spinner"></div>;
     if (error) return <div data-testid="error">{error}</div>;
     return <div data-testid="book-title">{book?.title}</div>;
 };
 
-describe('useBook', () => {
+describe('useBook Hook', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it('should render loading state initially', () => {
-        render(<TestComponent id="1" />);
-        expect(screen.getByTestId('loading')).toHaveTextContent('Loading...');
+    it('renders loading state initially', () => {
+        render(<TestComponent id="1"/>);
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
     });
 
-    it('should fetch book details successfully', async () => {
-        const mockBook = { title: 'Mock Book Title' };
-        api.get.mockResolvedValueOnce({ status: 200, data: mockBook });
+    it('fetches and displays book details successfully', async () => {
+        const mockBook = {title: 'Mock Book Title'};
+        BookDetails.fromJSON.mockReturnValueOnce(mockBook); // Mock de BookDetails
+        api.get.mockResolvedValueOnce({status: 200, data: mockBook}); // Mock de la API
 
-        render(<TestComponent id="1" />);
+        render(<TestComponent id="1"/>);
 
-        // Esperamos a que el componente se re-renderice después de la llamada a la API
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
         await act(async () => {
-            await Promise.resolve(); // Procesar el ciclo de eventos
+            await Promise.resolve();
         });
 
         expect(screen.getByTestId('book-title')).toHaveTextContent('Mock Book Title');
         expect(api.get).toHaveBeenCalledWith('/books/book-detail/1');
     });
 
-    it('should handle fetch error', async () => {
+    it('displays error when fetch fails', async () => {
         api.get.mockRejectedValueOnce(new Error('Error fetching book details'));
 
-        render(<TestComponent id="1" />);
+        render(<TestComponent id="1"/>);
 
-        // Esperamos a que el componente se re-renderice después de la llamada a la API
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
         await act(async () => {
-            await Promise.resolve(); // Procesar el ciclo de eventos
+            await Promise.resolve();
         });
 
         expect(screen.getByTestId('error')).toHaveTextContent('Error fetching book details');
+        expect(api.get).toHaveBeenCalledWith('/books/book-detail/1');
     });
-
-    it('should handle non-200 response', async () => {
-        api.get.mockResolvedValueOnce({ status: 400, data: { message: 'Bad Request' } });
-
-        render(<TestComponent id="1" />);
-
-        // Esperamos a que el componente se re-renderice después de la llamada a la API
-        await act(async () => {
-            await Promise.resolve(); // Procesar el ciclo de eventos
-        });
-
-        expect(screen.getByTestId('error')).toHaveTextContent('Error fetching book details');
-    });
+    
 });

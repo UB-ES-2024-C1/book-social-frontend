@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import App from './App';
-import {AuthProvider} from './hooks/authentication'; // Ajusta la ruta si es necesario
+import {AuthProvider} from './hooks/authentication';
 
 // Mocks de componentes y páginas
 jest.mock('./pages/HomePage', () => () => <div>Home Page</div>);
@@ -24,5 +24,5 @@ describe('App Component', () => {
         );
         expect(screen.getByText(/Landing Page/i)).toBeInTheDocument();
     });
-    
+
 });
