@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Typography} from '@mui/material';
-import paletteColors from "../resources/palette";
+import paletteColors from "../../resources/palette";
 import PropTypes from 'prop-types';
 
 const BookSocialPrimaryButton = ({
@@ -9,6 +9,7 @@ const BookSocialPrimaryButton = ({
                                      textColor = paletteColors.textColorWeakest,
                                      bgColor = paletteColors.color_primary,
                                      isExpanded = false,
+                                     dataTestId,
                                  }) => {
     return (
         <Button
@@ -24,6 +25,7 @@ const BookSocialPrimaryButton = ({
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
             }}
+            data-testid={dataTestId}
         >
             <Typography
                 variant={isExpanded ? "h6" : "button"} // Adjust the typography size
@@ -42,6 +44,7 @@ BookSocialPrimaryButton.propTypes = {
     textColor: PropTypes.string,
     bgColor: PropTypes.string,
     isExpanded: PropTypes.bool,
+    dataTestId: PropTypes.string, 
 };
 
 export default BookSocialPrimaryButton;

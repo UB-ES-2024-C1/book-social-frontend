@@ -1,7 +1,9 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import {alpha, styled} from '@mui/material/styles';
+import * as routes from '../resources/routes_name';
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -45,13 +47,26 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }));
 
 const SearchBar = () => {
+    const [inputValue, setInputValue] = useState('');
+    const navigate = useNavigate();
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter' && inputValue.trim() !== '') {
+            navigate(`${routes.DISCOVERY}?search=${encodeURIComponent(inputValue.trim())}`);
+            setInputValue('');
+        }
+    };
+
     return (
         <Search>
             <SearchIconWrapper>
                 <SearchIcon/>
             </SearchIconWrapper>
             <StyledInputBase
-                placeholder="Search…"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Search by title"
                 inputProps={{'aria-label': 'search'}}
             />
         </Search>

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Accordion, AccordionDetails, AccordionSummary} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BookSocialTitle from "./BookSocialTitle";
-import BookSocialText from "./BookSocialText";
-import paletteColors from "../resources/palette";
+import BookSocialTitle from "../BookSocialTitle";
+import BookSocialText from "../BookSocialText";
+import paletteColors from "../../resources/palette";
 
 const BookSocialAccordion = ({title, open = false, body}) => {
     const [expanded, setExpanded] = React.useState(open);

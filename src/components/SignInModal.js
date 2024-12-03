@@ -56,13 +56,13 @@ const SignInModal = ({open, handleClose}) => {
     const types_person = ['Reader', 'Writer'];
 
     const handleSignIn = async () => {
+        console.log(genre)
         // Intentamos realizar el registro
         await signIn(
             name,
             username,
             email,
             password,
-            password2,
             genre,
             personType
         );
@@ -137,12 +137,14 @@ const SignInModal = ({open, handleClose}) => {
                         type={'text'}
                         label={'Name'}
                         onChange={(e) => setName(e.target.value)}
+                        dataTestId={'name-input'}
                     />
                     <BookSocialTextField
                         value={username}
                         label={'Username'}
                         type={'text'}
                         onChange={(e) => setUsername(e.target.value)}
+                        dataTestId={'username-input'}
                     />
                 </Box>
                 <BookSocialTextField
@@ -150,6 +152,7 @@ const SignInModal = ({open, handleClose}) => {
                     label={'Email'}
                     type={'email'}
                     onChange={(e) => setEmail(e.target.value)}
+                    dataTestId={'email'}
                 />
                 <Box sx={{position: 'relative'}}>
                     <BookSocialTextField
@@ -157,6 +160,7 @@ const SignInModal = ({open, handleClose}) => {
                         type={showPassword ? 'text' : 'password'}
                         label={'Enter your password'}
                         onChange={(e) => setPassword(e.target.value)}
+                        dataTestId={'password-input'}
                     />
                     <IconButton
                         onClick={toggleShowPassword}
@@ -178,6 +182,7 @@ const SignInModal = ({open, handleClose}) => {
                         type={showPassword2 ? 'text' : 'password'}
                         label={'Confirm your password'}
                         onChange={(e) => setPassword2(e.target.value)}
+                        dataTestId={'password2-input'}
                     />
                     <IconButton
                         onClick={toggleShowPassword2}
@@ -206,6 +211,7 @@ const SignInModal = ({open, handleClose}) => {
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
                             options={types_genre}
+                            dataTestId={'genre-dropdown'}
                         />
                     </FormControl>
                     <FormControl fullWidth>
@@ -220,6 +226,7 @@ const SignInModal = ({open, handleClose}) => {
                             value={personType}
                             onChange={(e) => setPersonType(e.target.value)}
                             options={types_person}
+                            dataTestId={'person-type-dropdown'}
                         />
                     </FormControl>
                 </Box>
@@ -230,7 +237,7 @@ const SignInModal = ({open, handleClose}) => {
                     />
                 )}
                 <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
-                                         bgColor={paletteColors.color_primary}/>
+                                         bgColor={paletteColors.color_primary} dataTestId={'create-button'}/>
             </Box>
         </Modal>
     );

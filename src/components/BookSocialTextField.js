@@ -15,6 +15,7 @@ const BookSocialTextField = ({
                                  status = "default", // 'default', 'error', or 'success'
                                  required = false, 
                                  isDate = false,
+                                 dataTestId,
 
                              }) => {
     const isError = status === "error";
@@ -37,6 +38,7 @@ const BookSocialTextField = ({
                         shrink: true, // Aplica solo cuando es el campo "Publish Date"
                     } : {},
                     input: {
+                        'data-testid': dataTestId,
                         maxLength: maxLength, // Limita la longitud de caracteres
                     }
                 }}
@@ -77,6 +79,7 @@ BookSocialTextField.propTypes = {
     status: PropTypes.oneOf(['default', 'error', 'success']),
     required: PropTypes.bool,
     maxLength: PropTypes.number,
+    dataTestId: PropTypes.string,
 };
 
 export default BookSocialTextField;

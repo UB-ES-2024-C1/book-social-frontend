@@ -108,8 +108,9 @@ const LoginModal = ({open, handleClose}) => {
                 </Typography>
                 <BookSocialTextField
                     value={username}
-                    label={'Username'}
+                    label={'Email'}
                     onChange={(e) => setUsername(e.target.value)}
+                    dataTestId="username-input"
                 />
                 <Box sx={{position: 'relative'}}>
                     <BookSocialTextField
@@ -117,6 +118,7 @@ const LoginModal = ({open, handleClose}) => {
                         type={showPassword ? 'text' : 'password'}
                         label={'Enter your password'}
                         onChange={(e) => setPassword(e.target.value)}
+                        dataTestId="password-input"
                     />
                     <IconButton
                         onClick={toggleShowPassword}
@@ -152,7 +154,7 @@ const LoginModal = ({open, handleClose}) => {
                     />
                 )}
                 <BookSocialPrimaryButton buttonText={'Login'} onClick={handleLogin} isExpanded={false}
-                                         bgColor={paletteColors.color_primary}/>
+                                         bgColor={paletteColors.color_primary} dataTestId={'login-button'}/>
 
             </Box>
         </Modal>

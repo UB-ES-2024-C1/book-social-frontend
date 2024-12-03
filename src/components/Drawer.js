@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
+import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
@@ -134,15 +134,16 @@ export default function PermanentDrawer({isLogged}) {
                     {
                         text: 'New book',
                         icon: <AiOutlinePlus/>,
-                        route: 'New book'
+                        route: 'New book',
                     },
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
-                    // {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
                             onClick={() => handleSelect(item.route)}
+                            data-testid={`button-${item.route.toLowerCase().replace(/\s+/g, '-')}`}
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -195,12 +196,16 @@ export default function PermanentDrawer({isLogged}) {
                     bottom: '20px', // Coloca el botón cerca del fondo
                     left: '20px', // Alinea a la izquierda del contenedor
                     cursor: 'pointer',
-                    color: paletteColors.textColor_weakest,
+                    color: 'white',
                     justifyContent: 'flex-start', // Asegura que todo se alinee al inicio (izquierda)
                 }}
                 onClick={handleOpenDialog}
             >
-                <Logout sx={{mr: 1, color: paletteColors.textColor_weakest}}/> {/* Icono de logout */}
+                <Logout
+                    sx={{
+                        mr: 1,
+                        color: 'white',
+                    }}/> {/* Icono de logout */}
                 Logout {/* Texto de logout */}
             </Typography>
         </Box>

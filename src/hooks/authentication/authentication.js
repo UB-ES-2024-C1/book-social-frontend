@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 
 // Creamos el contexto
 const AuthContext = createContext();
@@ -15,7 +15,7 @@ export const AuthProvider = ({children}) => {
             const payload = {
                 email: name, password: pass
             };
-            console.log("payload", payload);
+            //console.log("payload", payload);
             const response = await api.post('/auth/login', {email: name, password: pass});
             if (response.status === 200) {
                 const {token} = response.data;
@@ -53,14 +53,14 @@ export const AuthProvider = ({children}) => {
                 username,
                 email,
                 password: pass,
-                role: "writer"
+                genre: genre,
+                role: personType
             };
             console.log("payload", payload);
             const response = await api.post('/auth/register', payload);
 
             if (response.status === 201) {
-                setIsLoggedIn(true);
-                login(email, pass);
+                await login(email, pass);
             } else {
                 setError(`Error on try to register: ${response.data.message}`);
             }
