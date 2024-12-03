@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import api from "../../services/api";
+import BookSummary from "../../dto/bookSummary";
 
 const useProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -22,11 +23,22 @@ const useProfile = () => {
             const profileImage = localStorage.getItem('profileImage');
             const coverImage = localStorage.getItem('coverImage');
             const response = await api.get('auth/me')
+            var fetchedBooks = [];
+            try {
+                const responseBooks = await api.get('/books/recent');
+                if (responseBooks.status === 200) {
+                    fetchedBooks = responseBooks.data.map((bookData) => BookSummary.fromJSON(bookData));
+                }
+            } catch (e) {
+                console.log('Error on get recents books on profile');
+            }
             console.log(response);
             setLoading(false);
             if (response.status === 200) {
+
                 setProfile({
                     ...response.data,
+                    books: fetchedBooks,
                     image: profileImage,
                     coverImage: coverImage,
                 });
