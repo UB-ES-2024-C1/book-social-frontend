@@ -128,33 +128,43 @@ const NewBook = () => {
         setIsbnError(error);
     };
 
-    const handleImageChange = (e) => {
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+    
+
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
-
+    
         if (file) {
-            // Validar formato
-            const validFormats = ['image/png', 'image/jpeg']; // PNG o JPG
+            const validFormats = ['image/png', 'image/jpeg'];
             if (!validFormats.includes(file.type)) {
-                setImageError('Only PNG or JPG files');
-                setCoverImage(null); // Restablecer la imagen cargada
+                setImageError('Only PNG or JPG files are allowed');
+                setCoverImage(null);
                 return;
             }
-
-            // Validar tamaño (máximo 10MB)
-            if (file.size > 10 * 1024 * 1024) {  // 10MB en bytes
-                setImageError('Maximum size of 10MB');
-                setCoverImage(null); // Restablecer la imagen cargada
+    
+            if (file.size > 10 * 1024 * 1024) {
+                setImageError('Maximum size of 10MB exceeded');
+                setCoverImage(null);
                 return;
             }
-
-            setImageError(''); // Reset error message
-            if (coverImage) {
-                URL.revokeObjectURL(coverImage);
+    
+            setImageError('');
+            try {
+                const base64 = await convertToBase64(file); // Convertir a Base64
+                setCoverImage(base64); // Guardar la representación Base64
+            } catch (error) {
+                console.error('Error converting image to Base64:', error);
             }
-            const imageUrl = URL.createObjectURL(file); // Create temporary URL for the image
-            setCoverImage(imageUrl); // Set the image preview
         }
     };
+    
 
     const handleEditionChange = (e) => {
         const value = e.target.value;
@@ -229,18 +239,38 @@ const NewBook = () => {
             return;
         }
 
+        let base64Image = coverImage;
+
+        // Si no hay imagen cargada, convertir la default a Base64
+        if (!coverImage) {
+            try {
+                const response = await fetch(defaultbook); // Fetch del archivo local
+                const blob = await response.blob(); // Convertirlo a Blob
+                base64Image = await convertToBase64(blob); // Convertir a Base64
+            } catch (error) {
+                console.error('Error converting default image to Base64:', error);
+            }
+        }
+
+
         const postData = {
             title,
             author: parseInt(profile.id, 10),
-            publication_date: publishDate,
-            genres: selectedGenres,
-            synopsis,
-            image_url: coverImage || '',
-            publisher: publisher || '',
-            ISBN: isbn,
-            edition: edition || '',
-            language,
+            publication_date: new Date(publishDate).toISOString().split('T')[0],
+            genres: selectedGenres || [],
+            categories: ["default"],
+            synopsis: synopsis || "No synopsis available.",
+            image_url: null,
+            publisher: publisher || "Unknown",
+            ISBN: isbn || "Unknown",
+            edition: edition && edition.length >= 1 && edition.length <= 50 ? edition : "Unknown",
+            language: language || "Unknown",
+            num_pages: 100,
+            externalRating: 4,
+
         };
+
+        
 
         try {
             // Realizar la solicitud POST usando la instancia de axios
