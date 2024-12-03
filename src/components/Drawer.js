@@ -134,7 +134,7 @@ export default function PermanentDrawer({isLogged}) {
                     {
                         text: 'New book',
                         icon: <AiOutlinePlus/>,
-                        route: 'New book'
+                        route: 'New book',
                     },
                     {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
                     {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
@@ -143,6 +143,7 @@ export default function PermanentDrawer({isLogged}) {
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
                             onClick={() => handleSelect(item.route)}
+                            data-testid={`button-${item.route.toLowerCase().replace(/\s+/g, '-')}`}
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
