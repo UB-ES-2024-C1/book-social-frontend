@@ -1,0 +1,34 @@
+name: Run Cypress Tests
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.11.1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Cypress
+        run: npm install cypress
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+      - name: Upload Cypress results
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results
+          path: cypress/videos/
