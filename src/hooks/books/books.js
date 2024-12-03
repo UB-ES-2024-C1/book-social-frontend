@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import api from "../../services/api";
 import BookSummary from "../../dto/bookSummary";
 
-const useBooks = () => {
+const useBooks = (searchQuery = '') => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,7 +15,6 @@ const useBooks = () => {
         try {
             const response = await api.get('/books/book-list');
             if (response.status === 200) {
-                console.log(response.data);
                 const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
                 setBooks(fetchedBooks);
                 setLoading(false);
@@ -30,6 +29,7 @@ const useBooks = () => {
     };
 
     const fetchBooksByTitle = async (title) => {
+
         if (!loading) {
             setLoading(true);
         }
@@ -37,8 +37,7 @@ const useBooks = () => {
         try {
             const response = await api.get(`/books/search?title=${encodeURIComponent(title)}`);
             if (response.status === 200) {
-                console.log(response.data);
-                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                const fetchedBooks = response.data.books.map((bookData) => BookSummary.fromJSON(bookData));
                 setBooks(fetchedBooks);
                 setLoading(false);
             } else {
@@ -52,8 +51,12 @@ const useBooks = () => {
     };
 
     useEffect(() => {
-        fetchBooks();
-    }, []);
+        if (searchQuery.trim()) {
+            fetchBooksByTitle(searchQuery);
+        } else {
+            fetchBooks();
+        }
+    }, [searchQuery]);
 
     return {books, loading, error, fetchBooks, fetchBooksByTitle};
 };

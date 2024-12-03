@@ -8,17 +8,27 @@ import paletteColors from "../resources/palette";
 import {Spacer} from "../resources/spacer";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
 
-const ErrorPage = ({errorMessage, onClick}) => {
+const ErrorPage = ({errorMessage, onClick, insideMainPage = false}) => {
+    const Container = insideMainPage ? 'div' : PageContainer;
+
     return (
-        <PageContainer>
+        <Container
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                textAlign: 'center',
+                width: "100%"
+            }}
+        >
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    minWidth: 'calc(100vh - 50px)',
-                    textAlign: 'center',
                 }}
             >
                 <BookSocialTitle
@@ -38,13 +48,14 @@ const ErrorPage = ({errorMessage, onClick}) => {
                     onClick={onClick}
                 />
             </Box>
-        </PageContainer>
+        </Container>
     );
 };
 
 ErrorPage.propTypes = {
     errorMessage: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    insideMainPage: PropTypes.bool,
 };
 
 export default ErrorPage;
