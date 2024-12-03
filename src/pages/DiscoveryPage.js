@@ -71,7 +71,7 @@ const DiscoveryPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
-                gap: '70%',
+                gap: '65%',
             }}>
                 <BookSocialTitle
                     level={3}

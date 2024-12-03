@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import paletteColors from "../resources/palette";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CardvisualizeBook from "./CardVisualizeBook";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CardvisualizeBook from "./CardVisualizeBook";
 
 const BookList = ({title, books}) => {
     const containerRef = useRef(null);
@@ -66,28 +66,32 @@ const BookList = ({title, books}) => {
                         padding: "16px 30px",
                     }}
                 >
-                    {books.map((book, index) => (
-                        <Box
-                            key={index}
-                            sx={{
-                                flex: "0 0 auto",
-                                transition: "transform 0.2s",
-                                "&:hover": {
-                                    transform: "scale(1.05)",
-                                },
-                                cursor: "pointer",
-                            }}
-                        >
-                            <CardvisualizeBook
-                                image={book.image}
-                                title={book.title}
-                                author={book.author}
-                                summary={book.summary}
-                                genre={book.genre}
-                                rating={book.rating}
-                            />
-                        </Box>
-                    ))}
+                    {books.map((book, index) => {
+                        console.log(`book ${index}`); // Imprime el contenido de cada libro en la consola
+                        console.log(book); // Imprime el contenido de cada libro en la consola
+                        return (
+                            <Box
+                                key={index}
+                                sx={{
+                                    flex: "0 0 auto",
+                                    transition: "transform 0.2s",
+                                    "&:hover": {
+                                        transform: "scale(1.05)",
+                                    },
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <CardvisualizeBook
+                                    id={book.id}
+                                    image={book.image}
+                                    title={book.title}
+                                    author={book.author || book.authorName}
+                                    summary={book.summary || book.synopsis}
+                                    rating={book.rating || book.googleAverageRating}
+                                />
+                            </Box>
+                        );
+                    })}
                 </div>
                 <IconButton
                     onClick={() => scrollContainer("right")}

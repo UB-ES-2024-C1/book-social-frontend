@@ -2,8 +2,11 @@ import {useEffect, useState} from 'react';
 import api from "../../services/api";
 import BookSummary from "../../dto/bookSummary";
 
-const useBooks = (searchQuery = '') => {
+const useBooks = (searchQuery = '', fromHome = false) => {
     const [books, setBooks] = useState([]);
+    const [booksRecent, setBooksRecent] = useState([]);
+    const [booksGenre, setBooksGenre] = useState([]);
+    const [booksTopRated, setBooksTopRated] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -29,7 +32,6 @@ const useBooks = (searchQuery = '') => {
     };
 
     const fetchBooksByTitle = async (title) => {
-
         if (!loading) {
             setLoading(true);
         }
@@ -50,15 +52,94 @@ const useBooks = (searchQuery = '') => {
         }
     };
 
+    const fetchRecentBooks = async () => {
+        if (!loading) {
+            setLoading(true);
+        }
+        setError(null);
+        try {
+            const response = await api.get('/books/recent');
+            if (response.status === 200) {
+                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                setBooksRecent(fetchedBooks);
+                setLoading(false);
+            } else {
+                setError(`Error fetching recent books: ${response.data.message}`);
+                setLoading(false);
+            }
+        } catch (err) {
+            setError('Error fetching recent books');
+            setLoading(false);
+        }
+    };
+
+    const fetchBooksByGenre = async (genre) => {
+        if (!loading) {
+            setLoading(true);
+        }
+        setError(null);
+        try {
+            const response = await api.get('/books/book-list');
+            if (response.status === 200) {
+                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                setBooksGenre(fetchedBooks);
+                setLoading(false);
+            } else {
+                setError(`Error fetching books by genre: ${response.data.message}`);
+                setLoading(false);
+            }
+        } catch (err) {
+            setError('Error fetching books by genre');
+            setLoading(false);
+        }
+    };
+
+    const fetchTopRatedBooks = async () => {
+        if (!loading) {
+            setLoading(true);
+        }
+        setError(null);
+        try {
+            const response = await api.get('/books/top-rated');
+            if (response.status === 200) {
+                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                setBooksTopRated(fetchedBooks);
+                setLoading(false);
+            } else {
+                setError(`Error fetching top-rated books: ${response.data.message}`);
+                setLoading(false);
+            }
+        } catch (err) {
+            setError('Error fetching top-rated books');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (searchQuery.trim()) {
             fetchBooksByTitle(searchQuery);
+        } else if (fromHome) {
+            fetchRecentBooks();
+            fetchBooksByGenre();
+            fetchTopRatedBooks();
         } else {
             fetchBooks();
         }
     }, [searchQuery]);
 
-    return {books, loading, error, fetchBooks, fetchBooksByTitle};
+    return {
+        books,
+        booksRecent,
+        booksGenre,
+        booksTopRated,
+        loading,
+        error,
+        fetchBooks,
+        fetchBooksByTitle,
+        fetchRecentBooks,
+        fetchBooksByGenre,
+        fetchTopRatedBooks
+    };
 };
 
 export default useBooks;

@@ -5,13 +5,20 @@ import {useNavigate} from "react-router-dom";
 
 const truncateText = (text) => {
     const maxLength = 87;
-    if (text.length > maxLength) {
-        return text.slice(0, maxLength) + '...';
+    const defaultText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+    // Si el texto es nulo o undefined, usa el texto por defecto y trunca si es necesario
+    const textToUse = text || defaultText;
+
+    if (textToUse.length > maxLength) {
+        return textToUse.slice(0, maxLength) + '...';
     }
-    return text;
+    return textToUse;
 };
 
+
 const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
+
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 

@@ -34,7 +34,7 @@ class BookSummary {
             json.id,
             json.image_url || null,
             json.title || null,
-            json.shortSynopsis || null,
+            json.shortSynopsis || json.synopsis || null,
             `${json.author?.firstName || ""} ${json.author?.lastName || ""}`.trim(),
             json.reviewValue || null
         );
