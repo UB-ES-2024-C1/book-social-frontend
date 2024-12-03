@@ -9,6 +9,7 @@ const BookSocialDropdown = ({
                                 label,
                                 options = [],
                                 sx = {},
+                                dataTestId,
                             }) => {
     return (
         <Select
@@ -33,6 +34,7 @@ const BookSocialDropdown = ({
                 },
                 ...sx,
             }}
+            data-testid={dataTestId}
             MenuProps={{
                 PaperProps: {
                     sx: {
@@ -67,6 +69,7 @@ BookSocialDropdown.propTypes = {
     label: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
     sx: PropTypes.object,
+    dataTestId: PropTypes.string, 
 };
 
 export default BookSocialDropdown;

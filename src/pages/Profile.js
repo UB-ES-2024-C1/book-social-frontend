@@ -34,6 +34,8 @@ const Profile = () => {
                 username: profile.username || "",
                 description: profile.description || "",
                 favGenre: profile.favGenre || "",
+                image: profile.image || localStorage.getItem("profileImage") || "",
+                coverImage: profile.coverImage || localStorage.getItem("coverImage") || defaultCoverImage,
             });
         }
     }, [profile]);
@@ -51,12 +53,14 @@ const Profile = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
+                const imageData = reader.result;
                 if (type === "profile") {
-                    //setProfileImage(reader.result);
+                    localStorage.setItem("profileImage", imageData);
+                    setLocalProfile((prev) => ({ ...prev, image: imageData }));
                 } else if (type === "cover") {
-                    //setCoverImage(reader.result);
+                    localStorage.setItem("coverImage", imageData);
+                    setLocalProfile((prev) => ({ ...prev, coverImage: imageData }));
                 }
-                console.log(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -115,7 +119,7 @@ const Profile = () => {
                 sx={{
                     width: "100%",
                     height: 200,
-                    backgroundImage: `url(${profile.coverImage || defaultCoverImage})`,
+                    backgroundImage: `url(${localProfile.coverImage || defaultCoverImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     position: "absolute",
@@ -151,7 +155,7 @@ const Profile = () => {
             </Box>
             <Box sx={{position: "relative"}}>
                 <Avatar
-                    src={profile.image}
+                    src={localProfile.image}
                     alt="Profile"
                     sx={{
                         width: 150,
@@ -202,15 +206,7 @@ const Profile = () => {
                 }}
             >
                 @{profile.username}
-            </Typography>
-            <Typography
-                sx={{
-                    color: "white",
-                    marginTop: "10px",
-                }}
-            >
-                {profile.description}
-            </Typography> <Typography
+            </Typography><Typography
             sx={{
                 color: "white",
                 marginTop: "10px",
