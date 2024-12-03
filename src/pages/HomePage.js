@@ -9,6 +9,7 @@ import useBooks from "../hooks/books";
 import {useNavigate} from "react-router-dom";
 import * as routes from "../resources/routes_name";
 import {Spacer} from "../resources/spacer";
+import defaultCoverImage from "../assets/portada.jpeg";
 
 
 const HomePage = () => {
@@ -51,14 +52,14 @@ const HomePage = () => {
                 }}
             >
                 <img
-                    src={userImage}
+                    src={localStorage.getItem("profileImage") || userImage}
                     alt="User Avatar"
                     style={{
                         width: "70px",
                         height: "70px",
                         marginRight: "15px",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                        borderRadius: "50%",
+                        borderRadius: "10%",
 
                     }}
                 />

@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import api from "../../services/api";
-import image from "../../components/Image";
 
 const useProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -20,13 +19,17 @@ const useProfile = () => {
         }
         setError(null);
         try {
-            const profileImage = localStorage.getItem('image');
-            const coverImage = localStorage.getItem('cover');
+            const profileImage = localStorage.getItem('profileImage');
+            const coverImage = localStorage.getItem('coverImage');
             const response = await api.get('auth/me')
             console.log(response);
             setLoading(false);
             if (response.status === 200) {
-                setProfile(response.data);
+                setProfile({
+                    ...response.data,
+                    image: profileImage,
+                    coverImage: coverImage,
+                });
                 setLoading(false);
             } else {
                 setError("Error fetching profile data");
