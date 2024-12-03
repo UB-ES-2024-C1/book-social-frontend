@@ -23,6 +23,7 @@ const Profile = () => {
         username: "",
         description: "",
         favGenre: "",
+        books: []
     });
 
     const {profile, loading, error, fetchProfile, updateProfile, updateStatus} = useProfile();
@@ -36,6 +37,7 @@ const Profile = () => {
                 favGenre: profile.favGenre || "",
                 image: profile.image || localStorage.getItem("profileImage") || "",
                 coverImage: profile.coverImage || localStorage.getItem("coverImage") || defaultCoverImage,
+                books: profile.books
             });
         }
     }, [profile]);
@@ -72,6 +74,13 @@ const Profile = () => {
 
     const handleSaveChanges = async () => {
         await updateProfile(localProfile);
+        console.log('updated profile');
+        console.log(profile);
+        setLocalProfile({
+            ...profile,
+            books: profile.books // Ensure this value is updated correctly
+        });
+
         if (updateStatus === "SUCCESS") {
             setSnackbarMessage("Profile updated successfully!");
         } else {
@@ -295,10 +304,8 @@ const Profile = () => {
                 message="Profile updated successfully!"
                 anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             />
-            {profile.role === "reader" && profile.books?.length > 0 ? (
-                <BookList title="Posts published" books={profile.books}/>
-            ) : profile.role === "writer" && profile.books?.length > 0 ? (
-                <BookList title="Books published" books={profile.books}/>
+            {profile.books?.length > 0 ? (
+                <BookList title="Books published" books={localProfile.books}/>
             ) : (
                 <Box
                     sx={{

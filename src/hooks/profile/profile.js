@@ -73,14 +73,26 @@ const useProfile = () => {
             };
             const response = await api.post('/auth/update', payload);
             console.log(response.data);
+            var fetchedBooks = [];
+            try {
+                const responseBooks = await api.get('/books/recent');
+                if (responseBooks.status === 200) {
+                    fetchedBooks = responseBooks.data.map((bookData) => BookSummary.fromJSON(bookData));
+                }
+            } catch (e) {
+                console.log('Error on get recents books on profile');
+            }
             if (response.status === 200) {
                 const result = {
                     name: response.data.user.firstName,
                     favGenre: response.data.user.genre,
                     username: response.data.user.username,
                     description: response.data.user.description,
-                    lastName: response.data.user.lastName
+                    lastName: response.data.user.lastName,
+                    books: fetchedBooks,
                 };
+                console.log('result');
+                console.log(result);
                 setProfile(result);
                 setUpdateStatus(Status.SUCCESS);
                 setLoading(false);
