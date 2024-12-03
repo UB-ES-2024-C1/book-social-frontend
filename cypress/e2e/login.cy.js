@@ -17,8 +17,8 @@ describe('Login test', () => {
 
     // Rellena los campos de usuario y contraseña
     
-    cy.get('[data-testid="username-input"]').type('testuser');
-    cy.get('[data-testid="password-input"]').type('Password123');
+    cy.get('[data-testid="username-input"]').type('raul.asins2@gmail.com');
+    cy.get('[data-testid="password-input"]').type('Testpassword_24');
 
     // Haz clic en el botón de inicio de sesión
     cy.get('[data-testid="login-button"]').should('be.visible').click();
@@ -26,7 +26,7 @@ describe('Login test', () => {
 
 
     // Verifica la redirección o el cambio de estado
-    //cy.url().should('include', '/home'); // Ajusta según la ruta de redirección esperada
+    cy.url().should('include', '/home'); // Ajusta según la ruta de redirección esperada
 
   });
 })
