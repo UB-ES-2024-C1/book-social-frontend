@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Typography} from '@mui/material';
-import paletteColors from "../resources/palette";
+import paletteColors from "../../resources/palette";
 import PropTypes from 'prop-types';
 
 const BookSocialPrimaryButton = ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Typography} from '@mui/material';
-import paletteColors from "../resources/palette";
+import paletteColors from "../../resources/palette";
 
 const BookSocialText = ({level, text, color = paletteColors.textColor, style = {}, sx = {}}) => {
     // Define font sizes for each text level
