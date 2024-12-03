@@ -28,7 +28,8 @@ const HomePage = () => {
     }
 
     if (errorProfile || error) {
-        return <ErrorPage errorMessage={errorProfile || error} onClick={() => navigate(routes.HOME)}/>;
+        return <ErrorPage insideMainPage={true} errorMessage={errorProfile || error}
+                          onClick={() => navigate(routes.HOME)}/>;
     }
 
     return (

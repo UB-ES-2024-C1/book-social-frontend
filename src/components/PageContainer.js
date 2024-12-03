@@ -6,7 +6,7 @@ import paletteColors from "../resources/palette";
 const PageContainer = ({children}) => {
     return (
         <div style={{
-            background: paletteColors.background_header,
+            background: paletteColors.background_color,
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
