@@ -10,7 +10,7 @@ import {useNavigate} from "react-router-dom";
 import * as routes from "../resources/routes_name";
 import {Spacer} from "../resources/spacer";
 import CardVisualizePost from "../components/CardVisualizePost";
-import defaultImage from '../assets/no_image_available.png';
+import defaultImage from '../assets/books/book1.jpg';
 
 
 
@@ -31,7 +31,7 @@ const HomePage = () => {
         title: 'Cómo aprender React en 10 días',
         content: 'React es una biblioteca de JavaScript para construir interfaces de usuario. En este post, compartiré algunos consejos y recursos para aprender React rápidamente.',
         hashtags: ['#React', '#JavaScript', '#WebDevelopment'],
-        image: '', // URL de la imagen del post
+        image: defaultImage, // URL de la imagen del post
     };
 
     if (loadingProfile || loading) {

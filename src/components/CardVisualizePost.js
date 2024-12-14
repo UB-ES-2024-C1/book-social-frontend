@@ -82,13 +82,14 @@ const CardVisualizePost = ({ authorName, authorImage, username, title, content, 
                             display: isLoading ? 'none' : 'block',
                             borderRadius: 10,
                             width: '100%', // Ajusta el ancho de la imagen
-                            maxHeight: 180,
-                            objectFit: 'cover',
+                            maxHeight: 180, // Máxima altura
+                            objectFit: 'contain', // Ajusta la imagen para que quepa completamente
                         }}
                         image={image}
                         alt={`${title} image`}
                         onLoad={handleImageLoad}
                     />
+
                 </Box>
             )}
         </Card>
