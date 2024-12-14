@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
+import {Box, Button, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
 
@@ -7,7 +7,6 @@ const truncateText = (text) => {
     const maxLength = 87;
     const defaultText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
-    // Si el texto es nulo o undefined, usa el texto por defecto y trunca si es necesario
     const textToUse = text || defaultText;
 
     if (textToUse.length > maxLength) {
@@ -16,9 +15,7 @@ const truncateText = (text) => {
     return textToUse;
 };
 
-
 const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
-
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -29,6 +26,11 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
 
     const handleImageLoad = () => {
         setIsLoading(false);
+    };
+
+    const saveForLater = (event) => {
+        event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
+        console.log(`Book with ID ${id} saved for later`);
     };
 
     return (
@@ -66,7 +68,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between', // Asegura que el botón esté abajo
                 alignItems: 'flex-start',
                 textAlign: 'left',
                 padding: 2,
@@ -106,7 +108,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
-                        WebkitLineClamp: 3,
+                        WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                     }}>
                         {truncateText(summary)}
@@ -138,6 +140,23 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         </Typography>
                     </Box>
                 </CardContent>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={saveForLater}
+                    sx={{
+                        mt: 1,
+                        alignSelf: 'center',
+                        fontSize: '0.8rem',
+                        textTransform: 'none',
+                        backgroundColor: paletteColors.color_primary,
+                        '&:hover': {
+                            backgroundColor: '#00A19D',
+                        }
+                    }}
+                >
+                    Save for later
+                </Button>
             </Box>
         </Card>
     );
