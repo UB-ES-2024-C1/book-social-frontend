@@ -60,7 +60,6 @@ const DiscoveryPage = () => {
         <div style={{
             minHeight: '100vh',
             maxWidth: '100%',
-            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyItems: 'flex-start',
