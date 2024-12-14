@@ -1,6 +1,6 @@
-import React from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {Spacer} from "../resources/spacer";
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Spacer } from "../resources/spacer";
 import Grid from "@mui/material/Grid2";
 import BookSocialImage from "../components/Image";
 import BookSocialRating from "../components/Rating";
@@ -13,28 +13,29 @@ import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
-import {AiOutlineArrowLeft, AiOutlineSave} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineSave, AiFillSave } from "react-icons/ai"; // Importa el icono de "guardado"
 import NavAppBar from "../components/NavAppBar";
-import {Box, Button} from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 const BookDetailsPage = () => {
-    const {id} = useParams();
-    const {book, loading, error, fetchBook} = useBook(id);
-    const navigate = useNavigate(); // Hook para manejar navegación
+    const { id } = useParams();
+    const { book, loading, error, fetchBook } = useBook(id);
+    const navigate = useNavigate();
+    const [isSaved, setIsSaved] = useState(false); // Estado para controlar si el libro está guardado
 
     if (loading) {
-        return <LoadingPage/>;
+        return <LoadingPage />;
     }
 
     if (error) {
-        return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
+        return <ErrorPage errorMessage={error} onClick={() => fetchBook()} />;
     }
 
-    //TODO CANVIAR EL SAVE QUAN TINGUESSIM LA API
     const saveForLater = (event) => {
         event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
-        console.log(`Book with ID ${id} saved for later`);
-    }
+        setIsSaved((prev) => !prev); // Alterna el estado de guardado
+        console.log(`Book with ID ${id} ${isSaved ? 'removed from' : 'saved to'} later list`);
+    };
 
     return (
         <div style={{
@@ -46,9 +47,8 @@ const BookDetailsPage = () => {
             alignItems: 'stretch',
             marginTop: '60px'
         }}>
-            <NavAppBar/>
-            {/* Contenedor superior para el botón de volver */}
-            <div style={{padding: '10px', display: 'flex', alignItems: 'start', marginTop:'5px'}}>
+            <NavAppBar />
+            <div style={{ padding: '10px', display: 'flex', alignItems: 'start', marginTop: '5px' }}>
                 <button
                     onClick={() => navigate('/home')}
                     style={{
@@ -62,7 +62,7 @@ const BookDetailsPage = () => {
                         fontSize: '25px',
                     }}
                 >
-                    <AiOutlineArrowLeft size={24} style={{marginRight: '8px'}}/>
+                    <AiOutlineArrowLeft size={24} style={{ marginRight: '8px' }} />
                     Back
                 </button>
             </div>
@@ -73,26 +73,26 @@ const BookDetailsPage = () => {
                     display: 'flex',
                     flexDirection: 'column'
                 }}>
-                    <BookSocialImage size="lg" url={book.image}/>
-                    <Spacer size={24}/>
-                    <BookSocialRating value={book.goodReadsMeanRating || 0}/>
-                    <Spacer size={24}/>
-                    <div style={{alignSelf: 'flex-start'}}>
+                    <BookSocialImage size="lg" url={book.image} />
+                    <Spacer size={24} />
+                    <BookSocialRating value={book.goodReadsMeanRating || 0} />
+                    <Spacer size={24} />
+                    <div style={{ alignSelf: 'flex-start' }}>
                         <BookSocialTitle level={4} text="Additional Info" textAlign="left"
-                                         color={paletteColors.textColorWeakest}/>
-                        <Spacer size={16}/>
-                        <BookSocialText level="medium" text={`**ISBN**: ${book.ISBN}`} style={{textAlign: 'left'}}
-                                        color={paletteColors.textColorStrong}/>
-                        <Spacer size={8}/>
+                                         color={paletteColors.textColorWeakest} />
+                        <Spacer size={16} />
+                        <BookSocialText level="medium" text={`**ISBN**: ${book.ISBN}`} style={{ textAlign: 'left' }}
+                                        color={paletteColors.textColorStrong} />
+                        <Spacer size={8} />
                         <BookSocialText level="medium" text={`**Language**: ${book.language}`}
-                                        style={{textAlign: 'left'}} color={paletteColors.textColorStrong}/>
-                        <Spacer size={8}/>
+                                        style={{ textAlign: 'left' }} color={paletteColors.textColorStrong} />
+                        <Spacer size={8} />
                         <BookSocialText level="medium" text={`**Published**: ${book.published}`}
-                                        style={{textAlign: 'left'}} color={paletteColors.textColorStrong}/>
-                        <Spacer size={8}/>
-                        <BookSocialText level="medium" text={`**Edition**: ${book.edition}`} style={{textAlign: 'left'}}
-                                        color={paletteColors.textColorStrong}/>
-                        <Spacer size={8}/>
+                                        style={{ textAlign: 'left' }} color={paletteColors.textColorStrong} />
+                        <Spacer size={8} />
+                        <BookSocialText level="medium" text={`**Edition**: ${book.edition}`} style={{ textAlign: 'left' }}
+                                        color={paletteColors.textColorStrong} />
+                        <Spacer size={8} />
                     </div>
                 </Grid>
                 <Grid item size={8}>
@@ -100,17 +100,17 @@ const BookDetailsPage = () => {
                         <BookSocialTitle level={2} text={book.title} textAlign="left" />
                         <Button
                             variant="contained"
-                            color="primary"
+                            color={isSaved ? 'success' : 'primary'} // Cambia el color a 'success' (verde) si está guardado
                             onClick={saveForLater}
-                            startIcon={<AiOutlineSave />}
+                            startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />} // Cambia el icono según el estado
                             sx={{
                                 mt: 1,
                                 fontSize: '0.8rem',
                                 textTransform: 'none',
-                                backgroundColor: paletteColors.color_primary,
+                                backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary, // Tono verde para guardado
                             }}
                         >
-                            Save
+                            {isSaved ? 'Saved' : 'Save'}
                         </Button>
                     </Box>
                     <Spacer size={16} />
@@ -119,44 +119,44 @@ const BookDetailsPage = () => {
                         book.authorName && book.coauthorName
                             ? `${book.authorName}, ${book.coauthorName}`
                             : book.authorName || book.coauthorName
-                    } textAlign="left" color={paletteColors.textColor_weakest}/>
-                    <Spacer size={24}/>
-                    <BookSocialText level="large" text={book.synopsis} style={{textAlign: 'justify'}}/>
-                    <Spacer size={24}/>
+                    } textAlign="left" color={paletteColors.textColor_weakest} />
+                    <Spacer size={24} />
+                    <BookSocialText level="large" text={book.synopsis} style={{ textAlign: 'justify' }} />
+                    <Spacer size={24} />
                     {book.authorDescription && (
-                        <BookSocialAccordion title="About the author" body={book.authorDescription}/>
+                        <BookSocialAccordion title="About the author" body={book.authorDescription} />
                     )}
-                    <Spacer size={24}/>
-                    <BookSocialTitle level={4} text="Genres" textAlign="left"/>
-                    <Spacer size={16}/>
-                    <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'flex-start'}}>
+                    <Spacer size={24} />
+                    <BookSocialTitle level={4} text="Genres" textAlign="left" />
+                    <Spacer size={16} />
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'flex-start' }}>
                         {book.genres.map((genre, index) => (
-                            <BookSocialChip key={index} size="md" text={genre}/>
+                            <BookSocialChip key={index} size="md" text={genre} />
                         ))}
                     </div>
-                    <Spacer size={24}/>
-                    <BookSocialTitle level={4} text="Summary of ratings" textAlign="left"/>
-                    <Spacer size={16}/>
+                    <Spacer size={24} />
+                    <BookSocialTitle level={4} text="Summary of ratings" textAlign="left" />
+                    <Spacer size={16} />
                     <BookSocialRating value={book.goodReadsMeanRating} showLabel={false}
-                                      numberRatings={book.goodReadsNumberRating}/>
-                    <Spacer size={16}/>
+                                      numberRatings={book.goodReadsNumberRating} />
+                    <Spacer size={16} />
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.fiveStars}
-                                            total={book.goodReadsNumberRating} title="5 stars"/>
-                    <Spacer size={8}/>
+                                            total={book.goodReadsNumberRating} title="5 stars" />
+                    <Spacer size={8} />
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.fourStars}
-                                            total={book.goodReadsNumberRating} title="4 stars"/>
-                    <Spacer size={8}/>
+                                            total={book.goodReadsNumberRating} title="4 stars" />
+                    <Spacer size={8} />
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.threeStars}
-                                            total={book.goodReadsNumberRating} title="3 stars"/>
-                    <Spacer size={8}/>
+                                            total={book.goodReadsNumberRating} title="3 stars" />
+                    <Spacer size={8} />
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.twoStars}
-                                            total={book.goodReadsNumberRating} title="2 stars"/>
-                    <Spacer size={8}/>
+                                            total={book.goodReadsNumberRating} title="2 stars" />
+                    <Spacer size={8} />
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStars}
-                                            total={book.goodReadsNumberRating} title="1 star"/>
+                                            total={book.goodReadsNumberRating} title="1 star" />
                 </Grid>
             </Grid>
-            <Spacer size={100}/>
+            <Spacer size={100} />
         </div>
     );
 };

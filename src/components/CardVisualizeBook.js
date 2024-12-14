@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography } from '@mui/material';
 import paletteColors from "../resources/palette";
-import {useNavigate} from "react-router-dom";
-import {AiOutlineSave} from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { AiOutlineSave, AiFillSave } from "react-icons/ai"; // Importa el icono de "guardado"
 
 const truncateText = (text) => {
     const maxLength = 87;
@@ -16,9 +16,10 @@ const truncateText = (text) => {
     return textToUse;
 };
 
-const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
+const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating }) => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaved, setIsSaved] = useState(false); // Estado para controlar si el libro está guardado
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -29,8 +30,10 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
         setIsLoading(false);
     };
 
+    //TODO change to save with the api of save
     const saveForLater = (event) => {
         event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
+        setIsSaved((prev) => !prev); // Alterna el estado de guardado
         console.log(`Book with ID ${id} saved for later`);
     };
 
@@ -44,13 +47,13 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
         }} onClick={goToDetails}>
-            <Box sx={{position: 'relative', width: 150, height: '100%'}}>
+            <Box sx={{ position: 'relative', width: 150, height: '100%' }}>
                 {isLoading && (
                     <Skeleton
                         variant="rectangular"
                         width="100%"
                         height="100%"
-                        sx={{borderRadius: 10}}
+                        sx={{ borderRadius: 10 }}
                     />
                 )}
                 <CardMedia
@@ -69,7 +72,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between', // Asegura que el botón esté abajo
+                justifyContent: 'space-between',
                 alignItems: 'flex-start',
                 textAlign: 'left',
                 padding: 2,
@@ -136,25 +139,25 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                                 }
                             }}
                         />
-                        <Typography variant="body2" sx={{ml: 1, color: 'white'}}>
+                        <Typography variant="body2" sx={{ ml: 1, color: 'white' }}>
                             {rating}
                         </Typography>
                     </Box>
                 </CardContent>
                 <Button
                     variant="contained"
-                    color="primary"
+                    color={isSaved ? 'success' : 'primary'} // Cambia el color a 'success' (verde) si está guardado
                     onClick={saveForLater}
-                    startIcon={<AiOutlineSave />}
+                    startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />} // Cambia el icono según el estado
                     sx={{
                         mt: 1,
                         alignSelf: 'center',
                         fontSize: '0.8rem',
                         textTransform: 'none',
-                        backgroundColor: paletteColors.color_primary,
+                        backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary, // Tono verde para guardado
                     }}
                 >
-                    Save
+                    {isSaved ? 'Saved' : 'Save'}
                 </Button>
             </Box>
         </Card>
