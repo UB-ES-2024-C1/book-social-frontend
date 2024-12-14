@@ -3,10 +3,10 @@ import { Box, Typography, IconButton } from '@mui/material';
 import BookSocialTextField from '../components/BookSocialTextField';
 import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
-import paletteColors from '../resources/palette';
 import api from '../services/api';
 import { Close } from '@mui/icons-material';
-import Button from "@mui/material/Button";
+import {useNavigate} from "react-router-dom";
+import * as routes from "../resources/routes_name";
 
 const NewPost = () => {
     const [title, setTitle] = useState('');
@@ -21,6 +21,7 @@ const NewPost = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     const [attachedFiles, setAttachedFiles] = useState([]);
 
@@ -68,7 +69,7 @@ const NewPost = () => {
         } else if (file.size > maxSize) {
             setFileError('Els fitxers adjunts no han de superar els 25MB.');
         } else {
-            setAttachedFiles((prevFiles) => [...prevFiles, file]);
+            setAttachedFiles([file]);
         }
     };
 
@@ -80,11 +81,6 @@ const NewPost = () => {
         setIsSubmitting(true);
 
         let hasErrors = false;
-
-        if (!title.trim()) {
-            setTitleError('Title is required.');
-            hasErrors = true;
-        }
 
         if (!content.trim()) {
             setContentError('Content is required.');
@@ -107,6 +103,7 @@ const NewPost = () => {
             tags: tags.split(',').map((tag) => tag.trim()),
         };
 
+        //TODO FALTA CANVIAR LA API DE POST QUAN ESTIGUI FETA
         try {
             await api.post('/posts', postData);
             setSuccessMessage('Post created successfully!');
@@ -132,32 +129,42 @@ const NewPost = () => {
         setFileError('');
         setSuccessMessage('');
         setErrorMessage('');
+        navigate(routes.HOME);
     };
 
     return (
         <Box
             sx={{
                 display: 'flex',
-                flexDirection: {xs: 'column', md: 'row'},
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '30px',
                 marginLeft: '50px',
-                width: {xs: '100%', sm: '90%', md: '80%'},
+                padding: '30px',
+                width: { xs: '100%', sm: '90%', md: '80%' },
                 overflow: 'auto', // Habilita el scroll si es necesario
             }}
         >
-            <Typography variant="h4" sx={{marginBottom: '20px', color: 'white'}}>
-                New Post
-            </Typography>
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} style={{ width: '100%' }}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                }}
+                style={{ width: '100%' }}
+            >
+                <Typography
+                    variant="h4"
+                    sx={{ marginBottom: '20px', color: 'white', textAlign: 'center' }}
+                >
+                    New Post
+                </Typography>
+
                 {/* Title Field */}
                 <Box sx={{ marginBottom: '20px' }}>
                     <BookSocialTextField
                         label="Title"
                         value={title}
                         onChange={handleTitleChange}
-                        required={true}
                         maxLength={100}
                         status={titleError ? 'error' : 'default'}
                         errorMessage={titleError}
@@ -189,11 +196,10 @@ const NewPost = () => {
                 </Box>
 
                 {/* File Upload */}
-                <Box sx={{ marginBottom: '20px' }}>
+                <Box sx={{ marginBottom: '20px', alignItems: 'center' }}>
                     <Typography variant="body1" sx={{ color: 'white', marginBottom: '10px' }}>
                         Attach Files (JPG, PNG, GIF, max 25MB):
                     </Typography>
-                    {/* Hidden File Input */}
                     <input
                         type="file"
                         accept="image/jpeg,image/png,image/gif"
@@ -201,24 +207,20 @@ const NewPost = () => {
                         style={{ display: 'none' }}
                         id="file-upload"
                     />
-                    {/* Styled Button */}
-                    <label htmlFor="file-upload">
-                        <Button
-                            variant="contained"
-                            component="span"
-                            sx={{
-                                backgroundColor: paletteColors.color_primary,
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: paletteColors.color_primary_weak,
-                                },
-                                padding: '10px 20px',
-                                borderRadius: '8px',
-                            }}
-                        >
-                            Select File
-                        </Button>
-                    </label>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: '20px',
+                        }}
+                    >
+                        <BookSocialPrimaryButton
+                            buttonText="Select File"
+                            onClick={() => document.getElementById('file-upload').click()}
+                            isExpanded={false}
+                        />
+                    </Box>
                     {fileError && (
                         <Typography variant="body2" sx={{ color: 'red', marginTop: '10px' }}>
                             {fileError}

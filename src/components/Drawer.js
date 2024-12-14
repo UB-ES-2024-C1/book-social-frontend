@@ -148,8 +148,16 @@ export default function PermanentDrawer({isLogged}) {
                         icon: <AiOutlinePlus/>,
                         route: 'New book',
                     },
-                    {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
-                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    {
+                        text: 'Home',
+                        icon: <AiOutlineHome/>,
+                        route: 'Home'
+                    },
+                    {
+                        text: 'Discovery',
+                        icon: <AiOutlineCompass/>,
+                        route: 'Discovery'
+                    },
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
@@ -159,13 +167,13 @@ export default function PermanentDrawer({isLogged}) {
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: item.route === 'New post' || item.route === 'New book' ? 'center' : 'flex-start',
+                                justifyContent: item.route === 'New Post' || item.route === 'New book' ? 'center' : 'flex-start',
                                 width: item.route === 'Add' ? '80%' : '100%',
                                 padding: item.route === 'Add' ? '5px' : '8px',
                                 gap: '5px',
                                 cursor: 'pointer',
                                 borderRadius: '8px',
-                                border: item.route === 'New post' || item.route === 'New book'
+                                border: item.route === 'New Post' || item.route === 'New book'
                                     ? '1px solid #FFFFFF'
                                     : selected === item.route
                                         ? '1px solid #6055CF'
