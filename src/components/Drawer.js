@@ -22,14 +22,16 @@ import paletteColors from "../resources/palette";
 import {Typography} from "@mui/material";
 import {Logout} from "@mui/icons-material";
 import {useAuth} from "../hooks/authentication";
+import useProfile from '../hooks/profile/profile';
 
 
 export default function PermanentDrawer({isLogged}) {
-    const {logout, user} = useAuth(); // Comprobar el tipo de user
+    const {logout} = useAuth(); 
     const [selected, setSelected] = useState('');
     const [openDialog, setOpenDialog] = useState(false); // Estado para controlar el diálogo
     const navigate = useNavigate();
     const location = useLocation();
+    const {profile, loading, error, fetchProfile} = useProfile();
 
     isLogged = true;
 
@@ -131,7 +133,7 @@ export default function PermanentDrawer({isLogged}) {
             }}>
                 {[
                     // {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
-                    {
+                    profile?.role === 'writer' &&{
                         text: 'New book',
                         icon: <AiOutlinePlus/>,
                         route: 'New book',
