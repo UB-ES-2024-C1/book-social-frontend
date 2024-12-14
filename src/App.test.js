@@ -10,6 +10,7 @@ jest.mock('./pages/SavedPage', () => () => <div>Saved Page</div>);
 jest.mock('./pages/Profile', () => () => <div>Profile Page</div>);
 jest.mock('./pages/LandingPage', () => () => <div>Landing Page</div>);
 jest.mock('./pages/NewBook', () => () => <div>New Book Page</div>);
+jest.mock('./pages/NewPost', () => () => <div>New Post Page</div>);
 jest.mock('./pages/BookDetailsPage', () => () => <div>Book Details Page</div>);
 jest.mock('./components/NavAppBar', () => () => <div>Nav App Bar</div>);
 jest.mock('./components/Drawer', () => () => <div>Drawer</div>);

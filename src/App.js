@@ -13,6 +13,7 @@ import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "@mui/material/Drawer";
+import NewPost from "./pages/NewPost";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -61,6 +62,10 @@ function AppContent() {
                 <Route path="/new-book" element={<ProtectedRoute>
                     <NewBook/>
                 </ProtectedRoute>}/>
+                <Route path="/new-post" element={<ProtectedRoute>
+                    <NewPost/>
+                </ProtectedRoute>}/>
+
             </Route>
             <Route
                 path="/book-details/:id"
