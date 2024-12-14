@@ -13,8 +13,9 @@ import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
-import {AiOutlineArrowLeft} from "react-icons/ai";
+import {AiOutlineArrowLeft, AiOutlineSave} from "react-icons/ai";
 import NavAppBar from "../components/NavAppBar";
+import {Box, Button} from "@mui/material";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
@@ -29,6 +30,12 @@ const BookDetailsPage = () => {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
 
+    //TODO CANVIAR EL SAVE QUAN TINGUESSIM LA API
+    const saveForLater = (event) => {
+        event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
+        console.log(`Book with ID ${id} saved for later`);
+    }
+
     return (
         <div style={{
             background: paletteColors.background_color,
@@ -37,10 +44,11 @@ const BookDetailsPage = () => {
             flexDirection: 'column',
             minWidth: '100%',
             alignItems: 'stretch',
+            marginTop: '60px'
         }}>
             <NavAppBar/>
             {/* Contenedor superior para el botón de volver */}
-            <div style={{padding: '10px', display: 'flex', alignItems: 'start'}}>
+            <div style={{padding: '10px', display: 'flex', alignItems: 'start', marginTop:'5px'}}>
                 <button
                     onClick={() => navigate('/home')}
                     style={{
@@ -88,8 +96,25 @@ const BookDetailsPage = () => {
                     </div>
                 </Grid>
                 <Grid item size={8}>
-                    <BookSocialTitle level={2} text={book.title} textAlign="left"/>
-                    <Spacer size={16}/>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                        <BookSocialTitle level={2} text={book.title} textAlign="left" />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={saveForLater}
+                            startIcon={<AiOutlineSave />}
+                            sx={{
+                                mt: 1,
+                                fontSize: '0.8rem',
+                                textTransform: 'none',
+                                backgroundColor: paletteColors.color_primary,
+                            }}
+                        >
+                            Save
+                        </Button>
+                    </Box>
+                    <Spacer size={16} />
+
                     <BookSocialTitle level={4} text={
                         book.authorName && book.coauthorName
                             ? `${book.authorName}, ${book.coauthorName}`

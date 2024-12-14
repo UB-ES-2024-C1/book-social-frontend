@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
+import {AiOutlineSave} from "react-icons/ai";
 
 const truncateText = (text) => {
     const maxLength = 87;
@@ -144,18 +145,16 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                     variant="contained"
                     color="primary"
                     onClick={saveForLater}
+                    startIcon={<AiOutlineSave />}
                     sx={{
                         mt: 1,
                         alignSelf: 'center',
                         fontSize: '0.8rem',
                         textTransform: 'none',
                         backgroundColor: paletteColors.color_primary,
-                        '&:hover': {
-                            backgroundColor: '#00A19D',
-                        }
                     }}
                 >
-                    Save for later
+                    Save
                 </Button>
             </Box>
         </Card>
