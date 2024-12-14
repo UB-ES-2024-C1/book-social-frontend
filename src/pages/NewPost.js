@@ -138,19 +138,17 @@ const NewPost = () => {
         <Box
             sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: {xs: 'column', md: 'row'},
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: '30px',
-                maxWidth: '600px',
-                margin: '0 auto',
-                backgroundColor: paletteColors.color_primary_weak,
-                borderRadius: '8px',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                marginLeft: '50px',
+                width: {xs: '100%', sm: '90%', md: '80%'},
+                overflow: 'auto', // Habilita el scroll si es necesario
             }}
         >
-            <Typography variant="h4" sx={{ color: 'white', marginBottom: '20px' }}>
-                Create a New Post
+            <Typography variant="h4" sx={{marginBottom: '20px', color: 'white'}}>
+                New Post
             </Typography>
             <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} style={{ width: '100%' }}>
                 {/* Title Field */}
