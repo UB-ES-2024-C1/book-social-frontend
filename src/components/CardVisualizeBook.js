@@ -151,7 +151,7 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
                     startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />} // Cambia el icono según el estado
                     sx={{
                         mt: 1,
-                        alignSelf: 'center',
+                        alignSelf: 'flex-end',
                         fontSize: '0.8rem',
                         textTransform: 'none',
                         backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary, // Tono verde para guardado
