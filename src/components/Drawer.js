@@ -69,7 +69,7 @@ export default function PermanentDrawer({isLogged}) {
                 setSelected('New book');
                 break;
             case routes.NEW_POST:
-                setSelected('New post');
+                setSelected('New Post');
                 break;
             default:
                 setSelected('');
@@ -138,9 +138,11 @@ export default function PermanentDrawer({isLogged}) {
                 width: '100%',
             }}>
                 {[
-                    {   text: 'New post',
+                    {
+                        text: 'New post',
                         icon: <AiOutlinePlus/>,
-                        route: 'New post'},
+                        route: 'New Post'
+                    },
                     {
                         text: 'New book',
                         icon: <AiOutlinePlus/>,
