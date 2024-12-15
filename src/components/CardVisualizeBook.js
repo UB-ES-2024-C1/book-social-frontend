@@ -19,7 +19,7 @@ const truncateText = (text) => {
 const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating }) => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
-    const [isSaved, setIsSaved] = useState(false); // Estado para controlar si el libro está guardado
+    const [isSaved, setIsSaved] = useState(false);
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -32,8 +32,8 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
 
     //TODO change to save with the api of save
     const saveForLater = (event) => {
-        event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
-        setIsSaved((prev) => !prev); // Alterna el estado de guardado
+        event.stopPropagation();
+        setIsSaved((prev) => !prev);
         console.log(`Book with ID ${id} saved for later`);
     };
 
@@ -146,15 +146,15 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
                 </CardContent>
                 <Button
                     variant="contained"
-                    color={isSaved ? 'success' : 'primary'} // Cambia el color a 'success' (verde) si está guardado
+                    color={isSaved ? 'success' : 'primary'}
                     onClick={saveForLater}
-                    startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />} // Cambia el icono según el estado
+                    startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />}
                     sx={{
                         mt: 1,
                         alignSelf: 'flex-end',
                         fontSize: '0.8rem',
                         textTransform: 'none',
-                        backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary, // Tono verde para guardado
+                        backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary,
                     }}
                 >
                     {isSaved ? 'Saved' : 'Save'}
