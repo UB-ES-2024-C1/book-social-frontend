@@ -8,7 +8,10 @@ import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useProfile from "../hooks/profile/profile";
 import BookList from "../components/BookList";
-import defaultCoverImage from '../assets/portada.jpeg'; // Importa la imagen por defecto
+import defaultCoverImage from '../assets/portada.jpeg';
+import usePosts from "../hooks/posts/posts";
+import CardVisualizePost from "../components/CardVisualizePost";
+import BookSocialTitle from "../components/BookSocialTitle"; // Importa la imagen por defecto
 
 
 const Profile = () => {
@@ -27,6 +30,7 @@ const Profile = () => {
     });
 
     const {profile, loading, error, fetchProfile, updateProfile, updateStatus} = useProfile();
+    const {posts, loading: loadingPosts, error: errorPosts} = usePosts(null, profile?.id);
 
     useEffect(() => {
         if (profile) {
@@ -48,6 +52,16 @@ const Profile = () => {
 
     if (error) {
         return <ErrorPage insideMainPage={true} errorMessage={error} onClick={() => fetchProfile()}/>;
+    }
+
+    if (error || errorPosts) {
+        return (
+            <ErrorPage
+                insideMainPage={true}
+                errorMessage={error || errorPosts}
+                onClick={() => fetchProfile()}
+            />
+        );
     }
 
     const handleImageChange = (event, type) => {
@@ -327,6 +341,54 @@ const Profile = () => {
                     </Typography>
                 </Box>
             )}
+            {/* Posts del usuario */}
+            <Box sx={{width: "100%", marginTop: "20px"}}>
+                <BookSocialTitle
+                    level={4}
+                    text={"Your Posts"}
+                    textAlign={"left"}
+                    sx={{margin: "20px"}}
+                />
+                <Box
+                    sx={{
+                        width: "98%",
+                        height: "1px",
+                        backgroundColor: "#ddd",
+                        margin: '10px'
+                    }}
+                />
+                {posts.length > 0 ? (
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                            gap: "20px",
+                        }}
+                    >
+                        {posts.map((post) => (
+                            <CardVisualizePost
+                                key={profile.id}
+                                authorName={profile.name}
+                                authorImage={profile.image}
+                                title={post.title}
+                                content={post.content}
+                                hashtags={post.hashtags}
+                                image={post.image}
+                            />
+                        ))}
+                    </Box>
+                ) : (
+                    <Typography
+                        sx={{
+                            color: paletteColors.textColor_weakest,
+                            textAlign: "center",
+                            marginTop: "10px",
+                        }}
+                    >
+                        You have not created any posts yet.
+                    </Typography>
+                )}
+            </Box>
         </div>
     );
 };
