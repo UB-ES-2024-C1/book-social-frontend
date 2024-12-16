@@ -49,7 +49,7 @@ export const AuthProvider = ({children}) => {
         try {
             const payload = {
                 firstName,
-                lastName: "lastname",
+                lastName: "Martínez",
                 username,
                 email,
                 password: pass,

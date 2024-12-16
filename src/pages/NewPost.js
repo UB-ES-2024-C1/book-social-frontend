@@ -5,17 +5,15 @@ import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import BookSocialPrimaryButton from '../components/BookSocialPrimaryButton';
 import api from '../services/api';
 import { Close } from '@mui/icons-material';
-import {useNavigate} from "react-router-dom";
-import * as routes from "../resources/routes_name";
+import { useNavigate } from 'react-router-dom';
+import * as routes from '../resources/routes_name';
 
 const NewPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [tags, setTags] = useState('');
 
     const [titleError, setTitleError] = useState('');
     const [contentError, setContentError] = useState('');
-    const [tagsError, setTagsError] = useState('');
 
     const [fileError, setFileError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -45,16 +43,6 @@ const NewPost = () => {
         }
     };
 
-    const handleTagsChange = (e) => {
-        const value = e.target.value;
-        setTags(value);
-        if (value.split(',').length > 5) {
-            setTagsError('You can add up to 5 tags only.');
-        } else {
-            setTagsError('');
-        }
-    };
-
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setFileError('');
@@ -65,9 +53,9 @@ const NewPost = () => {
         const maxSize = 25 * 1024 * 1024; // 25MB
 
         if (!validTypes.includes(file.type)) {
-            setFileError('Els fitxers adjunts han de ser JPG, PNG o GIF.');
+            setFileError('Files must be JPG, PNG, or GIF.');
         } else if (file.size > maxSize) {
-            setFileError('Els fitxers adjunts no han de superar els 25MB.');
+            setFileError('Files must not exceed 25MB.');
         } else {
             setAttachedFiles([file]);
         }
@@ -75,6 +63,19 @@ const NewPost = () => {
 
     const handleRemoveFile = (index) => {
         setAttachedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const uploadFile = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const response = await api.post('/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            return response.data.url; // Assuming the API returns the file URL
+        } catch (error) {
+            throw new Error('Failed to upload file.');
+        }
     };
 
     const handleSubmit = async () => {
@@ -87,29 +88,32 @@ const NewPost = () => {
             hasErrors = true;
         }
 
-        if (tags.split(',').length > 5) {
-            setTagsError('You can add up to 5 tags only.');
-            hasErrors = true;
-        }
-
         if (hasErrors) {
             setIsSubmitting(false);
             return;
         }
 
-        const postData = {
-            title,
-            content,
-            tags: tags.split(',').map((tag) => tag.trim()),
-        };
-
-        //TODO FALTA CANVIAR LA API DE POST QUAN ESTIGUI FETA
         try {
-            await api.post('/posts', postData);
+            let imageUrls = [];
+            if (attachedFiles.length > 0) {
+                imageUrls = await Promise.all(
+                    attachedFiles.map((file) => uploadFile(file))
+                );
+            }
+
+            const postData = {
+                title,
+                content,
+                imageUrls,
+            };
+
+            const response = await api.post('/posts/create', postData);
+            console.log('response: ', response);
+
             setSuccessMessage('Post created successfully!');
+
             setTitle('');
             setContent('');
-            setTags('');
             setAttachedFiles([]);
         } catch (error) {
             setErrorMessage('Failed to create post. Please try again.');
@@ -121,11 +125,9 @@ const NewPost = () => {
     const handleCancel = () => {
         setTitle('');
         setContent('');
-        setTags('');
         setAttachedFiles([]);
         setTitleError('');
         setContentError('');
-        setTagsError('');
         setFileError('');
         setSuccessMessage('');
         setErrorMessage('');
@@ -142,7 +144,7 @@ const NewPost = () => {
                 marginLeft: '50px',
                 padding: '30px',
                 width: { xs: '100%', sm: '90%', md: '80%' },
-                overflow: 'auto', // Habilita el scroll si es necesario
+                overflow: 'auto', // Enable scroll if necessary
             }}
         >
             <form
@@ -183,18 +185,6 @@ const NewPost = () => {
                         rows={5}
                     />
                 </Box>
-
-                {/* Tags Field */}
-                <Box sx={{ marginBottom: '20px' }}>
-                    <BookSocialTextField
-                        label="Tags (comma-separated)"
-                        value={tags}
-                        onChange={handleTagsChange}
-                        status={tagsError ? 'error' : 'default'}
-                        errorMessage={tagsError}
-                    />
-                </Box>
-
                 {/* File Upload */}
                 <Box sx={{ marginBottom: '20px', alignItems: 'center' }}>
                     <Typography variant="body1" sx={{ color: 'white', marginBottom: '10px' }}>

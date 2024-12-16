@@ -42,7 +42,6 @@ const useProfile = () => {
                     coverImage: coverImage,
                 });
                 console.log('profile');
-                console.log(profile);
                 setLoading(false);
             } else {
                 setError("Error fetching profile data");

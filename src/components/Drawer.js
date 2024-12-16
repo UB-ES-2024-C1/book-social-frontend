@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
+import {AiFillSave, AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
@@ -63,7 +63,7 @@ export default function PermanentDrawer({isLogged}) {
                 setSelected('Discovery');
                 break;
             case routes.SAVED:
-                setSelected('Saved');
+                setSelected('Saved Books');
                 break;
             case routes.NEW_BOOK:
                 setSelected('New book');
@@ -86,7 +86,7 @@ export default function PermanentDrawer({isLogged}) {
             case 'Discovery':
                 navigate(routes.DISCOVERY);
                 break;
-            case 'Saved':
+            case 'Saved Books':
                 navigate(routes.SAVED);
                 break;
             case 'New book':
@@ -160,6 +160,11 @@ export default function PermanentDrawer({isLogged}) {
                         text: 'Discovery',
                         icon: <AiOutlineCompass/>,
                         route: 'Discovery'
+                    },
+                    {
+                        text: 'Saved Books',
+                        icon: <AiFillSave/>,
+                        route: 'Saved Books'
                     },
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
