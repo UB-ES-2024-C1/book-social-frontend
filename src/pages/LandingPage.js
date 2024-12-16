@@ -16,6 +16,7 @@ import AppBar from "@mui/material/AppBar";
 import NavAppBar from "../components/NavAppBar";
 import {FaBook} from "react-icons/fa";
 import CardvisualizeBook from "../components/CardVisualizeBook";
+import CardVisualizePost from "../components/CardVisualizePost";
 
 
 const LandingPage = ({isLogged}) => {
@@ -49,6 +50,36 @@ const LandingPage = ({isLogged}) => {
         {top: '40%', left: '50%', size: '60px', opacity: 0.1, rotation: '35deg'},
         {top: '80%', left: '70%', size: '50px', opacity: 0.3, rotation: '75deg'},
         {top: '90%', left: '80%', size: '55px', opacity: 0.2, rotation: '85deg'},
+    ];
+
+    const posts = [
+        {
+            author: "John Doe",
+            authorImage: "https://example.com/profile.jpg",
+            title: "My Favorite Sci-Fi Books",
+            content:
+                "Exploring the vast universe of science fiction. Here are some of my top recommendations...",
+            hashtags: ["#SciFi", "#Books", "#Favorites"],
+            image: "",
+        },
+        {
+            author: "Jane Smith",
+            authorImage: "https://example.com/profile.jpg",
+            title: "Why Reading Matters",
+            content:
+                "In a fast-paced world, reading offers a chance to slow down, reflect, and grow...",
+            hashtags: ["#Reading", "#Motivation"],
+            image: "",
+        },
+        {
+            author: "Alex Johnson",
+            authorImage: "https://example.com/profile.jpg",
+            title: "Top 5 Thriller Novels of 2024",
+            content:
+                "This year has been fantastic for thrillers! Here are my top picks for edge-of-your-seat stories...",
+            hashtags: ["#Thriller", "#Books", "#Reviews"],
+            image: "",
+        },
     ];
 
     const bookCovers = [book1, book2, book3, book4, book5];
@@ -147,43 +178,35 @@ const LandingPage = ({isLogged}) => {
                         </div>
                     </Grid>
                     <Grid item xs={12}>
-                        <Spacer size={24}/>
-                        <BookSocialTitle level={2} text={'Create New Posts'} textAlign={"center"}/>
+                        <Spacer size={24} />
+                        <BookSocialTitle level={2} text={"Explore New Posts"} textAlign={"center"} />
                         <BookSocialTitle
                             level={3}
                             color={paletteColors.textColorStrong}
                             textAlign={"center"}
-                            text={"Post what you think, see opinions, and share your reader's world"}
+                            text={"Dive into thoughts, reviews, and recommendations from our community!"}
                         />
-                        <Spacer size={16}/>
-                        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
-                            {[{
-                                image: book1,
-                                title: "Cuando reescribamos la historia",
-                                author: "Belén Martínez",
-                                summary: "HACE VARIOS AÑOS… Julen e Ibai eran inseparables. Amigos que compartían clase...",
-                                rating: 4.5
-                            }, {
-                                image: book2,
-                                title: "Muertes perfectamente evitables",
-                                author: "Deirdre Sullivan",
-                                summary: "Las gemelas Maddy y Catlin acaban de mudarse a Ballyfrann, un pueblo...",
-                                rating: 3.0
-                            }].map((book, index) => (
-                                <Box key={index} sx={{
-                                    margin: '16px',
-                                    transition: 'transform 0.2s',
-                                    '&:hover': {
-                                        transform: 'scale(1.05)'
-                                    },
-                                    cursor: 'pointer'
-                                }}>
-                                    <CardvisualizeBook
-                                        image={book.image}
-                                        title={book.title}
-                                        author={book.author}
-                                        summary={book.summary}
-                                        rating={book.rating}
+                        <Spacer size={16} />
+                        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                            {posts.map((post, index) => (
+                                <Box
+                                    key={index}
+                                    sx={{
+                                        margin: "16px",
+                                        transition: "transform 0.2s",
+                                        "&:hover": {
+                                            transform: "scale(1.05)",
+                                        },
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <CardVisualizePost
+                                        author={post.author}
+                                        authorImage={post.authorImage}
+                                        title={post.title}
+                                        content={post.content}
+                                        hashtags={post.hashtags}
+                                        image={post.image}
                                     />
                                 </Box>
                             ))}
