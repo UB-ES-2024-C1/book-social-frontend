@@ -189,29 +189,42 @@ const NewBook = () => {
 
     useEffect(() => {
         const fetchGenres = async () => {
+            console.log('Fetching genres...');
+            const startTime = performance.now();
             try {
                 const response = await axios.get('books/genres');
+                console.log('Genres retrieved successfully:', response.data);
                 setGenres(response.data);
             } catch (error) {
-                console.error('Error fetching genres:', error);
+                console.error('Error fetching genres:', error.message);
+            } finally {
+                const endTime = performance.now();
+                console.log(`Fetching genres took ${(endTime - startTime).toFixed(2)} ms`);
             }
         };
-
+    
         fetchGenres();
     }, []);
-
+    
     useEffect(() => {
         const fetchCategories = async () => {
+            console.log('Fetching categories...');
+            const startTime = performance.now();
             try {
                 const response = await axios.get('books/categories');
+                console.log('Categories retrieved successfully:', response.data);
                 setCategories(response.data);
             } catch (error) {
-                console.error('Error fetching categories:', error);
+                console.error('Error fetching categories:', error.message);
+            } finally {
+                const endTime = performance.now();
+                console.log(`Fetching categories took ${(endTime - startTime).toFixed(2)} ms`);
             }
         };
-
+    
         fetchCategories();
     }, []);
+    
 
 
     const handleSubmit = async () => {
@@ -449,9 +462,10 @@ const NewBook = () => {
                     {/* Genres Field */}
                     <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialGenereSelector
-                            genres={genresList}
+                            genres={genres}
                             selectedGenres={selectedGenres}
                             onGenreChange={handleGenreChange}
+                            label={"Genres *"}
                         />
                     </div>
 
@@ -461,6 +475,7 @@ const NewBook = () => {
                             genres={categories}
                             selectedGenres={selectedCategories}
                             onGenreChange={handleCategoriesChange}
+                            label={"Categories"}
                         />
                     </div>
 
