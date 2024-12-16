@@ -31,11 +31,14 @@ const BookDetailsPage = () => {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()} />;
     }
     const defaultBookImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg"
+
+    // Aquí aplicamos la lógica para manejar las imágenes
     const imageUrl = book.image
-        ? book.image.startsWith('data:image') 
-            ? book.image 
-            : `data:image/jpeg;base64,${book.image}`
-        : defaultBookImage;
+        ? (book.image.startsWith('http') || book.image.startsWith('https')) // Si es URL
+            ? book.image
+            : `data:image/jpeg;base64,${book.image}` // Si es Base64
+        : defaultBookImage; // Si no tiene imagen, usamos la predeterminada
+
 
     const saveForLater = (event) => {
         event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
