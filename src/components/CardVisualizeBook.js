@@ -185,8 +185,6 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         </>
                     )}
                 </Button>
-
-
             </Box>
         </Card>
     );
