@@ -321,9 +321,11 @@ const NewBook = () => {
             // Resetear el formulario
             setTitle('');
             setPublishDate('');
+            setSelectedCategories([]);
             setSelectedGenres([]);
             setSynopsis('');
             setCoverImage(null);
+            setImagePreview(null);
             setPublisher('');
             setIsbn('');
             setEdition('');
