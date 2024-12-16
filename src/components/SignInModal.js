@@ -14,6 +14,8 @@ import BookSocialDropdown from "./BookSocialDropdown";
 import BookSocialText from "./BookSocialText";
 import axios from 'axios'; // Asegúrate de tener axios instalado
 
+const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -218,7 +220,7 @@ const SignInModal = ({ open, handleClose }) => {
                             label='Genre'
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
-                            options={genres} // Usar los géneros obtenidos de la API
+                            options={genresList} // Usar los géneros obtenidos de la API
                             dataTestId={'genre-dropdown'}
                         />
                     </FormControl>

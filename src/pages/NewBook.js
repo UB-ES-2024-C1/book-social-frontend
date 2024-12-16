@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from '@mui/material';
 import defaultbook from '../assets/books/DefaultBook.jpg';
 import BookSocialTextField from '../components/BookSocialTextField';
@@ -8,6 +8,7 @@ import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
 import useProfile from '../hooks/profile/profile';
 import api from '../services/api';
+import axios from 'axios';
 
 
 const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
@@ -24,6 +25,9 @@ const NewBook = () => {
     const [edition, setEdition] = useState('');
     const [publisher, setPublisher] = useState('');
     const {profile, loading, error, fetchProfile} = useProfile();
+    const [genres, setGenres] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [titleError, setTitleError] = useState('');
     const [languageError, setLanguageError] = useState('');
@@ -84,6 +88,9 @@ const NewBook = () => {
         if (newGenres.length > 0) {
             setGenresError('');
         }
+    };
+    const handleCategoriesChange = (newCategories) => {
+        setSelectedCategories(newCategories);
     };
 
 
@@ -180,6 +187,32 @@ const NewBook = () => {
         fileInputRef.current.click();
     };
 
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                const response = await axios.get('books/genres');
+                setGenres(response.data);
+            } catch (error) {
+                console.error('Error fetching genres:', error);
+            }
+        };
+
+        fetchGenres();
+    }, []);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('books/categories');
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
@@ -235,7 +268,7 @@ const NewBook = () => {
             author: parseInt(profile.id, 10),
             publication_date: new Date(publishDate).toISOString().split('T')[0],
             genres: selectedGenres || [],
-            categories: ["default"],
+            categories: selectedCategories || [],
             synopsis: synopsis || "No synopsis available.",
             image_url: "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg",
             publisher: publisher || "Unknown",
@@ -419,6 +452,15 @@ const NewBook = () => {
                             genres={genresList}
                             selectedGenres={selectedGenres}
                             onGenreChange={handleGenreChange}
+                        />
+                    </div>
+
+                    {/* Categories Field */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialGenereSelector
+                            genres={categories}
+                            selectedGenres={selectedCategories}
+                            onGenreChange={handleCategoriesChange}
                         />
                     </div>
 
