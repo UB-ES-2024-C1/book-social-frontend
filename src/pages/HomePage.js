@@ -6,77 +6,29 @@ import useProfile from "../hooks/profile/profile";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBooks from "../hooks/books";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as routes from "../resources/routes_name";
-import {Spacer} from "../resources/spacer";
+import { Spacer } from "../resources/spacer";
 import CardVisualizePost from "../components/CardVisualizePost";
-import defaultImage from "../assets/books/book2.jpg";
 import WelcomeSection from "../components/WelcomeSection";
+import usePosts from "../hooks/posts/posts";
+import {Box} from "@mui/material";
 
 const HomePage = () => {
-    const {profile, loading: loadingProfile, error: errorProfile} = useProfile();
-    const {
-        booksRecent,
-        booksGenre,
-        booksTopRated,
-        loading,
-        error,
-    } = useBooks('', true);
+    const { profile, loading: loadingProfile, error: errorProfile } = useProfile();
+    const { booksRecent, booksGenre, booksTopRated, loading, error } = useBooks("", true);
+    const { posts, loading: loadingPosts, error: errorPosts } = usePosts(); // Hook para los posts
     const navigate = useNavigate();
 
-    // Array de ejemplo de posts
-    const posts = [
-        {
-            authorName: 'John Doe',
-            authorImage: 'https://example.com/profile.jpg',
-            title: 'Cómo aprender React en 10 días',
-            content: 'React es una biblioteca de JavaScript para construir interfaces de usuario...',
-            hashtags: ['#React', '#JavaScript', '#WebDevelopment'],
-            image: '',
-        },
-        {
-            authorName: 'Jane Smith',
-            authorImage: 'https://example.com/profile2.jpg',
-            title: 'Consejos para mejorar tu código en JavaScript',
-            content: 'El código limpio es esencial para un desarrollo eficiente y colaborativo...',
-            hashtags: ['#CleanCode', '#JavaScript'],
-            image: '',
-        },
-        {
-            authorName: 'Carlos López',
-            authorImage: '',
-            title: 'Introducción a Python',
-            content: 'Python es uno de los lenguajes más versátiles y populares...',
-            hashtags: ['#Python', '#Programming'],
-            image: '',
-        },
-        {
-            authorName: 'Carlos López',
-            authorImage: '',
-            title: 'Introducción a Python',
-            content: 'Python es uno de los lenguajes más versátiles y populares...',
-            hashtags: ['#Python', '#Programming'],
-            image: '',
-        },        {
-            authorName: 'Carlos López',
-            authorImage: '',
-            title: 'Introducción a Python',
-            content: 'Python es uno de los lenguajes más versátiles y populares...',
-            hashtags: ['#Python', '#Programming'],
-            image: '',
-        },
-        // Más posts si es necesario
-    ];
-
-    if (loadingProfile || loading) {
+    if (loadingProfile || loading || loadingPosts) {
         return <LoadingPage />;
     }
 
-    if (errorProfile || error) {
+    if (errorProfile || error || errorPosts) {
         return (
             <ErrorPage
                 insideMainPage={true}
-                errorMessage={errorProfile || error}
+                errorMessage={errorProfile || error || errorPosts}
                 onClick={() => navigate(routes.HOME)}
             />
         );
@@ -87,37 +39,53 @@ const HomePage = () => {
             style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
+                alignItems: "flex-start",
                 width: "100%",
                 height: "100%",
                 padding: "16px",
                 boxSizing: "border-box",
+                marginTop: "20px",
             }}
         >
             {/* Bienvenida */}
             <WelcomeSection profile={profile} />
 
             {/* Grid de Posts */}
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                    gap: "20px",
-                    width: "100%",
+            <BookSocialTitle
+                level={4}
+                text={"All Posts"}
+                textAlign={"left"}
+            />
+            <Box
+                sx={{
+                    width: "98%",
+                    height: "1px",
+                    backgroundColor: "#ddd",
+                    margin: '10px'
                 }}
-            >
-                {posts.map((post, index) => (
-                    <CardVisualizePost
-                        key={index}
-                        authorName={post.authorName}
-                        authorImage={post.authorImage}
-                        title={post.title}
-                        content={post.content}
-                        hashtags={post.hashtags}
-                        image={post.image}
-                    />
-                ))}
-            </div>
+            />
+            {posts.length > 0 && (
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "20px",
+                        width: "100%",
+                    }}
+                >
+                    {posts.map((post) => (
+                        <CardVisualizePost
+                            key={post.id}
+                            authorName={profile.name }
+                            authorImage={profile.image }
+                            username={profile.username}
+                            title={post.title}
+                            content={post.content}
+                            image={post.image || ""}
+                        />
+                    ))}
+                </div>
+            )}
 
             {/* Secciones de libros */}
             {booksGenre.length > 0 && (

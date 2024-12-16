@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Avatar, Tooltip, Typography, Skeleton } from '@mui/material';
 import paletteColors from "../resources/palette";
 
-const CardVisualizePost = ({ authorName, authorImage, username, title, content, hashtags, image }) => {
+const CardVisualizePost = ({ authorName, authorImage, username, title, content, image }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const handleImageLoad = () => {
@@ -29,7 +29,7 @@ const CardVisualizePost = ({ authorName, authorImage, username, title, content, 
                         </Typography>
                     </Tooltip>
                     <Typography variant="body2" sx={{ color: 'gray', marginLeft: 1 }}>
-                        @{'johndoe'}
+                        @{username}
                     </Typography>
                 </Box>
             </CardContent>
@@ -56,12 +56,6 @@ const CardVisualizePost = ({ authorName, authorImage, username, title, content, 
                     textAlign: 'left', // Alinear el contenido al inicio
                 }}>
                     {content}
-                </Typography>
-                <Typography variant="body2" sx={{
-                    color: paletteColors.color_primary,
-                    alignSelf: 'flex-start', // Alinear el título al inicio
-                }}>
-                    {hashtags.join(' ')}
                 </Typography>
             </Box>
             {/* Sección de la imagen */}
