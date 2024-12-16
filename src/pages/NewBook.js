@@ -243,8 +243,8 @@ const NewBook = () => {
             edition: edition && edition.length >= 1 && edition.length <= 50 ? edition : "Unknown",
             language: language || "Unknown",
             num_pages: 100,
-            reviewValue: 4,
-            ratingCount: 1,
+            reviewValue: 0,
+            ratingCount: 0,
         };
 
         
@@ -338,9 +338,8 @@ const NewBook = () => {
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                     }}
                 />
-                {/* Campo para cargar la imagen de portada */}
+                {/* 
                 <Box sx={{display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px'}}>
-                    {/* Hidden File Input */}
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -348,8 +347,7 @@ const NewBook = () => {
                         onChange={handleImageChange}
                         style={{display: 'none'}} // Hide the input, but it's still accessible
                     />
-
-                    {/* Upload Button */}
+                    
                     <BookSocialPrimaryButton
                         buttonText="Upload Cover Image"
                         onClick={handleButtonImageClick} // Trigger file input click
@@ -357,6 +355,7 @@ const NewBook = () => {
                         bgColor={paletteColors.color_primary} // Use your desired background color
                     />
                 </Box>
+                */}
             </Box>
 
             {/* Formulario */}
