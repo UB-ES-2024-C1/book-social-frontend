@@ -43,7 +43,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
 
     //TODO change to save with the api of save
     const saveForLater = (event) => {
-        event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
+        event.stopPropagation();
         saveBook(id)
         console.log(`Book with ID ${id} saved for later`);
     };
