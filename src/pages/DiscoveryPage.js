@@ -60,11 +60,10 @@ const DiscoveryPage = () => {
         <div style={{
             minHeight: '100vh',
             maxWidth: '100%',
-            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyItems: 'flex-start',
-            marginLeft: "50px",
+            marginLeft: "130px",
         }}>
             <Spacer size={24}/>
             <div style={{

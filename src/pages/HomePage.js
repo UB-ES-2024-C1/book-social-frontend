@@ -9,6 +9,8 @@ import useBooks from "../hooks/books";
 import {useNavigate} from "react-router-dom";
 import * as routes from "../resources/routes_name";
 import {Spacer} from "../resources/spacer";
+import CardVisualizePost from "../components/CardVisualizePost";
+
 
 
 const HomePage = () => {
@@ -21,6 +23,15 @@ const HomePage = () => {
         error,
     } = useBooks('', true);
     const navigate = useNavigate();
+
+    const postExample = {
+        authorName: 'John Doe',
+        authorImage: 'https://example.com/profile.jpg', // URL de la imagen de perfil
+        title: 'Cómo aprender React en 10 días',
+        content: 'React es una biblioteca de JavaScript para construir interfaces de usuario. En este post, compartiré algunos consejos y recursos para aprender React rápidamente.',
+        hashtags: ['#React', '#JavaScript', '#WebDevelopment'],
+        image: '',
+    };
 
     if (loadingProfile || loading) {
         return <LoadingPage/>;
@@ -64,15 +75,26 @@ const HomePage = () => {
                     }}
                 />
                 <BookSocialTitle level={1} text={`Welcome ${profile.name}`}/>
+
+            </div>
+            <div style={{display: 'flex', justifyContent: 'center', padding: '20px'}}>
+                <CardVisualizePost
+                    authorName={postExample.authorName}
+                    authorImage={postExample.authorImage}
+                    title={postExample.title}
+                    content={postExample.content}
+                    hashtags={postExample.hashtags}
+                    image={postExample.image}
+                />
             </div>
             {booksGenre.length > 0 && (
                 <BookList title="Books of your favourite genre" books={booksGenre}/>
             )}
-            <Spacer size={24}/>
+            <Spacer size={16}/>
             {booksRecent.length > 0 && (
                 <BookList title="Books recently added" books={booksRecent}/>
             )}
-            <Spacer size={24}/>
+            <Spacer size={16}/>
             {booksTopRated.length > 0 && (
                 <BookList title="Most popular books" books={booksTopRated}/>
             )}
