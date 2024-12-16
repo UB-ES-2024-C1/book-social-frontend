@@ -30,6 +30,12 @@ const BookDetailsPage = () => {
     if (error) {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()} />;
     }
+    const defaultBookImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg"
+    const imageUrl = book.image
+        ? book.image.startsWith('data:image') 
+            ? book.image 
+            : `data:image/jpeg;base64,${book.image}`
+        : defaultBookImage;
 
     const saveForLater = (event) => {
         event.stopPropagation(); // Evita que el clic en el botón dispare el evento del Card
@@ -73,7 +79,7 @@ const BookDetailsPage = () => {
                     display: 'flex',
                     flexDirection: 'column'
                 }}>
-                    <BookSocialImage size="lg" url={book.image} />
+                    <BookSocialImage size="lg" url={imageUrl} />
                     <Spacer size={24} />
                     <BookSocialRating value={book.goodReadsMeanRating || 0} />
                     <Spacer size={24} />

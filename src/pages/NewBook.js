@@ -8,7 +8,7 @@ import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
 import useProfile from '../hooks/profile/profile';
 import api from '../services/api';
-import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 
 
 const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
@@ -136,41 +136,51 @@ const NewBook = () => {
         setIsbnError(error);
     };
 
-    const handleImageChange = (e) => {
+
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
 
         if (file) {
-            // Validar formato de la imagen
-            const validFormats = ['image/png', 'image/jpeg'];
-            if (!validFormats.includes(file.type)) {
-                setImageError('Only PNG or JPG files');
-                setCoverImage(null);
-                setImagePreview(null);
-                return;
+            try {
+                // Validar formato
+                const validFormats = ['image/png', 'image/jpeg'];
+                if (!validFormats.includes(file.type)) {
+                    setImageError('Only PNG or JPG files');
+                    return;
+                }
+
+                // Opciones de compresión
+                const options = {
+                    maxSizeMB: 0.1, // Máximo 0.5MB
+                    maxWidthOrHeight: 800,
+                    useWebWorker: true,
+                };
+
+                // Comprimir la imagen
+                const compressedFile = await imageCompression(file, options);
+
+                // Convertir el archivo comprimido a Base64
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result;
+
+                    // Reducir el Base64 eliminando el prefijo
+                    const reducedBase64 = base64String.replace(/^data:image\/\w+;base64,/, '');
+
+                    // Guardar la cadena Base64 reducida
+                    setCoverImage(reducedBase64);
+                    setImagePreview(reader.result); // Para previsualizar la imagen
+                };
+
+                reader.readAsDataURL(compressedFile);
+
+            } catch (error) {
+                console.error('Error processing image:', error);
+                setImageError('Error processing the image');
             }
-
-            // Validar tamaño (máximo 10MB)
-            if (file.size > 10 * 1024 * 1024) {
-                setImageError('Maximum size of 10MB');
-                setCoverImage(null);
-                setImagePreview(null);
-                return;
-            }
-
-            setImageError(''); // Resetear mensaje de error
-
-            // Mostrar la imagen seleccionada antes de convertirla
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);  // Mostrar la imagen seleccionada en vista previa
-
-                // Convertir la imagen a Base64
-                const base64String = reader.result.split(',')[1]; // Extrae la cadena base64
-                setCoverImage(base64String); // Guardar la imagen en base64
-            };
-            reader.readAsDataURL(file); // Leer el archivo
         }
     };
+
     
 
     const handleEditionChange = (e) => {
@@ -388,7 +398,7 @@ const NewBook = () => {
                         borderRadius: '8px',
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                     }}
-                />{/*
+                />
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
                     <input
                         ref={fileInputRef}
@@ -405,7 +415,7 @@ const NewBook = () => {
                         bgColor={paletteColors.color_primary} // Use your desired background color
                     />
                 </Box>
-                */}
+
             </Box>
 
             {/* Formulario */}
