@@ -143,11 +143,14 @@ export default function PermanentDrawer({isLogged}) {
                         icon: <AiOutlinePlus/>,
                         route: 'New Post'
                     },
-                    {
-                        text: 'New book',
-                        icon: <AiOutlinePlus/>,
-                        route: 'New book',
-                    },
+                    ...(profile?.role === 'writer'
+                        ? [{
+                            text: 'New book',
+                            icon: <AiOutlinePlus/>,
+                            route: 'New book',
+                        }]
+                        : []
+                    ),
                     {
                         text: 'Home',
                         icon: <AiOutlineHome/>,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/Delete'; // To use a custom delete icon
 import paletteColors from '../resources/palette';
 
-const BookSocialGenereSelector = ({ genres, selectedGenres, onGenreChange }) => {
+const BookSocialGenereSelector = ({ genres, selectedGenres, onGenreChange, label }) => {
     const [availableGenres, setAvailableGenres] = useState(genres);
     const [open, setOpen] = useState(false);  // State to control the dropdown open state
 
@@ -24,6 +24,7 @@ const BookSocialGenereSelector = ({ genres, selectedGenres, onGenreChange }) => 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Select
                 multiple
+                label
                 value={selectedGenres}
                 onChange={handleAddGenre}
                 displayEmpty
@@ -46,7 +47,7 @@ const BookSocialGenereSelector = ({ genres, selectedGenres, onGenreChange }) => 
                         </Box>
                     ) : (
                         <Box sx={{ textAlign: 'left', width: '100%', color: paletteColors.textColor }}>
-                            Generes *
+                            {label}
                         </Box>
                     )
                 }
@@ -80,6 +81,7 @@ BookSocialGenereSelector.propTypes = {
     genres: PropTypes.arrayOf(PropTypes.string).isRequired,
     selectedGenres: PropTypes.arrayOf(PropTypes.string).isRequired,
     onGenreChange: PropTypes.func.isRequired,
+    label: PropTypes.string,
 };
 
 export default BookSocialGenereSelector;

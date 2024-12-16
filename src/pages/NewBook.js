@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from '@mui/material';
 import defaultbook from '../assets/books/DefaultBook.jpg';
 import BookSocialTextField from '../components/BookSocialTextField';
@@ -8,6 +8,7 @@ import BookSocialLargeTextField from '../components/BookSocialLargeTextField';
 import paletteColors from '../resources/palette';
 import useProfile from '../hooks/profile/profile';
 import api from '../services/api';
+import imageCompression from 'browser-image-compression';
 
 
 const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
@@ -18,12 +19,16 @@ const NewBook = () => {
     const [synopsis, setSynopsis] = useState('');
     const [publishDate, setPublishDate] = useState('');
     const [isbn, setIsbn] = useState('');
-    const [coverImage, setCoverImage] = useState(null);
+    const [coverImage, setCoverImage] = useState(null);  // Para la imagen en base64
+    const [imagePreview, setImagePreview] = useState(null);  // Para la vista previa de la imagen
     const [selectedGenres, setSelectedGenres] = useState([]);
     const fileInputRef = useRef(null);
     const [edition, setEdition] = useState('');
     const [publisher, setPublisher] = useState('');
     const {profile, loading, error, fetchProfile} = useProfile();
+    const [genres, setGenres] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [titleError, setTitleError] = useState('');
     const [languageError, setLanguageError] = useState('');
@@ -85,6 +90,9 @@ const NewBook = () => {
             setGenresError('');
         }
     };
+    const handleCategoriesChange = (newCategories) => {
+        setSelectedCategories(newCategories);
+    };
 
 
     const handlePublishDateChange = (e) => {
@@ -128,33 +136,52 @@ const NewBook = () => {
         setIsbnError(error);
     };
 
-    const handleImageChange = (e) => {
+
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
 
         if (file) {
-            // Validar formato
-            const validFormats = ['image/png', 'image/jpeg']; // PNG o JPG
-            if (!validFormats.includes(file.type)) {
-                setImageError('Only PNG or JPG files');
-                setCoverImage(null); // Restablecer la imagen cargada
-                return;
-            }
+            try {
+                // Validar formato
+                const validFormats = ['image/png', 'image/jpeg'];
+                if (!validFormats.includes(file.type)) {
+                    setImageError('Only PNG or JPG files');
+                    return;
+                }
 
-            // Validar tamaño (máximo 10MB)
-            if (file.size > 10 * 1024 * 1024) {  // 10MB en bytes
-                setImageError('Maximum size of 10MB');
-                setCoverImage(null); // Restablecer la imagen cargada
-                return;
-            }
+                // Opciones de compresión
+                const options = {
+                    maxSizeMB: 0.1, // Máximo 0.5MB
+                    maxWidthOrHeight: 800,
+                    useWebWorker: true,
+                };
 
-            setImageError(''); // Reset error message
-            if (coverImage) {
-                URL.revokeObjectURL(coverImage);
+                // Comprimir la imagen
+                const compressedFile = await imageCompression(file, options);
+
+                // Convertir el archivo comprimido a Base64
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result;
+
+                    // Reducir el Base64 eliminando el prefijo
+                    const reducedBase64 = base64String.replace(/^data:image\/\w+;base64,/, '');
+
+                    // Guardar la cadena Base64 reducida
+                    setCoverImage(reducedBase64);
+                    setImagePreview(reader.result); // Para previsualizar la imagen
+                };
+
+                reader.readAsDataURL(compressedFile);
+
+            } catch (error) {
+                console.error('Error processing image:', error);
+                setImageError('Error processing the image');
             }
-            const imageUrl = URL.createObjectURL(file); // Create temporary URL for the image
-            setCoverImage(imageUrl); // Set the image preview
         }
     };
+
+    
 
     const handleEditionChange = (e) => {
         const value = e.target.value;
@@ -179,6 +206,40 @@ const NewBook = () => {
         // Trigger file input when the button is clicked
         fileInputRef.current.click();
     };
+
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                const response = await api.get('books/genres');
+                const sortedGenres = response.data.sort((a, b) => 
+                    a.localeCompare(b) 
+                );
+                setGenres(sortedGenres);
+            } catch (error) {
+                console.error('Error fetching genres:', error);
+            }
+        };
+
+        fetchGenres();
+    }, []);
+    
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await api.get('books/categories');
+                const sortedCategories = response.data.sort((a, b) => 
+                    a.localeCompare(b) 
+                );
+                setCategories(sortedCategories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+    
+        fetchCategories();
+    }, []);
+    
+    
 
 
     const handleSubmit = async () => {
@@ -235,16 +296,16 @@ const NewBook = () => {
             author: parseInt(profile.id, 10),
             publication_date: new Date(publishDate).toISOString().split('T')[0],
             genres: selectedGenres || [],
-            categories: ["default"],
+            categories: selectedCategories || [],
             synopsis: synopsis || "No synopsis available.",
-            image_url: "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg",
+            image_url: coverImage,
             publisher: publisher || "Unknown",
             ISBN: isbn || "Unknown",
             edition: edition && edition.length >= 1 && edition.length <= 50 ? edition : "Unknown",
             language: language || "Unknown",
             num_pages: 100,
-            reviewValue: 4,
-            ratingCount: 1,
+            reviewValue: 0,
+            ratingCount: 0,
         };
 
         
@@ -260,9 +321,11 @@ const NewBook = () => {
             // Resetear el formulario
             setTitle('');
             setPublishDate('');
+            setSelectedCategories([]);
             setSelectedGenres([]);
             setSynopsis('');
             setCoverImage(null);
+            setImagePreview(null);
             setPublisher('');
             setIsbn('');
             setEdition('');
@@ -329,7 +392,7 @@ const NewBook = () => {
                 }}
             >
                 <img
-                    src={coverImage || defaultbook}
+                    src={imagePreview || defaultbook}
                     alt="book cover"
                     style={{
                         width: '100%',
@@ -338,18 +401,15 @@ const NewBook = () => {
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                     }}
                 />
-                {/* Campo para cargar la imagen de portada */}
-                <Box sx={{display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px'}}>
-                    {/* Hidden File Input */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
                     <input
                         ref={fileInputRef}
                         type="file"
                         accept=".png, .jpg, .jpeg"
                         onChange={handleImageChange}
-                        style={{display: 'none'}} // Hide the input, but it's still accessible
+                        style={{ display: 'none' }} // Ocultar el input, pero aún accesible
                     />
-
-                    {/* Upload Button */}
+                    
                     <BookSocialPrimaryButton
                         buttonText="Upload Cover Image"
                         onClick={handleButtonImageClick} // Trigger file input click
@@ -357,6 +417,7 @@ const NewBook = () => {
                         bgColor={paletteColors.color_primary} // Use your desired background color
                     />
                 </Box>
+
             </Box>
 
             {/* Formulario */}
@@ -417,9 +478,20 @@ const NewBook = () => {
                     {/* Genres Field */}
                     <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
                         <BookSocialGenereSelector
-                            genres={genresList}
+                            genres={genres}
                             selectedGenres={selectedGenres}
                             onGenreChange={handleGenreChange}
+                            label={"Genres *"}
+                        />
+                    </div>
+
+                    {/* Categories Field */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px'}}>
+                        <BookSocialGenereSelector
+                            genres={categories}
+                            selectedGenres={selectedCategories}
+                            onGenreChange={handleCategoriesChange}
+                            label={"Categories"}
                         />
                     </div>
 

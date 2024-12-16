@@ -40,6 +40,44 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
     const handleImageLoad = () => {
         setIsImageLoading(false);
     };
+    
+    // Imagen predeterminada
+    const defaultImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg";
+
+    // Verificar si la imagen es base64 y añadir el prefijo adecuado
+    const isBase64 = (str) => {
+        return str && (str.startsWith('data:image/') || str.startsWith('data:image;base64,'));
+    };
+
+    // Función para verificar si una cadena es una URL válida
+    const isValidUrl = (str) => {
+        try {
+            new URL(str); // Intenta crear un objeto URL
+            return true;
+        } catch (_) {
+            return false;
+        }
+    };
+
+    // Función para añadir el prefijo de base64 adecuado si es necesario
+    const formatBase64Image = (image) => {
+        if (image && !isBase64(image)) {
+            return `data:image/jpeg;base64,${image}`; // Aquí puedes ajustarlo si no es JPEG
+        }
+        return image;
+    };
+
+    // Manejo de la imagen
+    let imageUrl = defaultImage; // Valor predeterminado
+
+    if (image) {
+        if (isValidUrl(image)) {
+            imageUrl = image; // Si es una URL válida, usamos la URL directamente
+        } else {
+            // Si no es una URL, la tratamos como base64
+            imageUrl = formatBase64Image(image);
+        }
+    }
 
     //TODO change to save with the api of save
     const saveForLater = (event) => {
@@ -75,7 +113,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         borderRadius: 10,
                         display: isImageLoading ? 'none' : 'block',
                     }}
-                    image={image}
+                    image={imageUrl}
                     alt={`${title} cover`}
                     onLoad={handleImageLoad}
                 />
