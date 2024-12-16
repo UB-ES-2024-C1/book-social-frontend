@@ -19,7 +19,8 @@ const NewBook = () => {
     const [synopsis, setSynopsis] = useState('');
     const [publishDate, setPublishDate] = useState('');
     const [isbn, setIsbn] = useState('');
-    const [coverImage, setCoverImage] = useState(null);
+    const [coverImage, setCoverImage] = useState(null);  // Para la imagen en base64
+    const [imagePreview, setImagePreview] = useState(null);  // Para la vista previa de la imagen
     const [selectedGenres, setSelectedGenres] = useState([]);
     const fileInputRef = useRef(null);
     const [edition, setEdition] = useState('');
@@ -139,29 +140,38 @@ const NewBook = () => {
         const file = e.target.files[0];
 
         if (file) {
-            // Validar formato
-            const validFormats = ['image/png', 'image/jpeg']; // PNG o JPG
+            // Validar formato de la imagen
+            const validFormats = ['image/png', 'image/jpeg'];
             if (!validFormats.includes(file.type)) {
                 setImageError('Only PNG or JPG files');
-                setCoverImage(null); // Restablecer la imagen cargada
+                setCoverImage(null);
+                setImagePreview(null);
                 return;
             }
 
             // Validar tamaño (máximo 10MB)
-            if (file.size > 10 * 1024 * 1024) {  // 10MB en bytes
+            if (file.size > 10 * 1024 * 1024) {
                 setImageError('Maximum size of 10MB');
-                setCoverImage(null); // Restablecer la imagen cargada
+                setCoverImage(null);
+                setImagePreview(null);
                 return;
             }
 
-            setImageError(''); // Reset error message
-            if (coverImage) {
-                URL.revokeObjectURL(coverImage);
-            }
-            const imageUrl = URL.createObjectURL(file); // Create temporary URL for the image
-            setCoverImage(imageUrl); // Set the image preview
+            setImageError(''); // Resetear mensaje de error
+
+            // Mostrar la imagen seleccionada antes de convertirla
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);  // Mostrar la imagen seleccionada en vista previa
+
+                // Convertir la imagen a Base64
+                const base64String = reader.result.split(',')[1]; // Extrae la cadena base64
+                setCoverImage(base64String); // Guardar la imagen en base64
+            };
+            reader.readAsDataURL(file); // Leer el archivo
         }
     };
+    
 
     const handleEditionChange = (e) => {
         const value = e.target.value;
@@ -278,7 +288,7 @@ const NewBook = () => {
             genres: selectedGenres || [],
             categories: selectedCategories || [],
             synopsis: synopsis || "No synopsis available.",
-            image_url: "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg",
+            image_url: coverImage,
             publisher: publisher || "Unknown",
             ISBN: isbn || "Unknown",
             edition: edition && edition.length >= 1 && edition.length <= 50 ? edition : "Unknown",
@@ -370,7 +380,7 @@ const NewBook = () => {
                 }}
             >
                 <img
-                    src={coverImage || defaultbook}
+                    src={imagePreview || defaultbook}
                     alt="book cover"
                     style={{
                         width: '100%',
@@ -378,15 +388,14 @@ const NewBook = () => {
                         borderRadius: '8px',
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                     }}
-                />
-                {/* 
-                <Box sx={{display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px'}}>
+                />{/*
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
                     <input
                         ref={fileInputRef}
                         type="file"
                         accept=".png, .jpg, .jpeg"
                         onChange={handleImageChange}
-                        style={{display: 'none'}} // Hide the input, but it's still accessible
+                        style={{ display: 'none' }} // Ocultar el input, pero aún accesible
                     />
                     
                     <BookSocialPrimaryButton

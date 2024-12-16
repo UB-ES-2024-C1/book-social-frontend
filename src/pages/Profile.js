@@ -11,6 +11,7 @@ import BookList from "../components/BookList";
 import defaultCoverImage from '../assets/portada.jpeg'; // Importa la imagen por defecto
 
 
+
 const Profile = () => {
     const [openModal, setOpenModal] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
