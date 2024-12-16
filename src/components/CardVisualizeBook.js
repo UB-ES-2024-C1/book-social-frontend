@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
-import { Box, Button, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography } from '@mui/material';
+import React, {useState} from 'react';
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardMedia,
+    CircularProgress,
+    Rating,
+    Skeleton,
+    Tooltip,
+    Typography
+} from '@mui/material';
 import paletteColors from "../resources/palette";
-import { useNavigate } from "react-router-dom";
-import { AiOutlineSave, AiFillSave } from "react-icons/ai"; // Importa el icono de "guardado"
+import {useNavigate} from "react-router-dom";
+import useSavedBooks from "../hooks/saved_books"; // Importa el icono de "guardado"
 
 const truncateText = (text) => {
     const maxLength = 87;
@@ -16,10 +27,10 @@ const truncateText = (text) => {
     return textToUse;
 };
 
-const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating }) => {
+const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [isSaved, setIsSaved] = useState(false);
+    const [isImageLoading, setIsImageLoading] = useState(true);
+    const {loading, saveBook, isBookSaved} = useSavedBooks();
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -27,13 +38,13 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
     };
 
     const handleImageLoad = () => {
-        setIsLoading(false);
+        setIsImageLoading(false);
     };
 
     //TODO change to save with the api of save
     const saveForLater = (event) => {
         event.stopPropagation();
-        setIsSaved((prev) => !prev);
+        saveBook(id)
         console.log(`Book with ID ${id} saved for later`);
     };
 
@@ -47,13 +58,13 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
         }} onClick={goToDetails}>
-            <Box sx={{ position: 'relative', width: 150, height: '100%' }}>
-                {isLoading && (
+            <Box sx={{position: 'relative', width: 150, height: '100%'}}>
+                {isImageLoading && (
                     <Skeleton
                         variant="rectangular"
                         width="100%"
                         height="100%"
-                        sx={{ borderRadius: 10 }}
+                        sx={{borderRadius: 10}}
                     />
                 )}
                 <CardMedia
@@ -62,7 +73,7 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
                         width: 150,
                         padding: 1.5,
                         borderRadius: 10,
-                        display: isLoading ? 'none' : 'block',
+                        display: isImageLoading ? 'none' : 'block',
                     }}
                     image={image}
                     alt={`${title} cover`}
@@ -139,26 +150,43 @@ const CardvisualizeBook = ({ id, image, title, author, summary, genre, rating })
                                 }
                             }}
                         />
-                        <Typography variant="body2" sx={{ ml: 1, color: 'white' }}>
+                        <Typography variant="body2" sx={{ml: 1, color: 'white'}}>
                             {rating}
                         </Typography>
                     </Box>
                 </CardContent>
+
                 <Button
                     variant="contained"
-                    color={isSaved ? 'success' : 'primary'}
+                    color={isBookSaved(id) ? 'success' : 'primary'}
                     onClick={saveForLater}
-                    startIcon={isSaved ? <AiFillSave /> : <AiOutlineSave />}
                     sx={{
                         mt: 1,
                         alignSelf: 'flex-end',
                         fontSize: '0.8rem',
                         textTransform: 'none',
-                        backgroundColor: isSaved ? '#4caf50' : paletteColors.color_primary,
+                        backgroundColor: isBookSaved(id) ? '#4caf50' : paletteColors.color_primary,
+                        position: 'relative',
+                        minWidth: '120px',
+                        height: '40px',
                     }}
+                    disabled={loading}
                 >
-                    {isSaved ? 'Saved' : 'Save'}
+                    {loading ? (
+                        <CircularProgress
+                            size={24}
+                            sx={{
+                                position: 'absolute'
+                            }}
+                        />
+                    ) : (
+                        <>
+                            {isBookSaved(id) ? 'Saved' : 'Save'}
+                        </>
+                    )}
                 </Button>
+
+
             </Box>
         </Card>
     );
