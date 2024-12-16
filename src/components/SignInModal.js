@@ -14,7 +14,6 @@ import BookSocialDropdown from "./BookSocialDropdown";
 import BookSocialText from "./BookSocialText";
 import api from "../services/api";
 
-const genresList = ['Fantasy', 'Fiction', 'Romance', 'NonFiction', 'Poetry', 'Science', 'Nature', 'Theatre', 'Comedy'];
 
 const style = {
     position: 'absolute',
@@ -220,7 +219,7 @@ const SignInModal = ({open, handleClose}) => {
                             label='Genre'
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
-                            options={genresList} // Usar los géneros obtenidos de la API
+                            options={genres} // Usar los géneros obtenidos de la API
                             dataTestId={'genre-dropdown'}
                         />
                     </FormControl>
