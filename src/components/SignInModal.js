@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Box, FormControl, InputLabel, Modal, Typography } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Box, FormControl, InputLabel, Modal, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo2 from "../logo2.svg";
 import IconButton from "@mui/material/IconButton";
-import { AiOutlineClose, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {AiOutlineClose, AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 import BookSocialPrimaryButton from "./BookSocialPrimaryButton";
-import { useAuth } from "../hooks/authentication";
-import { useNavigate } from "react-router-dom";
+import {useAuth} from "../hooks/authentication";
+import {useNavigate} from "react-router-dom";
 import * as routes from '../resources/routes_name';
 import BookSocialTextField from "./BookSocialTextField";
 import BookSocialDropdown from "./BookSocialDropdown";
 import BookSocialText from "./BookSocialText";
-import axios from 'axios'; // Asegúrate de tener axios instalado
+import api from "../services/api";
 
 const style = {
     position: 'absolute',
@@ -30,8 +30,8 @@ const style = {
     borderRadius: 4,
 };
 
-const SignInModal = ({ open, handleClose }) => {
-    const { signIn, error } = useAuth();
+const SignInModal = ({open, handleClose}) => {
+    const {signIn, error} = useAuth();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ const SignInModal = ({ open, handleClose }) => {
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-                const response = await axios.get('books/genres');
+                const response = await api.get('books/genres');
                 setGenres(response.data);
             } catch (error) {
                 console.error('Error fetching genres:', error);
@@ -112,7 +112,7 @@ const SignInModal = ({ open, handleClose }) => {
                         color: 'grey.500',
                     }}
                 >
-                    <AiOutlineClose />
+                    <AiOutlineClose/>
                 </IconButton>
                 <div className="logo" style={{
                     display: 'flex',
@@ -120,7 +120,7 @@ const SignInModal = ({ open, handleClose }) => {
                     width: '100%',
                     marginBottom: '15px',
                 }}>
-                    <img src={logo2} className="App-logo" alt="logo" style={{ width: '200px' }} />
+                    <img src={logo2} className="App-logo" alt="logo" style={{width: '200px'}}/>
                 </div>
                 <Typography
                     id="modal-title"
@@ -136,10 +136,10 @@ const SignInModal = ({ open, handleClose }) => {
                         justifyContent: 'center'
                     }}
                 >
-                    <AccountCircle sx={{ mr: 1 }} />
+                    <AccountCircle sx={{mr: 1}}/>
                     Create account
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{display: 'flex', gap: 2}}>
                     <BookSocialTextField
                         value={name}
                         type={'text'}
@@ -162,7 +162,7 @@ const SignInModal = ({ open, handleClose }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     dataTestId={'email'}
                 />
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{position: 'relative'}}>
                     <BookSocialTextField
                         value={password}
                         type={showPassword ? 'text' : 'password'}
@@ -181,10 +181,10 @@ const SignInModal = ({ open, handleClose }) => {
                             color: paletteColors.textColor,
                         }}
                     >
-                        {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                        {showPassword ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
                     </IconButton>
                 </Box>
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{position: 'relative'}}>
                     <BookSocialTextField
                         value={password2}
                         type={showPassword2 ? 'text' : 'password'}
@@ -203,10 +203,10 @@ const SignInModal = ({ open, handleClose }) => {
                             color: paletteColors.textColor,
                         }}
                     >
-                        {showPassword2 ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                        {showPassword2 ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
                     </IconButton>
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{display: 'flex', gap: 2}}>
                     <FormControl fullWidth>
                         <InputLabel id="genre-label" sx={{
                             color: paletteColors.textColor,
@@ -240,12 +240,12 @@ const SignInModal = ({ open, handleClose }) => {
                 </Box>
 
                 {errorMessage && (
-                    <BookSocialText level={"small"} text={errorMessage} sx={{ textAlign: 'left' }}
+                    <BookSocialText level={"small"} text={errorMessage} sx={{textAlign: 'left'}}
                                     color={paletteColors.warning_error}
                     />
                 )}
                 <BookSocialPrimaryButton buttonText={'Create Account'} onClick={handleSignIn} isExpanded={false}
-                                         bgColor={paletteColors.color_primary} dataTestId={'create-button'} />
+                                         bgColor={paletteColors.color_primary} dataTestId={'create-button'}/>
             </Box>
         </Modal>
     );
