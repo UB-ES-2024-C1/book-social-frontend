@@ -3,7 +3,7 @@ import BookSocialTitle from "../components/BookSocialTitle";
 import {Spacer} from "../resources/spacer";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
-import useBooks from "../hooks/books";
+import useBooks from "../hooks/books/books";
 import CardvisualizeBook from "../components/CardVisualizeBook";
 import {useLocation, useNavigate} from "react-router-dom";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";

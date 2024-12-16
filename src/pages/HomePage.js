@@ -5,12 +5,11 @@ import BookList from "../components/BookList";
 import useProfile from "../hooks/profile/profile";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
-import useBooks from "../hooks/books";
+import useBooks from "../hooks/books/books";
 import {useNavigate} from "react-router-dom";
 import * as routes from "../resources/routes_name";
 import {Spacer} from "../resources/spacer";
 import CardVisualizePost from "../components/CardVisualizePost";
-
 
 
 const HomePage = () => {
