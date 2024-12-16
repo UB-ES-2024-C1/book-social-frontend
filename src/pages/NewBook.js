@@ -189,41 +189,36 @@ const NewBook = () => {
 
     useEffect(() => {
         const fetchGenres = async () => {
-            console.log('Fetching genres...');
-            const startTime = performance.now();
             try {
-                const response = await axios.get('books/genres');
-                console.log('Genres retrieved successfully:', response.data);
-                setGenres(response.data);
+                const response = await api.get('books/genres');
+                const sortedGenres = response.data.sort((a, b) => 
+                    a.localeCompare(b) 
+                );
+                setGenres(sortedGenres);
             } catch (error) {
-                console.error('Error fetching genres:', error.message);
-            } finally {
-                const endTime = performance.now();
-                console.log(`Fetching genres took ${(endTime - startTime).toFixed(2)} ms`);
+                console.error('Error fetching genres:', error);
             }
         };
-    
+
         fetchGenres();
     }, []);
     
     useEffect(() => {
         const fetchCategories = async () => {
-            console.log('Fetching categories...');
-            const startTime = performance.now();
             try {
-                const response = await axios.get('books/categories');
-                console.log('Categories retrieved successfully:', response.data);
-                setCategories(response.data);
+                const response = await api.get('books/categories');
+                const sortedCategories = response.data.sort((a, b) => 
+                    a.localeCompare(b) 
+                );
+                setCategories(sortedCategories);
             } catch (error) {
-                console.error('Error fetching categories:', error.message);
-            } finally {
-                const endTime = performance.now();
-                console.log(`Fetching categories took ${(endTime - startTime).toFixed(2)} ms`);
+                console.error('Error fetching categories:', error);
             }
         };
     
         fetchCategories();
     }, []);
+    
     
 
 
