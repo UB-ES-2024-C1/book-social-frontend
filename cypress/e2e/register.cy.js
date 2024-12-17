@@ -26,16 +26,19 @@ describe('SignInModal', () => {
       cy.get('[data-testid="password2-input"]').type('Password123');
       
       // Seleccionar opciones del dropdown
-      cy.get('[data-testid="genre-dropdown"]').click();
+
+      cy.get('[data-testid="genre-dropdown"]')
+        .click();
+      cy.wait(1000); // 1 segundo de espera (ajústalo según el tiempo de animación)
       cy.contains('.MuiMenuItem-root', 'Contemporary Fiction').click();
-      cy.get('[data-testid="person-type-dropdown"]').click();
+
+      cy.get('[data-testid="person-type-dropdown"]')
+        .click();
+        cy.get('.MuiMenuItem-root').should('exist');
       cy.contains('.MuiMenuItem-root', 'Reader').click();
       
       // Hacer clic en el botón de 'Crear cuenta'
       cy.get('[data-testid="create-button');
-      
-      // Verificar que la navegación o el comportamiento esperado suceda después de enviar el formulario
-      //cy.url().should('include', '/home');  // Verifica la redirección, ajusta según sea necesario
     });
   });
   

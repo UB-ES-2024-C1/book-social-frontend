@@ -39,9 +39,11 @@ describe('Login test', () => {
         cy.get('[data-testid="synopsis-input"]').type('This is a cypress test');
         cy.get('[data-testid="lenguage-input"]').type('English');
         cy.get('[data-testid="genres-dropdown"]').click();
+        cy.get('.MuiMenuItem-root').should('exist');
         cy.contains('.MuiMenuItem-root', 'Fiction').click();
         cy.get('body').click();
         cy.get('[data-testid="categories-dropdown"]').click();
+        cy.get('.MuiMenuItem-root').should('exist');
         cy.contains('.MuiMenuItem-root', 'Adaptations').click();
         cy.get('body').click();
         cy.get('[data-testid="date-input"]').click().type(formattedDate);
