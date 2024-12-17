@@ -22,6 +22,7 @@ const useProfile = () => {
         try {
             const profileImage = localStorage.getItem('profileImage');
             const coverImage = localStorage.getItem('coverImage');
+            console.log('cover image', coverImage);
             const response = await api.get('auth/me')
             var fetchedBooks = [];
             try {
@@ -35,14 +36,16 @@ const useProfile = () => {
             console.log(response);
             setLoading(false);
             if (response.status === 200) {
+                localStorage.setItem('profileId', response.data.id);
+                localStorage.setItem('genre', response.data.favGenre);
+                localStorage.setItem('role', response.data.role.toString().toLocaleLowerCase());
+
                 setProfile({
                     ...response.data,
                     books: fetchedBooks,
                     image: profileImage,
                     coverImage: coverImage,
                 });
-                console.log('profile');
-                console.log(profile);
                 setLoading(false);
             } else {
                 setError("Error fetching profile data");

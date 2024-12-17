@@ -22,19 +22,22 @@ const BookList = ({title, books}) => {
 
     return (
         <div style={{width: "100%", marginTop: "40px", alignItems: "flex-start"}}>
-            <BookSocialTitle
-                level={4}
-                text={title}
-                textAlign={"left"}
-                sx={{margin: "20px"}}
-            />
-            <Box
-                sx={{
-                    width: "98%",
-                    height: "1px",
-                    backgroundColor: "#ddd",
-                }}
-            />
+            {title && title.trim() !== "" && (
+                <div>
+                    <BookSocialTitle
+                        level={4}
+                        text={title}
+                        textAlign={"left"}
+                        sx={{margin: "20px"}}
+                    /> <Box
+                    sx={{
+                        width: "98%",
+                        height: "1px",
+                        backgroundColor: "#ddd",
+                    }}
+                /></div>
+
+            )}
             <Box
                 sx={{
                     display: "flex",
@@ -67,8 +70,8 @@ const BookList = ({title, books}) => {
                     }}
                 >
                     {books.map((book, index) => {
-                        console.log(`book ${index}`); // Imprime el contenido de cada libro en la consola
-                        console.log(book); // Imprime el contenido de cada libro en la consola
+                        //console.log(`book ${index}`); // Imprime el contenido de cada libro en la consola
+                        // console.log(book); // Imprime el contenido de cada libro en la consola
                         return (
                             <Box
                                 key={index}

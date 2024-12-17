@@ -15,6 +15,7 @@ const BookSocialLargeTextField = ({
     status = "default", // 'default', 'error', or 'success'
     required = false,
     rows = 4, // Default rows to 4, but can be adjusted as needed
+    dataTestId,
 }) => {
     const isError = status === "error";
     const isSuccess = status === "success";
@@ -33,6 +34,7 @@ const BookSocialLargeTextField = ({
                 required={required}
                 multiline // Enables multi-line input (for longer text like synopsis)
                 rows={rows} // Number of rows for the text area
+                data-testid={dataTestId}
                 slotProps={{
                     inputLabel: {
                         shrink: true, // Apply shrink style to the label
@@ -78,6 +80,7 @@ BookSocialLargeTextField.propTypes = {
     status: PropTypes.oneOf(['default', 'error', 'success']),
     required: PropTypes.bool,
     maxLength: PropTypes.number,
+    dataTestId: PropTypes.string,
     rows: PropTypes.number, // Defines the number of rows for the text field
 };
 

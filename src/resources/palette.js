@@ -10,7 +10,7 @@ const paletteColors = {
     color_primary_weakest: '#1B1B33',
     background_header: '#282c34',
     warning_error: '#db121c',
-    backgroundImage: 'linear-gradient(135deg, #2E2C5F 0%, #4A478A 100%)'
+    backgroundImage: 'linear-gradient(135deg, #2E2C5F 0%, #4A478A 100%)',
 };
 
 export default paletteColors;

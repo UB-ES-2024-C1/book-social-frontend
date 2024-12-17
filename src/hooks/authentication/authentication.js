@@ -41,6 +41,9 @@ export const AuthProvider = ({children}) => {
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('profileId');
+        localStorage.removeItem('genre');
+        localStorage.removeItem('role');
         setIsLoggedIn(false);
     };
 
@@ -49,7 +52,7 @@ export const AuthProvider = ({children}) => {
         try {
             const payload = {
                 firstName,
-                lastName: "lastname",
+                lastName: "Martínez",
                 username,
                 email,
                 password: pass,
@@ -60,6 +63,8 @@ export const AuthProvider = ({children}) => {
             const response = await api.post('/auth/register', payload);
 
             if (response.status === 201) {
+                localStorage.setItem('genre', genre);
+                localStorage.setItem('role', personType.toString().toLocaleLowerCase());
                 await login(email, pass);
             } else {
                 setError(`Error on try to register: ${response.data.message}`);

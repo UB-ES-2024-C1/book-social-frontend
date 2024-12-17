@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
+import {AiFillSave, AiOutlineCompass, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai';
 import {useLocation, useNavigate} from "react-router-dom";
 import logo from '../logo.svg';
 import * as routes from '../resources/routes_name';
@@ -22,9 +22,11 @@ import paletteColors from "../resources/palette";
 import {Typography} from "@mui/material";
 import {Logout} from "@mui/icons-material";
 import {useAuth} from "../hooks/authentication";
+import useProfile from "../hooks/profile/profile";
 
 
 export default function PermanentDrawer({isLogged}) {
+    const {profile, loadingProfile} = useProfile();
     const {logout, user} = useAuth(); // Comprobar el tipo de user
     const [selected, setSelected] = useState('');
     const [openDialog, setOpenDialog] = useState(false); // Estado para controlar el diálogo
@@ -61,10 +63,13 @@ export default function PermanentDrawer({isLogged}) {
                 setSelected('Discovery');
                 break;
             case routes.SAVED:
-                setSelected('Saved');
+                setSelected('Saved Books');
                 break;
             case routes.NEW_BOOK:
                 setSelected('New book');
+                break;
+            case routes.NEW_POST:
+                setSelected('New Post');
                 break;
             default:
                 setSelected('');
@@ -81,11 +86,14 @@ export default function PermanentDrawer({isLogged}) {
             case 'Discovery':
                 navigate(routes.DISCOVERY);
                 break;
-            case 'Saved':
+            case 'Saved Books':
                 navigate(routes.SAVED);
                 break;
             case 'New book':
                 navigate(routes.NEW_BOOK);
+                break;
+            case 'New Post':
+                navigate(routes.NEW_POST);
                 break;
             default:
                 break;
@@ -130,14 +138,34 @@ export default function PermanentDrawer({isLogged}) {
                 width: '100%',
             }}>
                 {[
-                    // {text: 'New post', icon: <AiOutlinePlus/>, route: 'New post'},
                     {
-                        text: 'New book',
+                        text: 'New post',
                         icon: <AiOutlinePlus/>,
-                        route: 'New book',
+                        route: 'New Post'
                     },
-                    {text: 'Home', icon: <AiOutlineHome/>, route: 'Home'},
-                    {text: 'Discovery', icon: <AiOutlineCompass/>, route: 'Discovery'},
+                    ...(profile?.role === 'writer'
+                        ? [{
+                            text: 'New book',
+                            icon: <AiOutlinePlus/>,
+                            route: 'New book',
+                        }]
+                        : []
+                    ),
+                    {
+                        text: 'Home',
+                        icon: <AiOutlineHome/>,
+                        route: 'Home'
+                    },
+                    {
+                        text: 'Discovery',
+                        icon: <AiOutlineCompass/>,
+                        route: 'Discovery'
+                    },
+                    {
+                        text: 'Saved Books',
+                        icon: <AiFillSave/>,
+                        route: 'Saved Books'
+                    },
                     // {text: 'Saved', icon: <AiOutlineSave/>, route: 'Saved'}
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
@@ -147,13 +175,13 @@ export default function PermanentDrawer({isLogged}) {
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: item.route === 'New post' || item.route === 'New book' ? 'center' : 'flex-start',
+                                justifyContent: item.route === 'New Post' || item.route === 'New book' ? 'center' : 'flex-start',
                                 width: item.route === 'Add' ? '80%' : '100%',
                                 padding: item.route === 'Add' ? '5px' : '8px',
                                 gap: '5px',
                                 cursor: 'pointer',
                                 borderRadius: '8px',
-                                border: item.route === 'New post' || item.route === 'New book'
+                                border: item.route === 'New Post' || item.route === 'New book'
                                     ? '1px solid #FFFFFF'
                                     : selected === item.route
                                         ? '1px solid #6055CF'

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -24,7 +23,7 @@ export default function NavAppBar() {
     const handleCloseSignIn = () => setOpenSignIn(false);
 
     return (
-        <Box sx={{flexGrow: 1}}>
+        <div>
             <AppBar position="fixed" sx={{backgroundColor: '#282c34', height: '68px'}}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}/>
@@ -69,6 +68,6 @@ export default function NavAppBar() {
             </AppBar>
             <LoginModal open={openLogin} handleClose={handleCloseLogin}/>
             <SignInModal open={openSignIn} handleClose={handleCloseSignIn}/>
-        </Box>
+        </div>
     );
 }

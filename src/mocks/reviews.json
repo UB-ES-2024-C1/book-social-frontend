@@ -1,0 +1,131 @@
+[
+  {
+    "id": 1,
+    "user": "user123",
+    "book": 3,
+    "rating": 5,
+    "comment": "Absolutely loved this book! A must-read.",
+    "author": {
+      "id": 0,
+      "username": "mmartinez99",
+      "image": "",
+      "name": "Miriam"
+    }
+  },
+  {
+    "id": 2,
+    "user": "user789",
+    "book": 4,
+    "rating": 4,
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 3,
+    "user": "user456",
+    "book": 4,
+    "rating": 3,
+    "comment": "It was okay. Some parts were enjoyable, but it didn’t fully grab me.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 4,
+    "user": "user111",
+    "book": 4,
+    "rating": 2,
+    "comment": "I struggled to finish this one. Not my cup of tea.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 5,
+    "user": "user222",
+    "book": 4,
+    "rating": 5,
+    "comment": "An absolute masterpiece! The characters were so relatable.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 6,
+    "user": "user333",
+    "book": 4,
+    "rating": 4,
+    "comment": "Really enjoyed this book. Looking forward to the sequel.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 7,
+    "user": "user444",
+    "book": 4,
+    "rating": 1,
+    "comment": "I couldn’t get into it at all. The writing style didn’t work for me.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 8,
+    "user": "user555",
+    "book": "book123",
+    "rating": 5,
+    "comment": "A beautifully written book. I couldn’t put it down!",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 9,
+    "user": "user666",
+    "book": "book789",
+    "rating": 3,
+    "comment": "It was fine, but not particularly memorable.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  },
+  {
+    "id": 10,
+    "user": "user777",
+    "book": 4,
+    "rating": 4,
+    "comment": "Solid read with a few twists I didn’t see coming.",
+    "author": {
+      "id": 0,
+      "username": "string",
+      "image": "string",
+      "name": "string"
+    }
+  }
+]
