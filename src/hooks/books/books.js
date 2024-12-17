@@ -16,7 +16,11 @@ const useBooks = (searchQuery = '', fromHome = false) => {
         }
         setError(null);
         try {
-            const response = await api.get('/books/book-list');
+            let endpoint = '/books/book-list';
+            if (fromHome) {
+                endpoint = `${endpoint}?limit=10`;
+            }
+            const response = await api.get(endpoint);
             if (response.status === 200) {
                 const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
                 setBooks(fetchedBooks);
@@ -73,15 +77,17 @@ const useBooks = (searchQuery = '', fromHome = false) => {
         }
     };
 
-    const fetchBooksByGenre = async (genre) => {
+    const fetchBooksByGenre = async () => {
         if (!loading) {
             setLoading(true);
         }
         setError(null);
         try {
-            const response = await api.get('/books/book-list');
+            const genre = localStorage.getItem('genre') ?? 'Fiction';
+            const genreWithCapital = genre.charAt(0).toUpperCase() + genre.slice(1);
+            const response = await api.get(`/books/search?genre=${genreWithCapital}`);
             if (response.status === 200) {
-                const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
+                const fetchedBooks = response.data.books.map((bookData) => BookSummary.fromJSON(bookData));
                 setBooksGenre(fetchedBooks);
                 setLoading(false);
             } else {
