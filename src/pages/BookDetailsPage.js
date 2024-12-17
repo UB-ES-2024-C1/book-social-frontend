@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {Spacer} from "../resources/spacer";
 import Grid from "@mui/material/Grid2";
@@ -13,16 +13,47 @@ import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
-import {Box, Button, CircularProgress} from "@mui/material";
+import {Box, Button, CircularProgress, Rating, Snackbar, TextField} from "@mui/material";
 import useSavedBooks from "../hooks/saved_books";
 import {AiOutlineArrowLeft} from "react-icons/ai";
 import NavAppBar from "../components/NavAppBar";
+import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
+import StarIcon from "@mui/icons-material/StarBorder";
+import Divider from "@mui/material/Divider";
+import useReviews from "../hooks/reviews";
+import CardVisualizeReview from "../components/CardVisualizeReview";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
     const {book, loading, error, fetchBook} = useBook(id);
     const navigate = useNavigate();
     const {loading: isSavedLoading, saveBook, isBookSaved} = useSavedBooks();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+    const {loading: loadingReview, addResponse, bookReviews, addReview} = useReviews({bookId: id});
+
+    const handleRatingChange = (event, newValue) => {
+        setRating(newValue);
+    };
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+
+    const handleCommentChange = (event) => {
+        setComment(event.target.value);
+    };
+
+    const handlePublishReview = async () => {
+        // Aquí puedes agregar lógica para enviar la reseña a la API o base de datos.
+        console.log('Review published', {rating, comment});
+        // Resetear valores después de publicar la reseña
+        await addReview(rating, comment);
+        setSnackbarOpen(true);
+        setRating(0);
+        setComment('');
+    };
 
     if (loading) {
         return <LoadingPage/>;
@@ -32,9 +63,8 @@ const BookDetailsPage = () => {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
 
-    const saveForLater = (event) => {
-        event.stopPropagation();
-        saveBook(id);
+    const saveForLater = async (event) => {
+        await saveBook(id);
     };
 
     return (
@@ -67,6 +97,13 @@ const BookDetailsPage = () => {
                 <AiOutlineArrowLeft size={24} style={{marginRight: '8px'}}/>
                 Back
             </button>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                message={addResponse}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+            />
             <Grid container spacing={6} justifyContent="center" alignItems="flex-start">
                 <Grid item size={2} style={{
                     justifyContent: 'flex-start',
@@ -170,6 +207,86 @@ const BookDetailsPage = () => {
                     <Spacer size={8}/>
                     <BookSocialLinealRating value={book.goodReadsSummaryRatings.oneStars}
                                             total={book.goodReadsNumberRating} title="1 star"/>
+
+                    {/* New Section: Add Your Review */}
+                    <Spacer size={24}/>
+                    <BookSocialTitle level={4} text="Add Your Review" textAlign="left"/>
+                    <Spacer size={16}/>
+                    <Rating
+                        name="selectable-rating"
+                        value={rating}
+                        onChange={handleRatingChange}
+                        precision={0.25}
+                        size={"large"}
+                        emptyIcon={<StarIcon sx={{
+                            color: paletteColors.textColor_weakest,
+                            opacity: 0.55,
+                            fontSize: 'inherit'
+                        }}/>}
+                    />
+                    <Spacer size={16}/>
+                    <TextField
+                        label={"Left here your opinion"}
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        value={comment}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                    borderColor: paletteColors.textColorStrong,
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: paletteColors.color_primary,
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: paletteColors.color_primary,
+                                },
+                            },
+                            '& .MuiInputLabel-root': {
+                                color: paletteColors.textColorStrong,
+                                fontFamily: 'Roboto',
+                                fontSize: '1.5rem',
+                                '&.Mui-focused': {
+                                    color: paletteColors.textColorStrong,
+                                },
+                            },
+                            '& .MuiInputBase-input': {
+                                color: paletteColors.textColorWeakest,
+                                fontFamily: 'Roboto',
+                                fontSize: '1rem',
+                            },
+                        }}
+                        onChange={handleCommentChange}
+                    />
+                    <Spacer size={16}/>
+                    <BookSocialPrimaryButton
+                        onClick={handlePublishReview}
+                        isLoading={loadingReview}
+                        buttonText={"Publish My Review"}
+                    />
+                    <Spacer size={24}/>
+                    <BookSocialTitle
+                        level={4}
+                        text={"Community Reviews"}
+                        textAlign={"left"}
+                        sx={{margin: "20px"}}
+                    />
+                    <Divider color={"#ddd"} style={{margin: '10px 0'}}/>
+                    <Spacer size={6}/>
+                    {bookReviews.length > 0 && bookReviews.map((review, index) => (
+                        <div key={index} style={{marginBottom: '16px'}}>
+                            <CardVisualizeReview review={review}/>
+                        </div>
+                    ))}
+
+                    {bookReviews.length === 0 && (
+                        <BookSocialText level={"p"} text={"No community reviews available yet"}
+                                        color={paletteColors.textColorStrong}/>
+                    )}
+
+
                 </Grid>
             </Grid>
             <Spacer size={64}/>
