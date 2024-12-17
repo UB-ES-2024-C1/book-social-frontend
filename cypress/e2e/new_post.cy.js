@@ -32,23 +32,15 @@ describe('Login test', () => {
         // Verifica la redirección o el cambio de estado
         cy.url().should('include', '/home'); // Ajusta según la ruta de redirección esperada
 
-        cy.get('[data-testid="button-new-book"]').click();
+        cy.get('[data-testid="button-new-post"]').click();
 
         // Llenar el formulario
-        cy.get('[data-testid="title-input"]').type('Test');
-        cy.get('[data-testid="synopsis-input"]').type('This is a cypress test');
-        cy.get('[data-testid="lenguage-input"]').type('English');
-        cy.get('[data-testid="genres-dropdown"]').click();
-        cy.contains('.MuiMenuItem-root', 'Fiction').click();
-        cy.get('body').click();
-        cy.get('[data-testid="categories-dropdown"]').click();
-        cy.contains('.MuiMenuItem-root', 'Adaptations').click();
-        cy.get('body').click();
-        cy.get('[data-testid="date-input"]').click().type(formattedDate);
-        cy.get('[data-testid="isbn-input"]').type('9876543211');
-        cy.get('[data-testid="edition-input"]').type('First edition');
-        cy.get('[data-testid="publisher-input"]').type('Cypress');
+        cy.get('[data-testid="title-input"]').type('This is a post test');
+        cy.get('[data-testid="content-input"]').type('This is a post test made by cypress');
 
-        cy.get('[data-testid="submit-button');   
+        cy.get('[data-testid="file-button');
+        cy.get('[data-testid="submit-button');
+        cy.get('[data-testid="cancel-button');
+
       });
   })
