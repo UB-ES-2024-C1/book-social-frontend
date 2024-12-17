@@ -13,10 +13,10 @@ import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
-import {AiOutlineArrowLeft} from "react-icons/ai"; // Importa el icono de "guardado"
-import NavAppBar from "../components/NavAppBar";
 import {Box, Button, CircularProgress} from "@mui/material";
 import useSavedBooks from "../hooks/saved_books";
+import {AiOutlineArrowLeft} from "react-icons/ai";
+import NavAppBar from "../components/NavAppBar";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
@@ -44,34 +44,35 @@ const BookDetailsPage = () => {
             display: 'flex',
             flexDirection: 'column',
             minWidth: '100%',
-            alignItems: 'stretch',
-            marginTop: '60px'
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            marginTop: '68px',
         }}>
             <NavAppBar/>
-            <div style={{padding: '10px', display: 'flex', alignItems: 'start', marginTop: '5px'}}>
-                <button
-                    onClick={() => navigate('/home')}
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: paletteColors.textColorStrong,
-                        cursor: 'pointer',
-                        textDecoration: 'none',
-                        fontSize: '25px',
-                    }}
-                >
-                    <AiOutlineArrowLeft size={24} style={{marginRight: '8px'}}/>
-                    Back
-                </button>
-            </div>
-            <Grid container spacing={6} justifyContent="center" alignItems="start">
-                <Grid item size={2} style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
+            <Spacer size={24}/>
+            <button
+                onClick={() => navigate('/home')}
+                style={{
+                    marginLeft: '24px',
+                    background: 'none',
+                    border: 'none',
                     display: 'flex',
-                    flexDirection: 'column'
+                    alignItems: 'center',
+                    color: paletteColors.textColorStrong,
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    fontSize: '25px',
+                }}
+            >
+                <AiOutlineArrowLeft size={24} style={{marginRight: '8px'}}/>
+                Back
+            </button>
+            <Grid container spacing={6} justifyContent="center" alignItems="flex-start">
+                <Grid item size={2} style={{
+                    justifyContent: 'flex-start',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
                 }}>
                     <BookSocialImage size="lg" url={book.image}/>
                     <Spacer size={24}/>
@@ -171,7 +172,7 @@ const BookDetailsPage = () => {
                                             total={book.goodReadsNumberRating} title="1 star"/>
                 </Grid>
             </Grid>
-            <Spacer size={100}/>
+            <Spacer size={64}/>
         </div>
     );
 };
