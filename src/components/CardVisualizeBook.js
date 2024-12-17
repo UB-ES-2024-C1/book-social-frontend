@@ -40,7 +40,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
     const handleImageLoad = () => {
         setIsImageLoading(false);
     };
-    
+
     // Imagen predeterminada
     const defaultImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg";
 
@@ -214,6 +214,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         <CircularProgress
                             size={24}
                             sx={{
+                                color: "white",
                                 position: 'absolute'
                             }}
                         />

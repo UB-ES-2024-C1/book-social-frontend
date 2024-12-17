@@ -14,7 +14,6 @@ import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
 import {Box, Button, CircularProgress, Rating, Snackbar, TextField} from "@mui/material";
-import useSavedBooks from "../hooks/saved_books";
 import {AiOutlineArrowLeft} from "react-icons/ai";
 import NavAppBar from "../components/NavAppBar";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
@@ -22,16 +21,18 @@ import StarIcon from "@mui/icons-material/StarBorder";
 import Divider from "@mui/material/Divider";
 import useReviews from "../hooks/reviews";
 import CardVisualizeReview from "../components/CardVisualizeReview";
+import useSavedBooks from "../hooks/saved_books";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
+    const {loading: isSavedLoading, saveBook, isBookSaved} = useSavedBooks();
     const {book, loading, error, fetchBook} = useBook(id);
     const navigate = useNavigate();
-    const {loading: isSavedLoading, saveBook, isBookSaved} = useSavedBooks();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const {loading: loadingReview, addResponse, bookReviews, addReview} = useReviews({bookId: id});
+
 
     const handleRatingChange = (event, newValue) => {
         setRating(newValue);
@@ -55,6 +56,14 @@ const BookDetailsPage = () => {
         setComment('');
     };
 
+    const saveForLater = async (event) => {
+        event.stopPropagation();
+        await saveBook(1);
+        console.log('after save - saved book', isBookSaved(id));
+
+    };
+
+
     if (loading) {
         return <LoadingPage/>;
     }
@@ -62,6 +71,8 @@ const BookDetailsPage = () => {
     if (error) {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
+
+    console.log('saved book', isBookSaved(id));
     const defaultBookImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg"
 
     // Aquí aplicamos la lógica para manejar las imágenes
@@ -70,11 +81,6 @@ const BookDetailsPage = () => {
             ? book.image
             : `data:image/jpeg;base64,${book.image}` // Si es Base64
         : defaultBookImage; // Si no tiene imagen, usamos la predeterminada
-
-
-    const saveForLater = async (event) => {
-        await saveBook(id);
-    };
 
     return (
         <div style={{
@@ -120,7 +126,7 @@ const BookDetailsPage = () => {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                 }}>
-                    <BookSocialImage size="lg" url={book.image}/>
+                    <BookSocialImage size="lg" url={imageUrl}/>
                     <Spacer size={24}/>
                     <BookSocialRating value={book.goodReadsMeanRating || 0}/>
                     <Spacer size={24}/>
@@ -165,6 +171,7 @@ const BookDetailsPage = () => {
                                 <CircularProgress
                                     size={24}
                                     sx={{
+                                        color: "white",
                                         position: 'absolute'
                                     }}
                                 />
