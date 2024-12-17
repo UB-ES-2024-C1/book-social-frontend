@@ -23,15 +23,11 @@ describe('Login test', () => {
         // Verifica la redirección o el cambio de estado
         cy.url().should('include', '/home'); // Ajusta según la ruta de redirección esperada
 
-        cy.get('[data-testid="button-new-post"]').click();
+        // Hacer clic en la primera card
+        cy.get('[data-testid="book-card"]').first().click();
 
-        // Llenar el formulario
-        cy.get('[data-testid="title-input"]').type('This is a post test');
-        cy.get('[data-testid="content-input"]').type('This is a post test made by cypress');
-
-        cy.get('[data-testid="file-button');
-        cy.get('[data-testid="submit-button');
-        cy.get('[data-testid="cancel-button');
+        // Verificar que la URL cambia a la página de detalles del libro
+        cy.url().should('include', '/book-details');
 
       });
   })
