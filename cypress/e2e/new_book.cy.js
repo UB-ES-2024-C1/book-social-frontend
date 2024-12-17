@@ -11,7 +11,7 @@ describe('Login test', () => {
     
         // Rellena los campos de usuario y contraseña
         
-        cy.get('[data-testid="username-input"]').type('raul.asins2@gmail.com');
+        cy.get('[data-testid="username-input"]').type('raul.asins1@gmail.com');
         cy.get('[data-testid="password-input"]').type('Testpassword_24');
     
         // Haz clic en el botón de inicio de sesión

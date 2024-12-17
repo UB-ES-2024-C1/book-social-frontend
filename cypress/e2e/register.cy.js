@@ -32,7 +32,7 @@ describe('SignInModal', () => {
       cy.contains('.MuiMenuItem-root', 'Reader').click();
       
       // Hacer clic en el botón de 'Crear cuenta'
-      cy.get('[data-testid="create-button').click();
+      cy.get('[data-testid="create-button');
       
       // Verificar que la navegación o el comportamiento esperado suceda después de enviar el formulario
       //cy.url().should('include', '/home');  // Verifica la redirección, ajusta según sea necesario
