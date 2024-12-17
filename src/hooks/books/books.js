@@ -20,7 +20,7 @@ const useBooks = (searchQuery = '', fromHome = false) => {
             if (fromHome) {
                 endpoint = `${endpoint}?limit=10`;
             }
-            const response = await api.get('/books/book-list');
+            const response = await api.get(endpoint);
             if (response.status === 200) {
                 const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
                 setBooks(fetchedBooks);
