@@ -15,7 +15,7 @@ import {Box} from "@mui/material";
 
 const HomePage = () => {
     const {profile, loading: loadingProfile, error: errorProfile} = useProfile();
-    const {booksRecent, booksGenre, booksTopRated, loading, error} = useBooks("", true);
+    const {booksRecent, booksGenre, booksTopRated, loading, error} = useBooks("", true, false);
     const {posts, loading: loadingPosts, error: errorPosts} = usePosts(); // Hook para los posts
     const navigate = useNavigate();
 
