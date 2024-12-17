@@ -7,6 +7,8 @@ import api from '../services/api';
 import { Close } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import * as routes from '../resources/routes_name';
+import Compressor from 'compressorjs';
+
 
 const NewPost = () => {
     const [title, setTitle] = useState('');
@@ -43,39 +45,30 @@ const NewPost = () => {
         }
     };
 
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setFileError('');
-
         if (!file) return;
 
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const maxSize = 25 * 1024 * 1024; // 25MB
-
-        if (!validTypes.includes(file.type)) {
-            setFileError('Files must be JPG, PNG, or GIF.');
-        } else if (file.size > maxSize) {
-            setFileError('Files must not exceed 25MB.');
-        } else {
-            setAttachedFiles([file]);
-        }
+        new Compressor(file, {
+            quality: 0.8, // Ajusta la calidad (0 a 1)
+            maxWidth: 1920, // Ajusta el tamaño máximo en píxeles
+            success: (compressedFile) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    setAttachedFiles([reader.result]); // Guarda el archivo comprimido como base64
+                };
+                reader.readAsDataURL(compressedFile);
+            },
+            error: (err) => {
+                console.error('Compression error:', err.message);
+            },
+        });
     };
+
 
     const handleRemoveFile = (index) => {
         setAttachedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    };
-
-    const uploadFile = async (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            const response = await api.post('/upload', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            return response.data.url; // Assuming the API returns the file URL
-        } catch (error) {
-            throw new Error('Failed to upload file.');
-        }
     };
 
     const handleSubmit = async () => {
@@ -94,17 +87,10 @@ const NewPost = () => {
         }
 
         try {
-            let imageUrls = [];
-            if (attachedFiles.length > 0) {
-                imageUrls = await Promise.all(
-                    attachedFiles.map((file) => uploadFile(file))
-                );
-            }
-
             const postData = {
                 title,
                 content,
-                imageUrls,
+                imageUrls: attachedFiles,
             };
 
             const response = await api.post('/posts/create', postData);
