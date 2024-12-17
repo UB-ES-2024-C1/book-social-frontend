@@ -89,8 +89,6 @@ const Profile = () => {
 
     const handleSaveChanges = async () => {
         await updateProfile(localProfile);
-        console.log('updated profile');
-        console.log(profile);
         setLocalProfile({
             ...profile,
             books: profile.books // Ensure this value is updated correctly

@@ -22,6 +22,7 @@ const useProfile = () => {
         try {
             const profileImage = localStorage.getItem('profileImage');
             const coverImage = localStorage.getItem('coverImage');
+            console.log('cover image',coverImage);
             const response = await api.get('auth/me')
             var fetchedBooks = [];
             try {
@@ -43,7 +44,6 @@ const useProfile = () => {
                     image: profileImage,
                     coverImage: coverImage,
                 });
-                console.log('profile');
                 setLoading(false);
             } else {
                 setError("Error fetching profile data");

@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Avatar, Tooltip, Typography, Skeleton } from '@mui/material';
+import React from 'react';
+import { Box, Card, CardContent, Avatar, Tooltip, Typography, CardMedia } from '@mui/material';
 import paletteColors from "../resources/palette";
 
 const CardVisualizePost = ({ authorName, authorImage, username, title, content, image }) => {
-    const [isLoading, setIsLoading] = useState(true);
-
-    const handleImageLoad = () => {
-        setIsLoading(false);
-    };
+    const imageUrl = Array.isArray(image) && image.length > 1 ? `${image[0]},${image[1]}` : null;
 
     return (
         <Card sx={{
@@ -18,7 +14,7 @@ const CardVisualizePost = ({ authorName, authorImage, username, title, content, 
             color: 'white',
             display: 'flex',
             flexDirection: 'column',
-            padding: 2, // Agrega padding alrededor de toda la tarjeta
+            padding: 2,
         }}>
             <CardContent sx={{ display: 'flex', alignItems: 'flex-start', padding: 0 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
@@ -53,36 +49,25 @@ const CardVisualizePost = ({ authorName, authorImage, username, title, content, 
                     overflow: 'hidden',
                     display: '-webkit-box',
                     WebkitBoxOrient: 'vertical',
-                    textAlign: 'left', // Alinear el contenido al inicio
+                    textAlign: 'left',
                 }}>
                     {content}
                 </Typography>
             </Box>
-            {/* Sección de la imagen */}
-            {image && (
+            {/* Mostrar la imagen si existe */}
+            {imageUrl && (
                 <Box sx={{ position: 'relative', padding: '16px 16px' }}>
-                    {isLoading && (
-                        <Skeleton
-                            variant="rectangular"
-                            width="100%"
-                            height={150}
-                            sx={{ borderRadius: 10 }}
-                        />
-                    )}
                     <CardMedia
                         component="img"
                         sx={{
-                            display: isLoading ? 'none' : 'block',
+                            display: 'block',
                             borderRadius: 10,
-                            width: '100%', // Ajusta el ancho de la imagen
-                            maxHeight: 180, // Máxima altura
-                            objectFit: 'contain', // Ajusta la imagen para que quepa completamente
+                            width: '100%',
+                            maxHeight: 180,
+                            objectFit: 'contain',
                         }}
-                        image={image}
-                        alt={`${title} image`}
-                        onLoad={handleImageLoad}
+                        image={imageUrl}
                     />
-
                 </Box>
             )}
         </Card>
