@@ -19,7 +19,7 @@ class Review {
             author.name || null,
             author.image || null,
             author.username || null,
-            json.creationDate ? new Date(json.creationDate) : new Date()
+            json.creation_date ? new Date(json.creation_date) : new Date()
         );
     }
 }
