@@ -393,6 +393,7 @@ const NewBook = () => {
             >
                 <img
                     src={imagePreview || defaultbook}
+                    data-testid={'cover-image'}
                     alt="book cover"
                     style={{
                         width: '100%',
@@ -448,6 +449,7 @@ const NewBook = () => {
                             maxLength={200}
                             status={titleError ? 'error' : 'default'}
                             errorMessage={titleError}
+                            dataTestId={'title-input'}
                         />
                     </div>
                     {/* Synopsis Field */}
@@ -460,6 +462,7 @@ const NewBook = () => {
                             status={synopsisError ? 'error' : 'default'}
                             errorMessage={synopsisError}
                             rows={3} // Set the desired number of rows
+                            dataTestId={'synopsis-input'}
                         />
                     </div>
 
@@ -472,6 +475,7 @@ const NewBook = () => {
                             required={true}
                             status={languageError ? 'error' : 'default'}
                             errorMessage={languageError}
+                            dataTestId={'lenguage-input'}
                         />
                     </div>
 
@@ -482,6 +486,7 @@ const NewBook = () => {
                             selectedGenres={selectedGenres}
                             onGenreChange={handleGenreChange}
                             label={"Genres *"}
+                            dataTestId={'genres-dropdown'}
                         />
                     </div>
 
@@ -492,6 +497,7 @@ const NewBook = () => {
                             selectedGenres={selectedCategories}
                             onGenreChange={handleCategoriesChange}
                             label={"Categories"}
+                            dataTestId={'categories-dropdown'}
                         />
                     </div>
 
@@ -506,6 +512,7 @@ const NewBook = () => {
                             status={publishDateError ? 'error' : 'default'}
                             errorMessage={publishDateError} // Display the error message
                             isDate={true}
+                            dataTestId={'date-input'}
                         />
                     </div>
 
@@ -518,6 +525,7 @@ const NewBook = () => {
                             required={true}
                             errorMessage={isbnError}
                             status={isbnError ? 'error' : 'default'}
+                            dataTestId={'isbn-input'}
                         />
                     </div>
                     {/* Edition Field*/}
@@ -528,6 +536,7 @@ const NewBook = () => {
                             onChange={handleEditionChange}
                             errorMessage={editionError}
                             status={editionError ? 'error' : 'default'}
+                            dataTestId={'edition-input'}
                         />
                     </div>
 
@@ -539,6 +548,7 @@ const NewBook = () => {
                             onChange={handlePublisherChange}
                             errorMessage={publisherError}
                             status={publisherError ? 'error' : 'default'}
+                            dataTestId={'publisher-input'}
                         />
                     </div>
 
@@ -554,6 +564,7 @@ const NewBook = () => {
                             isExpanded={false}
                             bgColor={paletteColors.color_primary}
                             disabled={isSubmitting}
+                            dataTestId={'submit-button'}
                         />
                     </div>
 
