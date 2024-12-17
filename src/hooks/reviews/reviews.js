@@ -27,7 +27,7 @@ const useReviews = ({userId = null, bookId = null}) => {
             const response = await api.post(`/reviews`, payload);
             if (response.status === 201) {
                 setAddResponse("Your review have been added successfully");
-                setLoading(false);
+                await fetchBookReviews();
             } else {
                 setAddResponse(`Error on try add your review`);
                 setLoading(false);
@@ -46,8 +46,7 @@ const useReviews = ({userId = null, bookId = null}) => {
         try {
             const response = await api.get(`/reviews/user/${userId}`);
             if (response.status === 200) {
-                // const fetchedReviews = response.data.map((bookData) => Review.fromJSON(bookData));
-                const fetchedReviews = reviews.map((bookData) => Review.fromJSON(bookData));
+                const fetchedReviews = reviews.reviews.map((bookData) => Review.fromJSON(bookData));
                 setUserReviews(fetchedReviews);
                 setLoading(false);
             } else {
@@ -67,17 +66,15 @@ const useReviews = ({userId = null, bookId = null}) => {
         setError(null);
         try {
             const response = await api.get(`/reviews/book/${bookId}`);
-            const fetchedReviews = reviews.map((bookData) => Review.fromJSON(bookData));
-            setBookReviews(fetchedReviews);
-            setLoading(false);
-            // if (response.status === 200) {
-            //     const fetchedReviews = response.data.map((bookData) => Review.fromJSON(bookData));
-            //     setBookReviews(fetchedReviews);
-            //     setLoading(false);
-            // } else {
-            //     setError(`Error on try to get user reviews: ${response.data.message}`);
-            //     setLoading(false);
-            // }
+            if (response.status === 200) {
+                console.log(`/reviews/book/${bookId}`, response);
+                const fetchedReviews = response.data.reviews.map((bookData) => Review.fromJSON(bookData));
+                setBookReviews(fetchedReviews);
+                setLoading(false);
+            } else {
+                setError(`Error on try to get user reviews: ${response.data.message}`);
+                setLoading(false);
+            }
         } catch (err) {
             setError('Error fetching user reviews');
             setLoading(false);

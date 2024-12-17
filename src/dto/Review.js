@@ -11,12 +11,12 @@ class Review {
 
     // Método estático para crear una instancia de Review a partir de un objeto JSON
     static fromJSON(json) {
-        const author = json.author || {};
+        const author = json.user || {};
         return new Review(
             json.rating,
             json.book,
             json.comment || null,
-            author.name || null,
+            `${author.firstName} ${author.lastName}` || null,
             author.image || null,
             author.username || null,
             json.creation_date ? new Date(json.creation_date) : new Date()
