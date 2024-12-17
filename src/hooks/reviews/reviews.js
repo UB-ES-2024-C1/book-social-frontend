@@ -25,7 +25,7 @@ const useReviews = ({userId = null, bookId = null}) => {
                 comment: comment,
             };
             const response = await api.post(`/reviews`, payload);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setAddResponse("Your review have been added successfully");
                 setLoading(false);
             } else {
