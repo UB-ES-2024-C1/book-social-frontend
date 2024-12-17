@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState} from "react";
 import api from "../../services/api";
 import BookSummary from "../../dto/bookSummary";
 
@@ -8,51 +8,38 @@ const useSavedBooks = () => {
     const [error, setError] = useState(null);
 
     const fetchSavedBooks = async () => {
-        if (!loading) {
-            setLoading(true);
-        }
+        setLoading(true); // Siempre marcar como cargando al iniciar
         setError(null);
         try {
-            const response = await api.get('/books/saved-list');
+            const response = await api.get("/books/saved-list");
             if (response.status === 200) {
                 const fetchedBooks = response.data.map((bookData) => BookSummary.fromJSON(bookData));
                 setSavedBooks(fetchedBooks);
-                setLoading(false);
             } else {
                 setError(`Error fetching saved books: ${response.data.message}`);
-                setLoading(false);
             }
         } catch (err) {
-            setError('Error fetching saved book list');
-            setLoading(false);
+            setError("Error fetching saved book list");
+        } finally {
+            setLoading(false); // Asegurarnos de cambiar el estado de loading
         }
     };
 
     const saveBook = async (id) => {
-        if (!loading) {
-            setLoading(true);
-        }
-        setError(null);
         try {
             const response = await api.post(`/books/saved-list/${id}`);
             if (response.status === 200) {
-                await fetchSavedBooks();
-            } else {
-                setLoading(false);
+                await fetchSavedBooks(); // Actualizamos la lista de libros guardados
+                return response.data.isSaved;
             }
         } catch (err) {
-            setError('Error saving book list');
-            setLoading(false);
+            setError("Error saving book");
         }
+        return false; // Retornar false en caso de error
     };
 
-    const isBookSaved = (id) => {
-        return savedBooks.some((book) => book.id === id);
-    }
-
-
     useEffect(() => {
-        fetchSavedBooks();
+        fetchSavedBooks(); // Cargar los libros guardados al montar el hook
     }, []);
 
     return {
@@ -60,8 +47,7 @@ const useSavedBooks = () => {
         loading,
         error,
         fetchSavedBooks,
-        isBookSaved,
-        saveBook
+        saveBook,
     };
 };
 

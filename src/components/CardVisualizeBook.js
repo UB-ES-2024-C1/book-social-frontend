@@ -1,19 +1,8 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    Rating,
-    Skeleton,
-    Tooltip,
-    Typography
-} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
-import useSavedBooks from "../hooks/saved_books"; // Importa el icono de "guardado"
+import BookSocialSaveButton from "./SaveButton"; // Importa el icono de "guardado"
 
 const truncateText = (text) => {
     const maxLength = 87;
@@ -30,7 +19,6 @@ const truncateText = (text) => {
 const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
     const navigate = useNavigate();
     const [isImageLoading, setIsImageLoading] = useState(true);
-    const {loading, saveBook, isBookSaved} = useSavedBooks();
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -78,13 +66,6 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             imageUrl = formatBase64Image(image);
         }
     }
-
-    //TODO change to save with the api of save
-    const saveForLater = (event) => {
-        event.stopPropagation();
-        saveBook(id)
-        console.log(`Book with ID ${id} saved for later`);
-    };
 
     return (
         <Card sx={{
@@ -194,37 +175,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         </Typography>
                     </Box>
                 </CardContent>
-
-                <Button
-                    variant="contained"
-                    color={isBookSaved(id) ? 'success' : 'primary'}
-                    onClick={saveForLater}
-                    sx={{
-                        mt: 1,
-                        alignSelf: 'flex-end',
-                        fontSize: '0.8rem',
-                        textTransform: 'none',
-                        backgroundColor: isBookSaved(id) ? '#4caf50' : paletteColors.color_primary,
-                        position: 'relative',
-                        minWidth: '120px',
-                        height: '40px',
-                    }}
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <CircularProgress
-                            size={24}
-                            sx={{
-                                color: "white",
-                                position: 'absolute'
-                            }}
-                        />
-                    ) : (
-                        <>
-                            {isBookSaved(id) ? 'Saved' : 'Save'}
-                        </>
-                    )}
-                </Button>
+                <BookSocialSaveButton id={id}/>
             </Box>
         </Card>
     );

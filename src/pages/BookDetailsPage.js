@@ -13,7 +13,7 @@ import BookSocialLinealRating from "../components/LinealRating";
 import LoadingPage from "./LoadingPage";
 import ErrorPage from "./ErrorPage";
 import useBook from "../hooks/book/book";
-import {Box, Button, CircularProgress, Rating, Snackbar, TextField} from "@mui/material";
+import {Box, Rating, Snackbar, TextField} from "@mui/material";
 import {AiOutlineArrowLeft} from "react-icons/ai";
 import NavAppBar from "../components/NavAppBar";
 import BookSocialPrimaryButton from "../components/BookSocialPrimaryButton";
@@ -21,11 +21,10 @@ import StarIcon from "@mui/icons-material/StarBorder";
 import Divider from "@mui/material/Divider";
 import useReviews from "../hooks/reviews";
 import CardVisualizeReview from "../components/CardVisualizeReview";
-import useSavedBooks from "../hooks/saved_books";
+import BookSocialSaveButton from "../components/SaveButton";
 
 const BookDetailsPage = () => {
     const {id} = useParams();
-    const {loading: isSavedLoading, saveBook, isBookSaved} = useSavedBooks();
     const {book, loading, error, fetchBook} = useBook(id);
     const navigate = useNavigate();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -56,13 +55,6 @@ const BookDetailsPage = () => {
         setComment('');
     };
 
-    const saveForLater = async (event) => {
-        event.stopPropagation();
-        await saveBook(1);
-        console.log('after save - saved book', isBookSaved(id));
-
-    };
-
 
     if (loading) {
         return <LoadingPage/>;
@@ -72,7 +64,6 @@ const BookDetailsPage = () => {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
 
-    console.log('saved book', isBookSaved(id));
     const defaultBookImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg"
 
     // Aquí aplicamos la lógica para manejar las imágenes
@@ -151,36 +142,7 @@ const BookDetailsPage = () => {
                 <Grid item size={8}>
                     <Box display="flex" alignItems="center" justifyContent="space-between">
                         <BookSocialTitle level={2} text={book.title} textAlign="left"/>
-                        <Button
-                            variant="contained"
-                            color={isBookSaved(id) ? 'success' : 'primary'}
-                            onClick={saveForLater}
-                            sx={{
-                                mt: 1,
-                                alignSelf: 'flex-end',
-                                fontSize: '0.8rem',
-                                textTransform: 'none',
-                                backgroundColor: isBookSaved(id) ? '#4caf50' : paletteColors.color_primary,
-                                position: 'relative',
-                                minWidth: '120px',
-                                height: '40px',
-                            }}
-                            disabled={isSavedLoading}
-                        >
-                            {isSavedLoading ? (
-                                <CircularProgress
-                                    size={24}
-                                    sx={{
-                                        color: "white",
-                                        position: 'absolute'
-                                    }}
-                                />
-                            ) : (
-                                <>
-                                    {isBookSaved(id) ? 'Saved' : 'Save'}
-                                </>
-                            )}
-                        </Button>
+                        <BookSocialSaveButton id={id}/>
                     </Box>
                     <Spacer size={16}/>
 
