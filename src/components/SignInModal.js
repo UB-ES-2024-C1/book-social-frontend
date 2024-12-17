@@ -12,6 +12,8 @@ import * as routes from '../resources/routes_name';
 import BookSocialTextField from "./BookSocialTextField";
 import BookSocialDropdown from "./BookSocialDropdown";
 import BookSocialText from "./BookSocialText";
+import api from "../services/api";
+
 
 const style = {
     position: 'absolute',
@@ -40,6 +42,7 @@ const SignInModal = ({open, handleClose}) => {
     const [genre, setGenre] = useState('');
     const [personType, setPersonType] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [genres, setGenres] = useState([]); // Estado para almacenar los géneros
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -52,12 +55,10 @@ const SignInModal = ({open, handleClose}) => {
         setShowPassword2(!showPassword2);
     };
 
-    const types_genre = ['Fiction', 'Non-fiction', 'Poetry', 'Theater', 'Fantasy', 'Nature'];
     const types_person = ['Reader', 'Writer'];
 
     const handleSignIn = async () => {
-        console.log(genre)
-        // Intentamos realizar el registro
+        console.log(genre);
         await signIn(
             name,
             username,
@@ -76,11 +77,23 @@ const SignInModal = ({open, handleClose}) => {
     };
 
     useEffect(() => {
-        if (open) { // If the modal is opened, clear any previous error
+        const fetchGenres = async () => {
+            try {
+                const response = await api.get('books/genres');
+                setGenres(response.data);
+            } catch (error) {
+                console.error('Error fetching genres:', error);
+            }
+        };
+
+        fetchGenres();
+    }, []);
+
+    useEffect(() => {
+        if (open) {
             setErrorMessage('');
         }
     }, [open]);
-
 
     return (
         <Modal
@@ -108,11 +121,7 @@ const SignInModal = ({open, handleClose}) => {
                     width: '100%',
                     marginBottom: '15px',
                 }}>
-                    <img src={logo2}
-                         className="App-logo"
-                         alt="logo"
-                         style={{width: '200px'}}
-                    />
+                    <img src={logo2} className="App-logo" alt="logo" style={{width: '200px'}}/>
                 </div>
                 <Typography
                     id="modal-title"
@@ -210,7 +219,7 @@ const SignInModal = ({open, handleClose}) => {
                             label='Genre'
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
-                            options={types_genre}
+                            options={genres} // Usar los géneros obtenidos de la API
                             dataTestId={'genre-dropdown'}
                         />
                     </FormControl>
@@ -242,6 +251,5 @@ const SignInModal = ({open, handleClose}) => {
         </Modal>
     );
 };
-
 
 export default SignInModal;

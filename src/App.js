@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Navigate, Outlet, Route, Routes} from 'react-ro
 import './App.css';
 import HomePage from './pages/HomePage';
 import DiscoveryPage from './pages/DiscoveryPage';
-import SavedPage from './pages/SavedPage';
 import Profile from './pages/Profile';
 import PermanentDrawer from "./components/Drawer";
 import LandingPage from "./pages/LandingPage";
@@ -13,6 +12,8 @@ import NewBook from './pages/NewBook';
 import BookDetailsPage from './pages/BookDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "@mui/material/Drawer";
+import NewPost from "./pages/NewPost";
+import SavedListPage from "./pages/SavedListPage";
 
 // Layout without Drawer (for LandingPage)
 const MainLayout = () => (
@@ -52,8 +53,8 @@ function AppContent() {
                 <Route path="/discovery" element={<ProtectedRoute>
                     <DiscoveryPage/>
                 </ProtectedRoute>}/>
-                <Route path="/saved" element={<ProtectedRoute>
-                    <SavedPage/>
+                <Route path="/saved-books" element={<ProtectedRoute>
+                    <SavedListPage/>
                 </ProtectedRoute>}/>
                 <Route path="/profile" element={<ProtectedRoute>
                     <Profile/>
@@ -61,6 +62,10 @@ function AppContent() {
                 <Route path="/new-book" element={<ProtectedRoute>
                     <NewBook/>
                 </ProtectedRoute>}/>
+                <Route path="/new-post" element={<ProtectedRoute>
+                    <NewPost/>
+                </ProtectedRoute>}/>
+
             </Route>
             <Route
                 path="/book-details/:id"

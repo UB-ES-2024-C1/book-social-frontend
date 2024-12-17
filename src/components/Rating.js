@@ -7,7 +7,7 @@ import BookSocialText from "./BookSocialText";
 import BookSocialTitle from "./BookSocialTitle";
 
 
-const BookSocialRating = ({value = 0, size = 'lg', numberRatings = null, showLabel = true}) => {
+const BookSocialRating = ({value = 0, size = 'lg', numberRatings = null, showLabel = true, date = null}) => {
     const hoverSizeMap = {
         sm: 'small',
         md: 'medium',
@@ -36,6 +36,13 @@ const BookSocialRating = ({value = 0, size = 'lg', numberRatings = null, showLab
                     />
                 </Box>
             )}
+            {date && (
+                <Box sx={{ml: 2}}>
+                    <BookSocialText level={"p"} text={new Date(date).toLocaleDateString()}
+                                    color={paletteColors.textColor_weakest}/>
+                </Box>
+
+            )}
 
             {numberRatings !== null && (
                 <Box sx={{ml: 2}}>
@@ -51,7 +58,8 @@ BookSocialRating.propTypes = {
     value: PropTypes.number.isRequired,
     size: PropTypes.oneOf(['sm', 'md', 'lg']),
     numberRatings: PropTypes.number,
-    showLabel: PropTypes.bool
+    showLabel: PropTypes.bool,
+    date: PropTypes.string,
 };
 
 export default BookSocialRating;

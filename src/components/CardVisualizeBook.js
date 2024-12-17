@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Box, Card, CardContent, CardMedia, Rating, Skeleton, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import {useNavigate} from "react-router-dom";
+import BookSocialSaveButton from "./SaveButton"; // Importa el icono de "guardado"
 
 const truncateText = (text) => {
     const maxLength = 87;
     const defaultText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
-    // Si el texto es nulo o undefined, usa el texto por defecto y trunca si es necesario
     const textToUse = text || defaultText;
 
     if (textToUse.length > maxLength) {
@@ -16,11 +16,9 @@ const truncateText = (text) => {
     return textToUse;
 };
 
-
 const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) => {
-
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isImageLoading, setIsImageLoading] = useState(true);
 
     const goToDetails = () => {
         console.log('Card clicked');
@@ -28,8 +26,46 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
     };
 
     const handleImageLoad = () => {
-        setIsLoading(false);
+        setIsImageLoading(false);
     };
+
+    // Imagen predeterminada
+    const defaultImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg";
+
+    // Verificar si la imagen es base64 y añadir el prefijo adecuado
+    const isBase64 = (str) => {
+        return str && (str.startsWith('data:image/') || str.startsWith('data:image;base64,'));
+    };
+
+    // Función para verificar si una cadena es una URL válida
+    const isValidUrl = (str) => {
+        try {
+            new URL(str); // Intenta crear un objeto URL
+            return true;
+        } catch (_) {
+            return false;
+        }
+    };
+
+    // Función para añadir el prefijo de base64 adecuado si es necesario
+    const formatBase64Image = (image) => {
+        if (image && !isBase64(image)) {
+            return `data:image/jpeg;base64,${image}`; // Aquí puedes ajustarlo si no es JPEG
+        }
+        return image;
+    };
+
+    // Manejo de la imagen
+    let imageUrl = defaultImage; // Valor predeterminado
+
+    if (image) {
+        if (isValidUrl(image)) {
+            imageUrl = image; // Si es una URL válida, usamos la URL directamente
+        } else {
+            // Si no es una URL, la tratamos como base64
+            imageUrl = formatBase64Image(image);
+        }
+    }
 
     return (
         <Card sx={{
@@ -40,9 +76,10 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             width: 500,
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
-        }} onClick={goToDetails}>
+        }} onClick={goToDetails}
+        data-testid="book-card">
             <Box sx={{position: 'relative', width: 150, height: '100%'}}>
-                {isLoading && (
+                {isImageLoading && (
                     <Skeleton
                         variant="rectangular"
                         width="100%"
@@ -56,9 +93,9 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         width: 150,
                         padding: 1.5,
                         borderRadius: 10,
-                        display: isLoading ? 'none' : 'block',
+                        display: isImageLoading ? 'none' : 'block',
                     }}
-                    image={image}
+                    image={imageUrl}
                     alt={`${title} cover`}
                     onLoad={handleImageLoad}
                 />
@@ -66,7 +103,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between',
                 alignItems: 'flex-start',
                 textAlign: 'left',
                 padding: 2,
@@ -106,7 +143,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
-                        WebkitLineClamp: 3,
+                        WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                     }}>
                         {truncateText(summary)}
@@ -138,6 +175,7 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
                         </Typography>
                     </Box>
                 </CardContent>
+                <BookSocialSaveButton id={id}/>
             </Box>
         </Card>
     );

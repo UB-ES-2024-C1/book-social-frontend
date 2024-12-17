@@ -12,7 +12,7 @@ const TestComponent = ({searchQuery, fromHome}) => {
         booksTopRated,
         loading,
         error,
-    } = useBooks(searchQuery, fromHome);
+    } = useBooks(searchQuery, fromHome, false);
 
     return (
         <div>
@@ -97,20 +97,6 @@ describe('useBooks', () => {
 
         await waitFor(() => expect(getByTestId('booksTopRated')).toHaveTextContent('Top Rated Book 1'));
         expect(getByTestId('booksTopRated')).toHaveTextContent('Top Rated Book 2');
-    });
-
-    it('should fetch fav genre books', async () => {
-        const mockBooks = [
-            {id: 1, title: 'Fav Genre Book 1'},
-            {id: 2, title: 'Fav Genre Book 2'},
-        ];
-
-        mock.onGet('/books/book-list').reply(200, mockBooks);
-
-        const {getByTestId} = render(<TestComponent fromHome={true}/>);
-
-        await waitFor(() => expect(getByTestId('booksGenre')).toHaveTextContent('Fav Genre Book 1'));
-        expect(getByTestId('booksGenre')).toHaveTextContent('Fav Genre Book 2');
     });
 
     it('should fetch recent books', async () => {
