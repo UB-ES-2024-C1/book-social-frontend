@@ -43,6 +43,7 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('profileId');
         localStorage.removeItem('genre');
+        localStorage.removeItem('role');
         setIsLoggedIn(false);
     };
 
@@ -63,6 +64,7 @@ export const AuthProvider = ({children}) => {
 
             if (response.status === 201) {
                 localStorage.setItem('genre', genre);
+                localStorage.setItem('role', personType.toString().toLocaleLowerCase());
                 await login(email, pass);
             } else {
                 setError(`Error on try to register: ${response.data.message}`);

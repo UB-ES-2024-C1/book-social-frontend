@@ -12,7 +12,7 @@ const TestComponent = ({searchQuery, fromHome}) => {
         booksTopRated,
         loading,
         error,
-    } = useBooks(searchQuery, fromHome);
+    } = useBooks(searchQuery, fromHome, false);
 
     return (
         <div>
@@ -98,7 +98,7 @@ describe('useBooks', () => {
         await waitFor(() => expect(getByTestId('booksTopRated')).toHaveTextContent('Top Rated Book 1'));
         expect(getByTestId('booksTopRated')).toHaveTextContent('Top Rated Book 2');
     });
-    
+
     it('should fetch recent books', async () => {
         const mockBooks = [
             {id: 1, title: 'Recent Book 1', author: 'Author 1'},

@@ -2,9 +2,10 @@ import {useEffect, useState} from 'react';
 import api from "../../services/api";
 import BookSummary from "../../dto/bookSummary";
 
-const useBooks = (searchQuery = '', fromHome = false) => {
+const useBooks = (searchQuery = '', fromHome = false, fromProfile = false) => {
     const [books, setBooks] = useState([]);
     const [booksRecent, setBooksRecent] = useState([]);
+    const [booksAuthor, setBooksAuthor] = useState([]);
     const [booksGenre, setBooksGenre] = useState([]);
     const [booksTopRated, setBooksTopRated] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -99,6 +100,26 @@ const useBooks = (searchQuery = '', fromHome = false) => {
             setLoading(false);
         }
     };
+    const fetchBooksByAuthor = async () => {
+        if (!loading) {
+            setLoading(true);
+        }
+        setError(null);
+        try {
+            const response = await api.get(`/books/author/${localStorage.getItem('profileId')}`);
+            if (response.status === 200) {
+                const fetchedBooks = response.data.books.map((bookData) => BookSummary.fromJSON(bookData));
+                setBooksAuthor(fetchedBooks);
+                setLoading(false);
+            } else {
+                setError(`Error fetching books by author: ${response.data.message}`);
+                setLoading(false);
+            }
+        } catch (err) {
+            setError('Error fetching books by author');
+            setLoading(false);
+        }
+    };
 
     const fetchTopRatedBooks = async () => {
         if (!loading) {
@@ -128,6 +149,8 @@ const useBooks = (searchQuery = '', fromHome = false) => {
             fetchRecentBooks();
             fetchBooksByGenre();
             fetchTopRatedBooks();
+        } else if (fromProfile) {
+            fetchBooksByAuthor();
         } else {
             fetchBooks();
         }
@@ -138,13 +161,14 @@ const useBooks = (searchQuery = '', fromHome = false) => {
         booksRecent,
         booksGenre,
         booksTopRated,
+        booksAuthor,
         loading,
         error,
         fetchBooks,
         fetchBooksByTitle,
         fetchRecentBooks,
         fetchBooksByGenre,
-        fetchTopRatedBooks
+        fetchTopRatedBooks, fetchBooksByAuthor
     };
 };
 
