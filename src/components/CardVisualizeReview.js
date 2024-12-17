@@ -19,7 +19,7 @@ const CardVisualizeReview = ({review}) => {
             fontFamily: 'Roboto, Arial, sans-serif',
             borderRadius: 10,
             boxShadow: 3,
-            backgroundColor: '#1B1B33',
+            backgroundColor: paletteColors.background_header,
             color: 'white',
             display: 'flex',
             flexDirection: 'column',
@@ -42,7 +42,7 @@ const CardVisualizeReview = ({review}) => {
                 <BookSocialRating value={rating} size={"md"} date={creationDate} showLabel={false}/>
                 <Spacer size={4}/>
                 <BookSocialText level={"large"} text={comment ? comment : "No opinion provided."}
-                                color={paletteColors.textColorStrong}/>
+                                color={paletteColors.textColorWeakest}/>
 
             </Box>
         </Card>
