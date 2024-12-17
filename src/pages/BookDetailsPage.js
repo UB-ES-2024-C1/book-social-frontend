@@ -32,6 +32,7 @@ const BookDetailsPage = () => {
     const [comment, setComment] = useState('');
     const {loading: loadingReview, addResponse, bookReviews, addReview} = useReviews({bookId: id});
 
+    console.log("localStorage.getItem('role')", localStorage.getItem('role'));
 
     const handleRatingChange = (event, newValue) => {
         setRating(newValue);
@@ -187,65 +188,69 @@ const BookDetailsPage = () => {
                                             total={book.goodReadsNumberRating} title="1 star"/>
 
                     {/* New Section: Add Your Review */}
-                    <Spacer size={24}/>
-                    <BookSocialTitle level={4} text="Add Your Review" textAlign="left"/>
-                    <Spacer size={16}/>
-                    <Rating
-                        name="selectable-rating"
-                        value={rating}
-                        onChange={handleRatingChange}
-                        precision={0.25}
-                        size={"large"}
-                        emptyIcon={<StarIcon sx={{
-                            color: paletteColors.textColor_weakest,
-                            opacity: 0.55,
-                            fontSize: 'inherit'
-                        }}/>}
-                    />
-                    <Spacer size={16}/>
-                    <TextField
-                        label={"Left here your opinion"}
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        value={comment}
-                        data-testid={'opinion-input'}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: paletteColors.textColorStrong,
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: paletteColors.color_primary,
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: paletteColors.color_primary,
-                                },
-                            },
-                            '& .MuiInputLabel-root': {
-                                color: paletteColors.textColorStrong,
-                                fontFamily: 'Roboto',
-                                fontSize: '1.5rem',
-                                '&.Mui-focused': {
-                                    color: paletteColors.textColorStrong,
-                                },
-                            },
-                            '& .MuiInputBase-input': {
-                                color: paletteColors.textColorWeakest,
-                                fontFamily: 'Roboto',
-                                fontSize: '1rem',
-                            },
-                        }}
-                        onChange={handleCommentChange}
-                    />
-                    <Spacer size={16}/>
-                    <BookSocialPrimaryButton
-                        onClick={handlePublishReview}
-                        isLoading={loadingReview}
-                        buttonText={"Publish My Review"}
-                        dataTestId={'publish-button'}
-                    />
+                    {
+                        localStorage.getItem('role') === "reader" && (<div>
+                            <Spacer size={24}/>
+                            <BookSocialTitle level={4} text="Add Your Review" textAlign="left"/>
+                            <Spacer size={16}/>
+                            <Rating
+                                name="selectable-rating"
+                                value={rating}
+                                onChange={handleRatingChange}
+                                precision={0.25}
+                                size={"large"}
+                                emptyIcon={<StarIcon sx={{
+                                    color: paletteColors.textColor_weakest,
+                                    opacity: 0.55,
+                                    fontSize: 'inherit'
+                                }}/>}
+                            />
+                            <Spacer size={16}/>
+                            <TextField
+                                label={"Left here your opinion"}
+                                variant="outlined"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                value={comment}
+                                data-testid={'opinion-input'}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: paletteColors.textColorStrong,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: paletteColors.color_primary,
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: paletteColors.color_primary,
+                                        },
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        color: paletteColors.textColorStrong,
+                                        fontFamily: 'Roboto',
+                                        fontSize: '1.5rem',
+                                        '&.Mui-focused': {
+                                            color: paletteColors.textColorStrong,
+                                        },
+                                    },
+                                    '& .MuiInputBase-input': {
+                                        color: paletteColors.textColorWeakest,
+                                        fontFamily: 'Roboto',
+                                        fontSize: '1rem',
+                                    },
+                                }}
+                                onChange={handleCommentChange}
+                            />
+                            <Spacer size={16}/>
+                            <BookSocialPrimaryButton
+                                onClick={handlePublishReview}
+                                isLoading={loadingReview}
+                                buttonText={"Publish My Review"}
+                                dataTestId={'publish-button'}
+                            />
+                        </div>)
+                    }
                     <Spacer size={24}/>
                     <BookSocialTitle
                         level={4}

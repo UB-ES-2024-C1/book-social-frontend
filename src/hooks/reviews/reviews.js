@@ -19,8 +19,8 @@ const useReviews = ({userId = null, bookId = null}) => {
         try {
             const userId = localStorage.getItem('profileId');
             const payload = {
-                user: userId,
-                book: bookId,
+                userId: userId,
+                bookId: bookId,
                 rating: rating,
                 comment: comment,
             };
