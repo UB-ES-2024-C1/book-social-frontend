@@ -14,6 +14,7 @@ import CardVisualizePost from "../components/CardVisualizePost";
 import BookSocialTitle from "../components/BookSocialTitle"; // Importa la imagen por defecto
 
 
+
 const Profile = () => {
     const [openModal, setOpenModal] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);

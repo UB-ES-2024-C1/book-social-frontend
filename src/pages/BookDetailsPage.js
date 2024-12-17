@@ -62,6 +62,15 @@ const BookDetailsPage = () => {
     if (error) {
         return <ErrorPage errorMessage={error} onClick={() => fetchBook()}/>;
     }
+    const defaultBookImage = "https://terracehospice.org/wp-content/uploads/2024/05/default_book_cover_2015.jpg"
+
+    // Aquí aplicamos la lógica para manejar las imágenes
+    const imageUrl = book.image
+        ? (book.image.startsWith('http') || book.image.startsWith('https')) // Si es URL
+            ? book.image
+            : `data:image/jpeg;base64,${book.image}` // Si es Base64
+        : defaultBookImage; // Si no tiene imagen, usamos la predeterminada
+
 
     const saveForLater = async (event) => {
         await saveBook(id);
