@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import {Avatar, Box, Card, CardContent, Tooltip, Typography} from '@mui/material';
 import paletteColors from "../resources/palette";
 import BookSocialRating from "./Rating";
+import BookSocialText from "./BookSocialText";
+import {Spacer} from "../resources/spacer";
 
 const CardVisualizeReview = ({review}) => {
     const [isLoading, setIsLoading] = useState(true);
 
-    const {rating, comment, authorName, authorImage, authorUsername} = review;
+    const {rating, comment, authorName, authorImage, authorUsername, creationDate} = review;
 
     const handleImageLoad = () => {
         setIsLoading(false);
@@ -37,17 +39,11 @@ const CardVisualizeReview = ({review}) => {
                 </Box>
             </CardContent>
             <Box sx={{flex: 1, display: 'flex', flexDirection: 'column', padding: '10px'}}>
-                <BookSocialRating value={rating}/>
-                <Typography variant="body2" sx={{
-                    my: 1,
-                    color: paletteColors.textColor_weakest,
-                    overflow: 'hidden',
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    textAlign: 'left',
-                }}>
-                    {comment ? comment : "No opinion provided."}
-                </Typography>
+                <BookSocialRating value={rating} size={"md"} date={creationDate} showLabel={false}/>
+                <Spacer size={4}/>
+                <BookSocialText level={"large"} text={comment ? comment : "No opinion provided."}
+                                color={paletteColors.textColorStrong}/>
+
             </Box>
         </Card>
     );
