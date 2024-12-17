@@ -35,6 +35,7 @@ const useProfile = () => {
             console.log(response);
             setLoading(false);
             if (response.status === 200) {
+                localStorage.setItem('profileId', response.data.id);
                 setProfile({
                     ...response.data,
                     books: fetchedBooks,
