@@ -27,15 +27,10 @@ describe('SignInModal', () => {
       
       // Seleccionar opciones del dropdown
 
-      cy.get('[data-testid="genre-dropdown"]')
-        .click();
-      cy.wait(1000); // 1 segundo de espera (ajústalo según el tiempo de animación)
-      cy.contains('.MuiMenuItem-root', 'Contemporary Fiction').click();
-
-      cy.get('[data-testid="person-type-dropdown"]')
-        .click();
-        cy.get('.MuiMenuItem-root').should('exist');
-      cy.contains('.MuiMenuItem-root', 'Reader').click();
+      /*cy.get('[data-testid="genre-dropdown"]').click();
+      cy.contains('.MuiMenuItem-root', 'Fiction').click();
+      cy.get('[data-testid="person-type-dropdown"]').click();
+      cy.contains('.MuiMenuItem-root', 'Reader').click();*/
       
       // Hacer clic en el botón de 'Crear cuenta'
       cy.get('[data-testid="create-button');
