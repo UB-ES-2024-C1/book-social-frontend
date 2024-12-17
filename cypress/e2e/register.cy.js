@@ -27,7 +27,7 @@ describe('SignInModal', () => {
       
       // Seleccionar opciones del dropdown
       cy.get('[data-testid="genre-dropdown"]').click();
-      cy.contains('.MuiMenuItem-root', 'Fiction').click();
+      cy.contains('.MuiMenuItem-root', 'Contemporary Fiction').click();
       cy.get('[data-testid="person-type-dropdown"]').click();
       cy.contains('.MuiMenuItem-root', 'Reader').click();
       
