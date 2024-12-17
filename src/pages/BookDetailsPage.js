@@ -248,6 +248,7 @@ const BookDetailsPage = () => {
                         multiline
                         rows={4}
                         value={comment}
+                        data-testid={'opinion-input'}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 '& fieldset': {
@@ -281,6 +282,7 @@ const BookDetailsPage = () => {
                         onClick={handlePublishReview}
                         isLoading={loadingReview}
                         buttonText={"Publish My Review"}
+                        dataTestId={'publish-button'}
                     />
                     <Spacer size={24}/>
                     <BookSocialTitle

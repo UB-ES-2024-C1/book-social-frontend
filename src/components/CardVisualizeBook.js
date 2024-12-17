@@ -95,7 +95,8 @@ const CardvisualizeBook = ({id, image, title, author, summary, genre, rating}) =
             width: 500,
             height: 250,
             backgroundImage: 'linear-gradient(135deg, #1B1B33 0%, #1E1C4A 100%)',
-        }} onClick={goToDetails}>
+        }} onClick={goToDetails}
+        data-testid="book-card">
             <Box sx={{position: 'relative', width: 150, height: '100%'}}>
                 {isImageLoading && (
                     <Skeleton

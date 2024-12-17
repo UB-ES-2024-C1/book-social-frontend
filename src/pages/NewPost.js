@@ -170,6 +170,7 @@ const NewPost = () => {
                         maxLength={100}
                         status={titleError ? 'error' : 'default'}
                         errorMessage={titleError}
+                        dataTestId={'title-input'}
                     />
                 </Box>
 
@@ -183,6 +184,7 @@ const NewPost = () => {
                         status={contentError ? 'error' : 'default'}
                         errorMessage={contentError}
                         rows={5}
+                        dataTestId={'content-input'}
                     />
                 </Box>
                 {/* File Upload */}
@@ -209,6 +211,7 @@ const NewPost = () => {
                             buttonText="Select File"
                             onClick={() => document.getElementById('file-upload').click()}
                             isExpanded={false}
+                            dataTestId={'file-button'}
                         />
                     </Box>
                     {fileError && (
@@ -243,12 +246,14 @@ const NewPost = () => {
                         onClick={handleSubmit}
                         disabled={isSubmitting}
                         isExpanded={true}
+                        dataTestId={'submit-button'}
                     />
                     <BookSocialPrimaryButton
                         buttonText="Cancel"
                         onClick={handleCancel}
                         disabled={isSubmitting}
                         isExpanded={true}
+                        dataTestId={'cancel-button'}
                     />
                 </Box>
 
