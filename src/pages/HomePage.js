@@ -48,6 +48,19 @@ const HomePage = () => {
         >
             {/* Bienvenida */}
             <WelcomeSection profile={profile}/>
+            {/* Secciones de libros */}
+            {booksGenre.length > 0 && (
+                <BookList title="Books of your favourite genre" books={booksGenre}/>
+            )}
+            <Spacer size={16}/>
+            {booksRecent.length > 0 && (
+                <BookList title="Books recently added" books={booksRecent}/>
+            )}
+            <Spacer size={16}/>
+            {booksTopRated.length > 0 && (
+                <BookList title="Most popular books" books={booksTopRated}/>
+            )}
+            <Spacer size={16}/>
 
             {/* Grid de Posts */}
             <BookSocialTitle
@@ -74,29 +87,16 @@ const HomePage = () => {
                 >
                     {posts.map((post) => (
                         <CardVisualizePost
-                            key={post.id}
-                            authorName={profile.name}
+                            key={post.author.id}
+                            authorName={post.author.name}
                             authorImage={profile.image}
-                            username={profile.username}
+                            username={post.author.username}
                             title={post.title}
                             content={post.content}
-                            image={post.image || ""}
+                            image={post.imageUrls || ""}
                         />
                     ))}
                 </div>
-            )}
-
-            {/* Secciones de libros */}
-            {booksGenre.length > 0 && (
-                <BookList title="Books of your favourite genre" books={booksGenre}/>
-            )}
-            <Spacer size={16}/>
-            {booksRecent.length > 0 && (
-                <BookList title="Books recently added" books={booksRecent}/>
-            )}
-            <Spacer size={16}/>
-            {booksTopRated.length > 0 && (
-                <BookList title="Most popular books" books={booksTopRated}/>
             )}
         </div>
     );

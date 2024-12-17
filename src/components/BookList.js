@@ -70,8 +70,8 @@ const BookList = ({title, books}) => {
                     }}
                 >
                     {books.map((book, index) => {
-                        console.log(`book ${index}`); // Imprime el contenido de cada libro en la consola
-                        console.log(book); // Imprime el contenido de cada libro en la consola
+                        //console.log(`book ${index}`); // Imprime el contenido de cada libro en la consola
+                        // console.log(book); // Imprime el contenido de cada libro en la consola
                         return (
                             <Box
                                 key={index}
